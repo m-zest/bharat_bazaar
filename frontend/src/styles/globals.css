@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-saffron-500 hover:bg-saffron-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg shadow-saffron-500/25 hover:shadow-xl hover:shadow-saffron-500/30 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-bazaar-500 hover:bg-bazaar-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg shadow-bazaar-500/25 hover:shadow-xl hover:shadow-bazaar-500/30 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply border-2 border-saffron-500 text-saffron-600 hover:bg-saffron-50 font-semibold py-3 px-6 rounded-xl transition-all duration-200 active:scale-[0.98];
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-200 hover:shadow-md;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl shadow-lg border border-gray-100 p-6;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-br from-saffron-500 via-saffron-400 to-bazaar-500;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-saffron-500 to-bazaar-500 bg-clip-text text-transparent;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-saffron-400 focus:ring-2 focus:ring-saffron-100 outline-none transition-all duration-200 bg-white;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded-lg;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Typewriter animation for AI responses */
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 1.5s steps(60) 0.5s both;
+}
+
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
