@@ -4,12 +4,18 @@ import Dashboard from './pages/Dashboard'
 import PricingPage from './pages/PricingPage'
 import ContentPage from './pages/ContentPage'
 import SentimentPage from './pages/SentimentPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import Layout from './components/Layout'
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route element={<Layout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pricing" element={<PricingPage />} />

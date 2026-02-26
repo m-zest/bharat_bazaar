@@ -53,10 +53,16 @@ export default function Landing() {
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-500 hidden sm:block font-hindi">भारत के लिए AI</span>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/login')}
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Login
+            </button>
+            <button
+              onClick={() => navigate('/signup')}
               className="btn-primary flex items-center gap-2 text-sm"
             >
-              Try Live Demo <ArrowRight className="w-4 h-4" />
+              Sign Up <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>

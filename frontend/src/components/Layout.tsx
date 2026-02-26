@@ -1,5 +1,6 @@
-import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, ArrowLeft } from 'lucide-react'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
+import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, LogOut } from 'lucide-react'
+import { signOut, getCurrentUser, isConfigured } from '../utils/auth'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', labelHi: 'डैशबोर्ड', icon: LayoutDashboard },
@@ -10,6 +11,13 @@ const navItems = [
 
 export default function Layout() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const cognitoUser = isConfigured() ? getCurrentUser() : null
+
+  const handleSignOut = () => {
+    signOut()
+    navigate('/')
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -52,13 +60,38 @@ export default function Layout() {
           })}
         </nav>
 
-        {/* Business Info */}
-        <div className="p-4 border-t border-gray-100">
+        {/* User Info & Sign Out */}
+        <div className="p-4 border-t border-gray-100 space-y-3">
           <div className="bg-bazaar-50 rounded-xl p-4">
-            <p className="text-xs font-medium text-bazaar-700">Demo Mode</p>
-            <p className="text-sm font-semibold text-bazaar-800 mt-1">Sharma Kirana Store</p>
-            <p className="text-xs text-bazaar-600 mt-0.5">Lucknow, UP</p>
+            {cognitoUser ? (
+              <>
+                <p className="text-xs font-medium text-bazaar-700">Logged In</p>
+                <p className="text-sm font-semibold text-bazaar-800 mt-1 truncate">{cognitoUser.getUsername()}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-xs font-medium text-bazaar-700">Demo Mode</p>
+                <p className="text-sm font-semibold text-bazaar-800 mt-1">Sharma Kirana Store</p>
+                <p className="text-xs text-bazaar-600 mt-0.5">Lucknow, UP</p>
+              </>
+            )}
           </div>
+          {cognitoUser ? (
+            <button
+              onClick={handleSignOut}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-clay-600 hover:bg-clay-50 rounded-xl transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/login')}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-saffron-600 hover:bg-saffron-50 rounded-xl transition-all"
+            >
+              Login / Sign Up
+            </button>
+          )}
         </div>
       </aside>
 
