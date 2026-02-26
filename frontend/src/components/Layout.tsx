@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, LogOut } from 'lucide-react'
+import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, CalendarDays, Store, LogOut } from 'lucide-react'
 import { signOut, getCurrentUser, isConfigured } from '../utils/auth'
 
 const navItems = [
@@ -7,6 +7,7 @@ const navItems = [
   { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
   { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages },
   { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट एनालाइज़र', icon: MessageSquareText },
+  { path: '/holidays', label: 'Holiday Demand', labelHi: 'त्योहार डिमांड', icon: CalendarDays },
 ]
 
 export default function Layout() {

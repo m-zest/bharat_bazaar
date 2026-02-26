@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard'
 import PricingPage from './pages/PricingPage'
 import ContentPage from './pages/ContentPage'
 import SentimentPage from './pages/SentimentPage'
+import HolidaysPage from './pages/HolidaysPage'
+import HolidayDetailPage from './pages/HolidayDetailPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/content" element={<ContentPage />} />
         <Route path="/sentiment" element={<SentimentPage />} />
+        <Route path="/holidays" element={<HolidaysPage />} />
+        <Route path="/holidays/:id" element={<HolidayDetailPage />} />
       </Route>
     </Routes>
   )
