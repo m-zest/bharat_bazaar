@@ -74,7 +74,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
     });
 
     const aiResponse = await invokeBedrockClaude(prompt, {
-      maxTokens: 4000,
+      maxTokens: 1500,
       temperature: 0.2,
       systemPrompt: 'You are BharatBazaar AI Sentiment Analyzer. You are an expert at understanding Indian consumer reviews in Hindi, English, Hinglish (code-mixed), and other Indian languages. You detect nuanced sentiment including sarcasm, regional expressions, and cultural context. Always respond in valid JSON.',
     });

@@ -86,7 +86,7 @@ IMPORTANT RULES:
     const aiResponse = await invokeBedrockClaude(
       messages.map(m => m.content).join('\n\n---\n\n'),
       {
-        maxTokens: 1500,
+        maxTokens: 800,
         temperature: 0.7,
         systemPrompt,
       }

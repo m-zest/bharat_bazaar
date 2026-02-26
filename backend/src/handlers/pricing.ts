@@ -69,7 +69,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
     });
 
     const aiResponse = await invokeBedrockClaude(prompt, {
-      maxTokens: 3000,
+      maxTokens: 1500,
       temperature: 0.4,
       systemPrompt: 'You are BharatBazaar AI Pricing Engine. Analyze Indian retail markets and provide pricing strategies. Always respond in valid JSON format. All prices must be in Indian Rupees (₹).',
     });
