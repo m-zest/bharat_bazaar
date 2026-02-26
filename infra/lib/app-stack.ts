@@ -192,6 +192,20 @@ export class BharatBazaarAppStack extends cdk.Stack {
       description: 'User Authentication — register, login, profile management',
     });
 
+    // Holidays Lambda
+    const holidaysFn = new nodejs.NodejsFunction(this, 'HolidaysFunction', {
+      functionName: 'BharatBazaar-Holidays',
+      entry: path.join(handlersDir, 'holidays.ts'),
+      handler: 'handler',
+      runtime: lambda.Runtime.NODEJS_20_X,
+      architecture: lambda.Architecture.ARM_64,
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(30),
+      environment: commonEnv,
+      bundling: commonBundling,
+      description: 'Holiday Demand Intelligence — holiday listings and AI stock recommendations',
+    });
+
     // Notification Lambda
     const notificationFn = new nodejs.NodejsFunction(this, 'NotificationsFunction', {
       functionName: 'BharatBazaar-Notifications',
@@ -245,6 +259,7 @@ export class BharatBazaarAppStack extends cdk.Stack {
     props.table.grantReadWriteData(descriptionsFn);
     props.table.grantReadWriteData(sentimentFn);
     props.table.grantReadData(dashboardFn);
+    props.table.grantReadWriteData(holidaysFn);
     props.table.grantReadWriteData(authFn);
     props.table.grantReadWriteData(notificationFn);
     props.table.grantReadWriteData(notificationWorkerFn);
@@ -269,7 +284,7 @@ export class BharatBazaarAppStack extends cdk.Stack {
       actions: ['sqs:SendMessage'],
       resources: [notificationQueue.queueArn],
     });
-    for (const fn of [pricingFn, descriptionsFn, sentimentFn, authFn, notificationFn]) {
+    for (const fn of [pricingFn, descriptionsFn, sentimentFn, holidaysFn, authFn, notificationFn]) {
       fn.addToRolePolicy(sqsSendPolicy);
     }
 
@@ -359,6 +374,17 @@ export class BharatBazaarAppStack extends cdk.Stack {
     apiResource.addResource('dashboard').addMethod(
       'GET',
       new apigateway.LambdaIntegration(dashboardFn),
+    );
+
+    // Holiday routes
+    const holidays = apiResource.addResource('holidays');
+    holidays.addMethod('GET', new apigateway.LambdaIntegration(holidaysFn)); // list (public)
+    const holidayById = holidays.addResource('{holidayId}');
+    holidayById.addMethod('GET', new apigateway.LambdaIntegration(holidaysFn)); // detail (public)
+    holidayById.addResource('recommendations').addMethod(
+      'GET',
+      new apigateway.LambdaIntegration(holidaysFn),
+      authMethodOptions, // AI recommendations require auth
     );
 
     // Public routes (no auth)
