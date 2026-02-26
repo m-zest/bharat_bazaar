@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 import { TrendingUp, IndianRupee, Languages, MessageSquareText, Calendar, MapPin, ArrowRight, Sparkles, Package, BarChart3, Activity } from 'lucide-react'
@@ -9,6 +9,7 @@ const COLORS = ['#FF9933', '#138d75', '#7c3aed', '#C0392B']
 
 export default function Dashboard() {
   const [data, setData] = useState<any>(null)
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [selectedCity, setSelectedCity] = useState('Lucknow')
 
@@ -188,10 +189,17 @@ export default function Dashboard() {
             Upcoming Festivals — {selectedCity}
           </h3>
           <div className="space-y-3">
-            {data.regionalInfo.festivals.length > 0 ? data.regionalInfo.festivals.map((f: any, i: number) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+            {data.regionalInfo.festivals.length > 0 ? data.regionalInfo.festivals.map((f: any, i: number) => {
+              // Map festival name to holiday ID slug
+              const slug = f.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-2026'
+              return (
+              <div
+                key={i}
+                onClick={() => navigate(`/holidays/${slug}`)}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-saffron-50 transition-colors group"
+              >
                 <div>
-                  <p className="font-medium text-gray-900">{f.name}</p>
+                  <p className="font-medium text-gray-900 group-hover:text-saffron-700">{f.name}</p>
                   <p className="text-xs text-gray-500">{f.daysAway} days away</p>
                 </div>
                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
@@ -202,7 +210,8 @@ export default function Dashboard() {
                   {f.impact.replace('_', ' ')} impact
                 </span>
               </div>
-            )) : (
+              )
+            }) : (
               <p className="text-gray-400 text-sm">No major festivals in the next few months</p>
             )}
           </div>
