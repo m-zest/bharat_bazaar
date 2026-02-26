@@ -1,19 +1,27 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { handler as pricingHandler } from './handlers/pricing';
 import { handler as descriptionsHandler } from './handlers/descriptions';
 import { handler as sentimentHandler } from './handlers/sentiment';
 import { handler as dashboardHandler } from './handlers/dashboard';
+import { handler as authHandler } from './handlers/auth';
+import { handler as notificationsHandler } from './handlers/notifications';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const MOCK_USER_ID = 'local-dev-user-001';
+
 function createEvent(req: express.Request): APIGatewayProxyEvent {
   return {
     body: JSON.stringify(req.body),
-    headers: req.headers as any,
+    headers: {
+      ...req.headers as any,
+      'x-mock-user-id': MOCK_USER_ID,
+    },
     httpMethod: req.method,
     path: req.path,
     queryStringParameters: req.query as any,
@@ -27,26 +35,29 @@ function createEvent(req: express.Request): APIGatewayProxyEvent {
   };
 }
 
-// API Routes
-app.post('/api/pricing/recommend', async (req, res) => {
-  const result = await pricingHandler(createEvent(req));
+async function handleRoute(req: express.Request, res: express.Response, handler: Function) {
+  const result = await handler(createEvent(req));
   res.status(result.statusCode).json(JSON.parse(result.body));
-});
+}
 
-app.post('/api/content/generate', async (req, res) => {
-  const result = await descriptionsHandler(createEvent(req));
-  res.status(result.statusCode).json(JSON.parse(result.body));
-});
+// Auth Routes (public)
+app.post('/api/auth/register', (req, res) => handleRoute(req, res, authHandler));
+app.post('/api/auth/login', (req, res) => handleRoute(req, res, authHandler));
+app.post('/api/auth/confirm', (req, res) => handleRoute(req, res, authHandler));
+app.post('/api/auth/forgot-password', (req, res) => handleRoute(req, res, authHandler));
+app.post('/api/auth/reset-password', (req, res) => handleRoute(req, res, authHandler));
+app.get('/api/auth/profile', (req, res) => handleRoute(req, res, authHandler));
+app.put('/api/auth/profile-update', (req, res) => handleRoute(req, res, authHandler));
 
-app.post('/api/sentiment/analyze', async (req, res) => {
-  const result = await sentimentHandler(createEvent(req));
-  res.status(result.statusCode).json(JSON.parse(result.body));
-});
+// Notification Routes
+app.get('/api/notifications/preferences', (req, res) => handleRoute(req, res, notificationsHandler));
+app.put('/api/notifications/preferences', (req, res) => handleRoute(req, res, notificationsHandler));
 
-app.get('/api/dashboard', async (req, res) => {
-  const result = await dashboardHandler(createEvent(req));
-  res.status(result.statusCode).json(JSON.parse(result.body));
-});
+// AI Routes (protected in production, mock user locally)
+app.post('/api/pricing/recommend', (req, res) => handleRoute(req, res, pricingHandler));
+app.post('/api/content/generate', (req, res) => handleRoute(req, res, descriptionsHandler));
+app.post('/api/sentiment/analyze', (req, res) => handleRoute(req, res, sentimentHandler));
+app.get('/api/dashboard', (req, res) => handleRoute(req, res, dashboardHandler));
 
 // Health check
 app.get('/api/health', (_req, res) => {
@@ -57,8 +68,17 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`
   ╔══════════════════════════════════════════════╗
-  ║     🏪 BharatBazaar AI — API Server         ║
+  ║     BharatBazaar AI — API Server             ║
   ║     Running on http://localhost:${PORT}         ║
+  ╠══════════════════════════════════════════════╣
+  ║  POST /api/auth/register                     ║
+  ║  POST /api/auth/login                        ║
+  ║  POST /api/auth/confirm                      ║
+  ║  GET  /api/auth/profile                      ║
+  ║  PUT  /api/auth/profile-update               ║
+  ╠══════════════════════════════════════════════╣
+  ║  GET  /api/notifications/preferences         ║
+  ║  PUT  /api/notifications/preferences         ║
   ╠══════════════════════════════════════════════╣
   ║  POST /api/pricing/recommend                 ║
   ║  POST /api/content/generate                  ║
