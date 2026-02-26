@@ -7,6 +7,7 @@ import { handler as sentimentHandler } from './handlers/sentiment';
 import { handler as dashboardHandler } from './handlers/dashboard';
 import { handler as authHandler } from './handlers/auth';
 import { handler as notificationsHandler } from './handlers/notifications';
+import { handler as holidaysHandler } from './handlers/holidays';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
@@ -53,6 +54,11 @@ app.put('/api/auth/profile-update', (req, res) => handleRoute(req, res, authHand
 app.get('/api/notifications/preferences', (req, res) => handleRoute(req, res, notificationsHandler));
 app.put('/api/notifications/preferences', (req, res) => handleRoute(req, res, notificationsHandler));
 
+// Holiday Routes
+app.get('/api/holidays', (req, res) => handleRoute(req, res, holidaysHandler));
+app.get('/api/holidays/:holidayId', (req, res) => handleRoute(req, res, holidaysHandler));
+app.get('/api/holidays/:holidayId/recommendations', (req, res) => handleRoute(req, res, holidaysHandler));
+
 // AI Routes (protected in production, mock user locally)
 app.post('/api/pricing/recommend', (req, res) => handleRoute(req, res, pricingHandler));
 app.post('/api/content/generate', (req, res) => handleRoute(req, res, descriptionsHandler));
@@ -79,6 +85,10 @@ app.listen(PORT, () => {
   ╠══════════════════════════════════════════════╣
   ║  GET  /api/notifications/preferences         ║
   ║  PUT  /api/notifications/preferences         ║
+  ╠══════════════════════════════════════════════╣
+  ║  GET  /api/holidays                          ║
+  ║  GET  /api/holidays/:id                      ║
+  ║  GET  /api/holidays/:id/recommendations      ║
   ╠══════════════════════════════════════════════╣
   ║  POST /api/pricing/recommend                 ║
   ║  POST /api/content/generate                  ║
