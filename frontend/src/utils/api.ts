@@ -1,14 +1,32 @@
+import { getToken, isConfigured } from './auth';
+
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
+
+  // Add auth token if Cognito is configured
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (isConfigured()) {
+    const token = await getToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
   const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
     ...options,
+    headers: { ...headers, ...options?.headers as Record<string, string> },
   });
+
+  // Redirect to login on 401
+  if (response.status === 401 && isConfigured()) {
+    window.location.href = '/login';
+    throw new Error('Session expired. Please login again.');
+  }
 
   const data = await response.json();
 
