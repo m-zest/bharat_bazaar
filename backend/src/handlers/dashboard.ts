@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { success, error } from '../utils/response';
 import { REGIONAL_DATA, getUpcomingFestivals, PRODUCT_CATEGORIES } from '../data/regional-data';
 import { DEMO_BUSINESS, DEMO_PRODUCTS } from '../data/sample-data';
+import { getSmartAlerts, getWholesalersForCity } from '../data/wholesale-data';
 
 export interface DashboardRequest {
   city?: string;
@@ -77,6 +78,8 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
       products: DEMO_PRODUCTS,
       categories: [...PRODUCT_CATEGORIES],
       supportedCities: Object.keys(REGIONAL_DATA),
+      alerts: getSmartAlerts(city),
+      nearbyWholesalers: getWholesalersForCity(city).length,
     };
 
     return success(dashboard);

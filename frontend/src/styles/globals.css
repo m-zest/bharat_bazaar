@@ -63,6 +63,14 @@
   @apply bg-gray-400;
 }
 
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Typewriter animation for AI responses */
 .typewriter-text {
   overflow: hidden;
@@ -73,4 +81,9 @@
 @keyframes typewriter {
   from { max-width: 0; }
   to { max-width: 100%; }
+}
+
+/* Chat page needs full height */
+.chat-full-height {
+  height: calc(100vh - 0px);
 }

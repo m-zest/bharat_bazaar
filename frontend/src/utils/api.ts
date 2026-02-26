@@ -23,6 +23,29 @@ export const api = {
   getDashboard: (city?: string) =>
     request<any>(`/dashboard${city ? `?city=${city}` : ''}`),
 
+  getWeather: (city?: string) =>
+    request<any>(`/weather${city ? `?city=${city}` : ''}`),
+
+  getSourcing: (city?: string, category?: string, search?: string) => {
+    const params = new URLSearchParams();
+    if (city) params.set('city', city);
+    if (category) params.set('category', category);
+    if (search) params.set('search', search);
+    const qs = params.toString();
+    return request<any>(`/sourcing${qs ? `?${qs}` : ''}`);
+  },
+
+  placeOrder: (body: {
+    productName: string;
+    wholesalerId: string;
+    quantity: number;
+    city: string;
+  }) =>
+    request<any>('/sourcing/order', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
   analyzePricing: (body: {
     productName: string;
     category: string;
@@ -54,6 +77,16 @@ export const api = {
     useDemo?: boolean;
   }) =>
     request<any>('/sentiment/analyze', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  chat: (body: {
+    message: string;
+    city: string;
+    conversationHistory?: { role: string; content: string }[];
+  }) =>
+    request<any>('/chat', {
       method: 'POST',
       body: JSON.stringify(body),
     }),

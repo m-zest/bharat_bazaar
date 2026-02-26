@@ -1,11 +1,13 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, ArrowLeft } from 'lucide-react'
+import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, Package, MessageCircle } from 'lucide-react'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', labelHi: 'डैशबोर्ड', icon: LayoutDashboard },
+  { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package },
   { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
+  { path: '/chat', label: 'AI Advisor', labelHi: 'AI सलाहकार', icon: MessageCircle },
   { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages },
-  { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट एनालाइज़र', icon: MessageSquareText },
+  { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट', icon: MessageSquareText },
 ]
 
 export default function Layout() {

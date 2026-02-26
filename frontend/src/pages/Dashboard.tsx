@@ -2,18 +2,39 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
-import { TrendingUp, IndianRupee, Languages, MessageSquareText, Calendar, MapPin, ArrowRight, Sparkles, Package, BarChart3, Activity } from 'lucide-react'
+import { TrendingUp, IndianRupee, Languages, MessageSquareText, Calendar, MapPin, ArrowRight, Sparkles, Package, BarChart3, Activity, CloudSun, Sun, Cloud, CloudRain, Thermometer, Bell, MessageCircle, AlertTriangle, ShieldCheck } from 'lucide-react'
 import { api } from '../utils/api'
 
 const COLORS = ['#FF9933', '#138d75', '#7c3aed', '#C0392B']
 
+const WEATHER_ICONS: Record<string, any> = {
+  'sun': Sun,
+  'cloud-sun': CloudSun,
+  'cloud': Cloud,
+  'cloud-rain': CloudRain,
+  'cloud-fog': Cloud,
+  'cloud-lightning': CloudRain,
+  'thermometer-sun': Thermometer,
+  'droplets': CloudRain,
+}
+
+const ALERT_ICONS: Record<string, any> = {
+  'cloud-rain': CloudRain,
+  'trending-down': TrendingUp,
+  'trending-up': TrendingUp,
+  'package': Package,
+  'sparkles': Sparkles,
+}
+
 export default function Dashboard() {
   const [data, setData] = useState<any>(null)
+  const [weather, setWeather] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedCity, setSelectedCity] = useState('Lucknow')
 
   useEffect(() => {
     loadDashboard()
+    loadWeather()
   }, [selectedCity])
 
   async function loadDashboard() {
@@ -25,6 +46,15 @@ export default function Dashboard() {
       console.error('Dashboard error:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function loadWeather() {
+    try {
+      const result = await api.getWeather(selectedCity)
+      setWeather(result)
+    } catch (err) {
+      console.error('Weather error:', err)
     }
   }
 
@@ -55,9 +85,11 @@ export default function Dashboard() {
   }))
 
   const featureCards = [
+    { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package, color: 'green', desc: 'Find wholesale prices' },
     { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee, color: 'saffron', desc: 'Get AI pricing strategies' },
-    { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages, color: 'bazaar', desc: 'Create multilingual descriptions' },
-    { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट एनालाइज़र', icon: MessageSquareText, color: 'royal', desc: 'Analyze customer reviews' },
+    { path: '/chat', label: 'AI Advisor', labelHi: 'AI सलाहकार', icon: MessageCircle, color: 'royal', desc: 'Ask anything in Hindi' },
+    { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages, color: 'bazaar', desc: 'Multilingual descriptions' },
+    { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट एनालाइज़र', icon: MessageSquareText, color: 'royal', desc: 'Analyze reviews' },
   ]
 
   return (
@@ -209,9 +241,88 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Weather + Smart Alerts Row */}
+      <div className="grid lg:grid-cols-3 gap-6 mb-8">
+        {/* Weather Widget */}
+        <div className="card bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200">
+          <h3 className="font-display font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <CloudSun className="w-5 h-5 text-blue-500" />
+            Weather — {selectedCity}
+          </h3>
+          {weather ? (
+            <>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="text-4xl font-display font-extrabold text-gray-900">{weather.temperature}°C</div>
+                <div>
+                  <p className="font-medium text-gray-700">{weather.condition}</p>
+                  <p className="text-xs text-gray-500">Feels like {weather.feelsLike}°C | {weather.humidity}% humidity</p>
+                </div>
+              </div>
+              <div className="flex gap-2 mb-3 overflow-x-auto">
+                {weather.forecast?.slice(0, 5).map((day: any) => (
+                  <div key={day.day} className="flex-shrink-0 text-center bg-white/60 rounded-lg px-3 py-2 min-w-[56px]">
+                    <p className="text-[10px] font-medium text-gray-500">{day.day}</p>
+                    <p className="text-sm font-bold text-gray-900">{day.tempHigh}°</p>
+                    <p className="text-[10px] text-gray-400">{day.tempLow}°</p>
+                    {day.rainChance > 30 && <p className="text-[10px] text-blue-500">{day.rainChance}%</p>}
+                  </div>
+                ))}
+              </div>
+              {weather.businessImpact && (
+                <div className="bg-white/70 rounded-lg p-3">
+                  <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Business Impact</p>
+                  <p className="text-xs text-gray-600">{weather.businessImpact.summary}</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="skeleton h-32" />
+          )}
+        </div>
+
+        {/* Smart Alerts */}
+        <div className="lg:col-span-2 card">
+          <h3 className="font-display font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <Bell className="w-5 h-5 text-saffron-500" />
+            Smart Alerts
+          </h3>
+          <div className="space-y-2 max-h-[280px] overflow-y-auto">
+            {data.alerts?.map((alert: any) => {
+              const AlertIcon = ALERT_ICONS[alert.icon] || Sparkles
+              return (
+                <Link key={alert.id} to={alert.actionRoute} className="block">
+                  <div className={`flex items-start gap-3 p-3 rounded-xl border transition-all hover:shadow-sm ${
+                    alert.severity === 'high' ? 'bg-red-50 border-red-200' :
+                    alert.severity === 'medium' ? 'bg-saffron-50 border-saffron-200' :
+                    'bg-gray-50 border-gray-200'
+                  }`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                      alert.severity === 'high' ? 'bg-red-100 text-red-600' :
+                      alert.severity === 'medium' ? 'bg-saffron-100 text-saffron-600' :
+                      'bg-gray-100 text-gray-600'
+                    }`}>
+                      <AlertIcon className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold text-gray-900">{alert.title}</p>
+                        <span className="text-[10px] text-gray-400 flex-shrink-0 ml-2">{alert.timestamp}</span>
+                      </div>
+                      <p className="text-xs text-gray-500 font-hindi">{alert.titleHi}</p>
+                      <p className="text-xs text-gray-600 mt-1 line-clamp-2">{alert.message}</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0 mt-1" />
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Feature Quick Access */}
       <h3 className="font-display text-xl font-bold text-gray-900 mb-4">AI Features — Try Now</h3>
-      <div className="grid md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {featureCards.map((f, i) => (
           <Link key={f.path} to={f.path}>
             <motion.div
@@ -220,9 +331,10 @@ export default function Dashboard() {
               transition={{ delay: i * 0.1 + 0.3 }}
               className="card group cursor-pointer hover:-translate-y-1 transition-all"
             >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${
                 f.color === 'saffron' ? 'bg-saffron-100 text-saffron-600' :
                 f.color === 'bazaar' ? 'bg-bazaar-100 text-bazaar-600' :
+                f.color === 'green' ? 'bg-green-100 text-green-600' :
                 'bg-royal-100 text-royal-600'
               }`}>
                 <f.icon className="w-6 h-6" />
