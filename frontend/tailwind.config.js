@@ -7,14 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // India-inspired palette
         saffron: {
           50: '#fff8f0',
           100: '#fff0db',
           200: '#ffddb3',
           300: '#ffc480',
           400: '#ffa54d',
-          500: '#FF9933', // Indian saffron
+          500: '#FF9933',
           600: '#e6852e',
           700: '#cc7029',
           800: '#995420',
@@ -26,7 +25,7 @@ export default {
           200: '#99f6de',
           300: '#5cebc9',
           400: '#2dd4ad',
-          500: '#138d75', // Teal primary
+          500: '#0D9488',
           600: '#0e7060',
           700: '#0b594d',
           800: '#09473d',
@@ -38,7 +37,7 @@ export default {
           200: '#ddd6fe',
           300: '#c4b5fd',
           400: '#a78bfa',
-          500: '#7c3aed', // Royal purple
+          500: '#7c3aed',
           600: '#6d28d9',
           700: '#5b21b6',
           800: '#4c1d95',
@@ -50,11 +49,23 @@ export default {
           200: '#fad3cd',
           300: '#f5b3a8',
           400: '#ec8575',
-          500: '#C0392B', // Terracotta red
+          500: '#C0392B',
           600: '#a63125',
           700: '#8c291f',
           800: '#732219',
           900: '#5a1a13',
+        },
+        deep: {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
+          500: '#1E1B4B',
+          600: '#181646',
+          700: '#131040',
+          800: '#0d0b3a',
+          900: '#070535',
         },
       },
       fontFamily: {
@@ -67,6 +78,21 @@ export default {
         'slide-up': 'slideUp 0.5s ease-out',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'typewriter': 'typewriter 2s steps(40) 1s both',
+        'float': 'float 6s ease-in-out infinite',
+        'float-delayed': 'float 6s ease-in-out 2s infinite',
+        'float-slow': 'float 8s ease-in-out 1s infinite',
+        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 8s ease infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+        'border-rotate': 'borderRotate 4s linear infinite',
+        'slide-in-right': 'slideInRight 0.4s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'shake': 'shake 0.5s ease-in-out',
+        'draw-line': 'drawLine 1.5s ease-out forwards',
+        'count-up': 'countUp 0.5s ease-out',
+        'marquee': 'marquee 30s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -81,6 +107,54 @@ export default {
           '0%': { width: '0' },
           '100%': { width: '100%' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-20px) rotate(3deg)' },
+        },
+        glowPulse: {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.1)' },
+          '50%': { boxShadow: '0 0 30px rgba(249, 115, 22, 0.5), 0 0 60px rgba(249, 115, 22, 0.2)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        bounceGentle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        borderRotate: {
+          '0%': { '--border-angle': '0deg' },
+          '100%': { '--border-angle': '360deg' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(30px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-4px)' },
+          '75%': { transform: 'translateX(4px)' },
+        },
+        drawLine: {
+          '0%': { strokeDashoffset: '100%' },
+          '100%': { strokeDashoffset: '0%' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300% 300%',
       },
     },
   },
