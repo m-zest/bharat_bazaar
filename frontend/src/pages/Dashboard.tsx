@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
-import { TrendingUp, IndianRupee, Languages, MessageSquareText, Calendar, MapPin, ArrowRight, Sparkles, Package, BarChart3, Activity, CloudSun, Sun, Cloud, CloudRain, Thermometer, Bell, MessageCircle, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { TrendingUp, IndianRupee, Languages, MessageSquareText, Calendar, MapPin, ArrowRight, Sparkles, Package, BarChart3, Activity, CloudSun, Sun, Cloud, CloudRain, Thermometer, Bell, MessageCircle, AlertTriangle, ShieldCheck, Eye, GitCompare } from 'lucide-react'
 import { api } from '../utils/api'
+import OnboardingModal, { isOnboarded, getOnboardingData } from '../components/OnboardingModal'
 
 const COLORS = ['#FF9933', '#138d75', '#7c3aed', '#C0392B']
 
@@ -30,7 +31,11 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null)
   const [weather, setWeather] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [selectedCity, setSelectedCity] = useState('Lucknow')
+  const [showOnboarding, setShowOnboarding] = useState(() => !isOnboarded())
+  const [selectedCity, setSelectedCity] = useState(() => {
+    const saved = getOnboardingData()
+    return saved?.city || 'Lucknow'
+  })
 
   useEffect(() => {
     loadDashboard()
@@ -84,25 +89,37 @@ export default function Dashboard() {
     lower: data.charts.demandForecast.lower[i],
   }))
 
+  const onboardingData = getOnboardingData()
+
   const featureCards = [
     { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package, color: 'green', desc: 'Find wholesale prices' },
     { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee, color: 'saffron', desc: 'Get AI pricing strategies' },
     { path: '/chat', label: 'AI Advisor', labelHi: 'AI सलाहकार', icon: MessageCircle, color: 'royal', desc: 'Ask anything in Hindi' },
-    { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages, color: 'bazaar', desc: 'Multilingual descriptions' },
-    { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट एनालाइज़र', icon: MessageSquareText, color: 'royal', desc: 'Analyze reviews' },
+    { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: Package, color: 'bazaar', desc: 'Track stock levels' },
+    { path: '/competitors', label: 'Competitors', labelHi: 'प्रतिस्पर्धी', icon: Eye, color: 'saffron', desc: 'Monitor rival prices' },
+    { path: '/compare', label: 'Compare', labelHi: 'तुलना करें', icon: GitCompare, color: 'royal', desc: 'Side-by-side analysis' },
+    { path: '/content', label: 'Content', labelHi: 'कंटेंट', icon: Languages, color: 'bazaar', desc: 'Multilingual descriptions' },
+    { path: '/sentiment', label: 'Sentiment', labelHi: 'सेंटिमेंट', icon: MessageSquareText, color: 'royal', desc: 'Analyze reviews' },
   ]
 
   return (
     <div className="p-8 max-w-[1400px]">
+      {showOnboarding && (
+        <OnboardingModal onComplete={(d) => {
+          setShowOnboarding(false)
+          if (d.city) setSelectedCity(d.city)
+        }} />
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-display text-2xl font-bold text-gray-900">
-            Namaste, {data.business.owner} <span className="text-2xl">🙏</span>
+            Namaste, {onboardingData?.ownerName || data.business.owner} <span className="text-2xl">🙏</span>
           </h1>
           <p className="text-gray-500 mt-1 flex items-center gap-2">
             <MapPin className="w-4 h-4" />
-            {data.business.name} — {data.business.city}
+            {onboardingData?.storeName || data.business.name} — {data.business.city}
           </p>
         </div>
         <select
@@ -322,7 +339,7 @@ export default function Dashboard() {
 
       {/* Feature Quick Access */}
       <h3 className="font-display text-xl font-bold text-gray-900 mb-4">AI Features — Try Now</h3>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {featureCards.map((f, i) => (
           <Link key={f.path} to={f.path}>
             <motion.div

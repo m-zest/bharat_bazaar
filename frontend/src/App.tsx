@@ -6,6 +6,9 @@ import ContentPage from './pages/ContentPage'
 import SentimentPage from './pages/SentimentPage'
 import SourcingPage from './pages/SourcingPage'
 import ChatPage from './pages/ChatPage'
+import ComparePage from './pages/ComparePage'
+import InventoryPage from './pages/InventoryPage'
+import CompetitorPage from './pages/CompetitorPage'
 import Layout from './components/Layout'
 
 export default function App() {
@@ -19,6 +22,9 @@ export default function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/content" element={<ContentPage />} />
         <Route path="/sentiment" element={<SentimentPage />} />
+        <Route path="/compare" element={<ComparePage />} />
+        <Route path="/inventory" element={<InventoryPage />} />
+        <Route path="/competitors" element={<CompetitorPage />} />
       </Route>
     </Routes>
   )

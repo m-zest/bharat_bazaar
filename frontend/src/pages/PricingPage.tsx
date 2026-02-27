@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { IndianRupee, TrendingUp, TrendingDown, Minus, Sparkles, RotateCcw, Zap, ShieldCheck, Target } from 'lucide-react'
+import { IndianRupee, TrendingUp, TrendingDown, Minus, Sparkles, RotateCcw, Zap, ShieldCheck, Target, Download, Share2 } from 'lucide-react'
+import { jsPDF } from 'jspdf'
 import { api } from '../utils/api'
 
 const DEMO_PRODUCTS = [
@@ -63,6 +64,89 @@ export default function PricingPage() {
     }
   }
 
+  function downloadPDF() {
+    if (!result) return
+    const doc = new jsPDF()
+    const margin = 20
+    let y = margin
+
+    doc.setFontSize(20)
+    doc.setTextColor(255, 153, 51)
+    doc.text('BharatBazaar AI', margin, y)
+    y += 8
+    doc.setFontSize(14)
+    doc.setTextColor(60, 60, 60)
+    doc.text('Pricing Strategy Report', margin, y)
+    y += 10
+    doc.setFontSize(10)
+    doc.setTextColor(120, 120, 120)
+    doc.text(`Product: ${productName} | City: ${city} | Generated: ${new Date().toLocaleDateString('en-IN')}`, margin, y)
+    y += 12
+
+    // Market Context
+    if (result.marketContext) {
+      doc.setFontSize(12)
+      doc.setTextColor(40, 40, 40)
+      doc.text('Market Context', margin, y)
+      y += 7
+      doc.setFontSize(10)
+      doc.setTextColor(80, 80, 80)
+      doc.text(`Avg Competitor Price: Rs.${result.marketContext.averageCompetitorPrice}`, margin, y); y += 6
+      doc.text(`Price Range: Rs.${result.marketContext.priceRange?.min} - Rs.${result.marketContext.priceRange?.max}`, margin, y); y += 6
+      doc.text(`Regional Purchasing Power: ${result.marketContext.regionalPurchasingPower}/100`, margin, y); y += 10
+    }
+
+    // Recommendations
+    result.recommendations?.forEach((rec: any, i: number) => {
+      doc.setFontSize(12)
+      doc.setTextColor(40, 40, 40)
+      doc.text(`${i + 1}. ${rec.strategy.toUpperCase()} Strategy — Rs.${rec.suggestedPrice}`, margin, y)
+      y += 7
+      doc.setFontSize(9)
+      doc.setTextColor(80, 80, 80)
+      doc.text(`Confidence: ${rec.confidenceScore}% | Demand: ${rec.expectedImpact?.demandChange} | Revenue: ${rec.expectedImpact?.revenueChange}`, margin, y)
+      y += 6
+      if (rec.reasoning) {
+        const lines = doc.splitTextToSize(rec.reasoning, 170)
+        doc.text(lines, margin, y)
+        y += lines.length * 5
+      }
+      y += 5
+    })
+
+    // Festival Insight
+    if (result.festivalInsight) {
+      y += 3
+      doc.setFontSize(11)
+      doc.setTextColor(255, 153, 51)
+      doc.text('Festival Insight', margin, y); y += 7
+      doc.setFontSize(9)
+      doc.setTextColor(80, 80, 80)
+      const lines = doc.splitTextToSize(result.festivalInsight, 170)
+      doc.text(lines, margin, y); y += lines.length * 5
+    }
+
+    // Key Takeaway
+    if (result.keyTakeaway) {
+      y += 5
+      doc.setFontSize(11)
+      doc.setTextColor(40, 40, 40)
+      doc.text('Key Takeaway', margin, y); y += 7
+      doc.setFontSize(9)
+      const lines = doc.splitTextToSize(result.keyTakeaway, 170)
+      doc.text(lines, margin, y)
+    }
+
+    doc.save(`BharatBazaar-Pricing-${productName.replace(/\s+/g, '-')}.pdf`)
+  }
+
+  function shareWhatsApp() {
+    if (!result) return
+    const bestRec = result.recommendations?.[0]
+    const text = `*BharatBazaar AI Pricing Report*\n\nProduct: ${productName}\nCity: ${city}\n\nBest Strategy: ${bestRec?.strategy?.toUpperCase()}\nSuggested Price: Rs.${bestRec?.suggestedPrice}\nConfidence: ${bestRec?.confidenceScore}%\nExpected Impact: Demand ${bestRec?.expectedImpact?.demandChange}, Revenue ${bestRec?.expectedImpact?.revenueChange}\n\n${result.keyTakeaway ? `Key Takeaway: ${result.keyTakeaway}` : ''}\n\nPowered by BharatBazaar AI`
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+  }
+
   return (
     <div className="p-8 max-w-[1400px]">
       <div className="flex items-center gap-4 mb-8">
@@ -73,6 +157,16 @@ export default function PricingPage() {
           <h1 className="font-display text-2xl font-bold text-gray-900">Smart Pricing Engine</h1>
           <p className="text-sm text-gray-500">AI-powered pricing strategies adjusted for your region</p>
         </div>
+        {result && (
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={downloadPDF} className="flex items-center gap-2 px-4 py-2 text-sm bg-white border border-gray-200 rounded-xl hover:border-saffron-300 hover:bg-saffron-50 transition-all text-gray-600">
+              <Download className="w-4 h-4" /> Download PDF
+            </button>
+            <button onClick={shareWhatsApp} className="flex items-center gap-2 px-4 py-2 text-sm bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all shadow-sm">
+              <Share2 className="w-4 h-4" /> WhatsApp
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Demo Buttons */}
