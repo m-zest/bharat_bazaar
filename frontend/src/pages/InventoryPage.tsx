@@ -95,21 +95,27 @@ export default function InventoryPage() {
   const lowStockCount = alerts.length
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-saffron-400 to-bazaar-500 flex items-center justify-center">
-          <Package className="w-6 h-6 text-white" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-saffron-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Inventory Tracker</h1>
-          <p className="text-sm text-gray-500">Track stock levels, get reorder alerts, never run out</p>
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <Package className="w-6 h-6 text-saffron-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Inventory Tracker</h1>
+            <p className="text-sm text-white/60">Track stock levels, get reorder alerts, never run out</p>
+          </div>
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="ml-auto flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white border border-white/20 px-4 py-2 rounded-xl text-sm font-medium hover:bg-white/25 transition-all"
+          >
+            <Plus className="w-4 h-4" /> Add Product
+          </button>
         </div>
-        <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="ml-auto flex items-center gap-2 btn-primary text-sm"
-        >
-          <Plus className="w-4 h-4" /> Add Product
-        </button>
       </div>
 
       {/* Stats Cards */}
@@ -120,7 +126,7 @@ export default function InventoryPage() {
           { label: 'Total Cost', value: `Rs.${totalCost.toLocaleString()}`, icon: TrendingDown, color: 'text-gray-500', bg: 'bg-gray-50' },
           { label: 'Low Stock Alerts', value: lowStockCount, icon: AlertTriangle, color: lowStockCount > 0 ? 'text-red-500' : 'text-green-500', bg: lowStockCount > 0 ? 'bg-red-50' : 'bg-green-50' },
         ].map((stat) => (
-          <div key={stat.label} className="card">
+          <div key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-500">{stat.label}</p>
@@ -136,7 +142,7 @@ export default function InventoryPage() {
 
       {/* Alerts */}
       {alerts.length > 0 && (
-        <div className="card bg-red-50 border-red-200 mb-6">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-red-200 bg-red-50/50 mb-6">
           <h3 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5" /> Reorder Alerts
           </h3>
@@ -168,7 +174,7 @@ export default function InventoryPage() {
       <AnimatePresence>
         {showAddForm && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-6">
-            <div className="card border-saffron-200 bg-saffron-50/30">
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-saffron-200 bg-saffron-50/30">
               <h3 className="font-semibold text-gray-900 mb-3">Add New Product</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <input value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} placeholder="Product name" className="input-field" required />
@@ -190,7 +196,7 @@ export default function InventoryPage() {
       </AnimatePresence>
 
       {/* Inventory Table */}
-      <div className="card overflow-x-auto">
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100">

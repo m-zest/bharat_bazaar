@@ -128,24 +128,30 @@ export default function CompetitorPage() {
   const alerts = getPriceAlerts(MONITORED_PRODUCTS)
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-saffron-500 flex items-center justify-center">
-          <Eye className="w-6 h-6 text-white" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-red-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Competitor Price Monitor</h1>
-          <p className="text-sm text-gray-500">Track competitor prices across Amazon, Flipkart, BigBasket & more</p>
-        </div>
-        <div className="ml-auto flex items-center gap-2 text-sm text-gray-400">
-          <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          Updated every few hours
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <Eye className="w-6 h-6 text-red-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Competitor Price Monitor</h1>
+            <p className="text-sm text-white/60">Track competitor prices across Amazon, Flipkart, BigBasket & more</p>
+          </div>
+          <div className="ml-auto flex items-center gap-2 text-sm text-white/40">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            Updated every few hours
+          </div>
         </div>
       </div>
 
       {/* Price Alerts */}
       {alerts.length > 0 && (
-        <div className="card border-red-200 bg-red-50/50 mb-6">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-red-200 bg-red-50/50 mb-6">
           <h3 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
             <Bell className="w-5 h-5" /> Price Alerts ({alerts.length})
           </h3>
@@ -180,7 +186,7 @@ export default function CompetitorPage() {
             <motion.div
               key={product.id}
               layout
-              className="card overflow-hidden"
+              className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all"
             >
               {/* Product Header */}
               <div

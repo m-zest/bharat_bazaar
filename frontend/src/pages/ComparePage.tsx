@@ -98,14 +98,20 @@ export default function ComparePage() {
   }))
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-royal-100 flex items-center justify-center">
-          <GitCompare className="w-6 h-6 text-royal-600" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Compare Products</h1>
-          <p className="text-sm text-gray-500">Side-by-side pricing, demand & sentiment comparison</p>
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <GitCompare className="w-6 h-6 text-violet-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Compare Products</h1>
+            <p className="text-sm text-white/60">Side-by-side pricing, demand & sentiment comparison</p>
+          </div>
         </div>
       </div>
 
@@ -129,7 +135,7 @@ export default function ComparePage() {
       </div>
 
       {compared.length < 2 ? (
-        <div className="card text-center py-16 text-gray-400">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
           <GitCompare className="w-16 h-16 mx-auto mb-4 text-gray-200" />
           <p className="text-lg font-medium">Select at least 2 products to compare</p>
         </div>
@@ -137,7 +143,7 @@ export default function ComparePage() {
         <AnimatePresence>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
             {/* Comparison Table */}
-            <div className="card overflow-x-auto">
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100">
@@ -208,7 +214,7 @@ export default function ComparePage() {
 
             {/* Charts Row */}
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="card">
+              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <h3 className="font-semibold text-gray-900 mb-3">Price Comparison</h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={priceData}>
@@ -223,7 +229,7 @@ export default function ComparePage() {
                 </ResponsiveContainer>
               </div>
 
-              <div className="card">
+              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <h3 className="font-semibold text-gray-900 mb-3">Margin %</h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={marginData}>
@@ -237,7 +243,7 @@ export default function ComparePage() {
                 </ResponsiveContainer>
               </div>
 
-              <div className="card">
+              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <h3 className="font-semibold text-gray-900 mb-3">Sentiment Score</h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={sentimentData}>
@@ -253,7 +259,7 @@ export default function ComparePage() {
             </div>
 
             {/* Competitor Price Breakdown */}
-            <div className="card">
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
               <h3 className="font-semibold text-gray-900 mb-4">Competitor Price Comparison</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">

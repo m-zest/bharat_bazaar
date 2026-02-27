@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 import { MessageSquareText, RotateCcw, Zap, ThumbsUp, ThumbsDown, Minus, AlertTriangle, CheckCircle2, Lightbulb, Globe } from 'lucide-react'
 import { api } from '../utils/api'
+import { ScrollReveal } from '../components/AnimatedComponents'
 
 const SAMPLE_REVIEWS = [
   'Product accha hai but delivery bahut slow thi. 5 din lag gaye aane mein.',
@@ -26,9 +27,9 @@ const SENTIMENT_COLORS = {
 }
 
 function getSentimentEmoji(score: number) {
-  if (score >= 50) return { emoji: '😊', label: 'Positive', color: 'text-green-500' }
-  if (score >= 0) return { emoji: '😐', label: 'Neutral', color: 'text-yellow-500' }
-  return { emoji: '😟', label: 'Negative', color: 'text-red-500' }
+  if (score >= 50) return { emoji: '😊', label: 'Positive', color: 'text-green-500', bg: 'bg-green-50', border: 'border-green-200' }
+  if (score >= 0) return { emoji: '😐', label: 'Neutral', color: 'text-yellow-500', bg: 'bg-yellow-50', border: 'border-yellow-200' }
+  return { emoji: '😟', label: 'Negative', color: 'text-red-500', bg: 'bg-red-50', border: 'border-red-200' }
 }
 
 export default function SentimentPage() {
@@ -50,7 +51,6 @@ export default function SentimentPage() {
     setResult(null)
 
     try {
-      // If user pasted reviews, parse them; otherwise use demo
       let reviews;
       if (reviewText.trim()) {
         reviews = reviewText.split('\n').filter(l => l.trim()).map((text, i) => ({
@@ -90,21 +90,27 @@ export default function SentimentPage() {
   })) || []
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-royal-100 flex items-center justify-center">
-          <MessageSquareText className="w-6 h-6 text-royal-600" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Sentiment Analyzer</h1>
-          <p className="text-sm text-gray-500">Understands Hindi, English & Hinglish reviews</p>
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <MessageSquareText className="w-6 h-6 text-violet-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Sentiment Analyzer</h1>
+            <p className="text-sm text-white/60">Understands Hindi, English & Hinglish reviews</p>
+          </div>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-5 gap-8">
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-4">
-          <div className="card space-y-4">
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
               <input
@@ -127,18 +133,22 @@ export default function SentimentPage() {
               />
             </div>
 
-            <button
+            <motion.button
               type="button"
               onClick={loadDemoReviews}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               className="w-full text-sm px-4 py-3 bg-royal-50 border border-royal-200 rounded-xl text-royal-700 hover:bg-royal-100 transition-all font-medium"
             >
               Load 12 Hinglish Demo Reviews
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               type="submit"
               disabled={loading}
-              className="w-full bg-royal-500 hover:bg-royal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg shadow-royal-500/25 flex items-center justify-center gap-2 disabled:opacity-50"
+              whileHover={{ scale: loading ? 1 : 1.01 }}
+              whileTap={{ scale: loading ? 1 : 0.99 }}
+              className="w-full bg-gradient-to-r from-royal-500 to-violet-600 hover:from-royal-600 hover:to-violet-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg shadow-royal-500/25 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -151,7 +161,7 @@ export default function SentimentPage() {
                   Analyze Sentiment
                 </>
               )}
-            </button>
+            </motion.button>
 
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>
@@ -159,7 +169,7 @@ export default function SentimentPage() {
           </div>
 
           {/* Sample reviews preview */}
-          <div className="card bg-gray-50">
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Sample Hinglish Reviews</p>
             <div className="space-y-2">
               {SAMPLE_REVIEWS.slice(0, 4).map((r, i) => (
@@ -175,9 +185,9 @@ export default function SentimentPage() {
           <AnimatePresence mode="wait">
             {loading && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
-                <div className="card"><div className="skeleton h-32" /></div>
-                <div className="card"><div className="skeleton h-48" /></div>
-                <div className="card"><div className="skeleton h-40" /></div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"><div className="skeleton h-32 rounded-xl" /></div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"><div className="skeleton h-48 rounded-xl" /></div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"><div className="skeleton h-40 rounded-xl" /></div>
               </motion.div>
             )}
 
@@ -187,182 +197,202 @@ export default function SentimentPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="card text-center"
+                  className={`bg-white rounded-2xl p-6 shadow-sm border ${sentimentInfo?.border} text-center relative overflow-hidden`}
                 >
-                  <p className="text-sm text-gray-500 mb-2">Overall Sentiment</p>
-                  <div className="flex items-center justify-center gap-4">
-                    <span className="text-5xl">{sentimentInfo?.emoji}</span>
-                    <div>
-                      <p className={`text-5xl font-display font-extrabold ${sentimentInfo?.color}`}>
-                        {sentiment.score > 0 ? '+' : ''}{sentiment.score}
-                      </p>
-                      <p className="text-sm text-gray-500 mt-1">{sentimentInfo?.label} — {result.reviewCount} reviews analyzed</p>
+                  <div className={`absolute inset-0 ${sentimentInfo?.bg} opacity-30`} />
+                  <div className="relative z-10">
+                    <p className="text-sm text-gray-500 mb-2">Overall Sentiment</p>
+                    <div className="flex items-center justify-center gap-4">
+                      <span className="text-5xl">{sentimentInfo?.emoji}</span>
+                      <div>
+                        <p className={`text-5xl font-display font-extrabold ${sentimentInfo?.color}`}>
+                          {sentiment.score > 0 ? '+' : ''}{sentiment.score}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-1">{sentimentInfo?.label} — {result.reviewCount} reviews analyzed</p>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
 
                 {/* Distribution + Attributes */}
                 <div className="grid md:grid-cols-2 gap-4">
-                  {/* Sentiment Distribution Pie */}
-                  <div className="card">
-                    <h3 className="font-semibold text-gray-900 mb-3">Sentiment Distribution</h3>
-                    <ResponsiveContainer width="100%" height={180}>
-                      <PieChart>
-                        <Pie data={distributionData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70} label={({ name, value }) => `${name} ${value}%`}>
-                          {distributionData.map((entry, i) => (
-                            <Cell key={i} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <ScrollReveal delay={0.1}>
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Sentiment Distribution</h3>
+                      <ResponsiveContainer width="100%" height={180}>
+                        <PieChart>
+                          <Pie data={distributionData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={35} outerRadius={70} strokeWidth={2} stroke="#fff" label={({ name, value }) => `${name} ${value}%`}>
+                            {distributionData.map((entry, i) => (
+                              <Cell key={i} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </ScrollReveal>
 
-                  {/* Product Attributes */}
-                  <div className="card">
-                    <h3 className="font-semibold text-gray-900 mb-3">Attribute Sentiment</h3>
-                    <ResponsiveContainer width="100%" height={180}>
-                      <BarChart data={attributeData} layout="vertical">
-                        <XAxis type="number" domain={[-100, 100]} axisLine={false} tickLine={false} />
-                        <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={80} className="text-xs" />
-                        <Tooltip />
-                        <Bar dataKey="sentiment" radius={4}>
-                          {attributeData.map((entry: any, i: number) => (
-                            <Cell key={i} fill={entry.fill} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  <ScrollReveal delay={0.15}>
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Attribute Sentiment</h3>
+                      <ResponsiveContainer width="100%" height={180}>
+                        <BarChart data={attributeData} layout="vertical">
+                          <XAxis type="number" domain={[-100, 100]} axisLine={false} tickLine={false} />
+                          <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={80} className="text-xs" />
+                          <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                          <Bar dataKey="sentiment" radius={4}>
+                            {attributeData.map((entry: any, i: number) => (
+                              <Cell key={i} fill={entry.fill} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </ScrollReveal>
                 </div>
 
                 {/* Key Themes */}
                 {result.keyThemes?.length > 0 && (
-                  <div className="card">
-                    <h3 className="font-semibold text-gray-900 mb-3">Key Themes</h3>
-                    <div className="space-y-3">
-                      {result.keyThemes.map((theme: any, i: number) => (
-                        <motion.div
-                          key={theme.theme}
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl"
-                        >
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                            theme.sentiment >= 30 ? 'bg-green-100 text-green-600' :
-                            theme.sentiment >= -30 ? 'bg-yellow-100 text-yellow-600' :
-                            'bg-red-100 text-red-600'
-                          }`}>
-                            {theme.sentiment >= 30 ? <ThumbsUp className="w-4 h-4" /> :
-                             theme.sentiment >= -30 ? <Minus className="w-4 h-4" /> :
-                             <ThumbsDown className="w-4 h-4" />}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <p className="font-medium text-gray-900">{theme.theme}</p>
-                              <span className="text-xs text-gray-400">{theme.frequency} mentions</span>
+                  <ScrollReveal>
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Key Themes</h3>
+                      <div className="space-y-2">
+                        {result.keyThemes.map((theme: any, i: number) => (
+                          <motion.div
+                            key={theme.theme}
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.08 }}
+                            whileHover={{ x: 4 }}
+                            className="flex items-start gap-3 p-3 bg-gray-50/80 rounded-xl hover:bg-gray-100/80 transition-colors"
+                          >
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              theme.sentiment >= 30 ? 'bg-green-100 text-green-600' :
+                              theme.sentiment >= -30 ? 'bg-yellow-100 text-yellow-600' :
+                              'bg-red-100 text-red-600'
+                            }`}>
+                              {theme.sentiment >= 30 ? <ThumbsUp className="w-4 h-4" /> :
+                               theme.sentiment >= -30 ? <Minus className="w-4 h-4" /> :
+                               <ThumbsDown className="w-4 h-4" />}
                             </div>
-                            {theme.exampleReviews?.length > 0 && (
-                              <p className="text-xs text-gray-500 mt-1 font-hindi italic">"{theme.exampleReviews[0]}"</p>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
+                            <div className="flex-1">
+                              <div className="flex items-center justify-between">
+                                <p className="font-medium text-gray-900 text-sm">{theme.theme}</p>
+                                <span className="text-xs text-gray-400">{theme.frequency} mentions</span>
+                              </div>
+                              {theme.exampleReviews?.length > 0 && (
+                                <p className="text-xs text-gray-500 mt-1 font-hindi italic">"{theme.exampleReviews[0]}"</p>
+                              )}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 )}
 
                 {/* Actionable Insights */}
                 {result.actionableInsights?.length > 0 && (
-                  <div className="card">
-                    <h3 className="font-semibold text-gray-900 mb-3">Actionable Insights</h3>
-                    <div className="space-y-3">
-                      {result.actionableInsights.map((insight: any, i: number) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.1 + 0.2 }}
-                          className={`p-4 rounded-xl border ${
-                            insight.category === 'improvement' ? 'bg-red-50 border-red-200' :
-                            insight.category === 'strength' ? 'bg-green-50 border-green-200' :
-                            'bg-yellow-50 border-yellow-200'
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="mt-0.5">
-                              {insight.category === 'improvement' ? <AlertTriangle className="w-5 h-5 text-red-500" /> :
-                               insight.category === 'strength' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> :
-                               <Lightbulb className="w-5 h-5 text-yellow-500" />}
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className={`text-xs font-bold uppercase tracking-wider ${
-                                  insight.category === 'improvement' ? 'text-red-600' :
-                                  insight.category === 'strength' ? 'text-green-600' : 'text-yellow-600'
-                                }`}>
-                                  {insight.category}
-                                </span>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                  insight.priority === 'high' ? 'bg-red-100 text-red-700' :
-                                  insight.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                                  'bg-gray-100 text-gray-600'
-                                }`}>
-                                  {insight.priority} priority
-                                </span>
-                                <span className="text-xs text-gray-400">{insight.affectedReviewCount} reviews</span>
+                  <ScrollReveal>
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                      <h3 className="font-semibold text-gray-900 mb-3 text-sm">Actionable Insights</h3>
+                      <div className="space-y-3">
+                        {result.actionableInsights.map((insight: any, i: number) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.08 }}
+                            className={`p-4 rounded-xl border ${
+                              insight.category === 'improvement' ? 'bg-red-50/80 border-red-200' :
+                              insight.category === 'strength' ? 'bg-green-50/80 border-green-200' :
+                              'bg-yellow-50/80 border-yellow-200'
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="mt-0.5">
+                                {insight.category === 'improvement' ? <AlertTriangle className="w-5 h-5 text-red-500" /> :
+                                 insight.category === 'strength' ? <CheckCircle2 className="w-5 h-5 text-green-500" /> :
+                                 <Lightbulb className="w-5 h-5 text-yellow-500" />}
                               </div>
-                              <p className="text-sm text-gray-700 mt-1">{insight.description}</p>
-                              {insight.suggestedAction && (
-                                <p className="text-sm font-medium text-gray-900 mt-2">
-                                  Action: {insight.suggestedAction}
-                                </p>
-                              )}
+                              <div>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className={`text-[10px] font-bold uppercase tracking-wider ${
+                                    insight.category === 'improvement' ? 'text-red-600' :
+                                    insight.category === 'strength' ? 'text-green-600' : 'text-yellow-600'
+                                  }`}>
+                                    {insight.category}
+                                  </span>
+                                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                                    insight.priority === 'high' ? 'bg-red-100 text-red-700' :
+                                    insight.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                    'bg-gray-100 text-gray-600'
+                                  }`}>
+                                    {insight.priority} priority
+                                  </span>
+                                  <span className="text-[10px] text-gray-400">{insight.affectedReviewCount} reviews</span>
+                                </div>
+                                <p className="text-sm text-gray-700 mt-1">{insight.description}</p>
+                                {insight.suggestedAction && (
+                                  <p className="text-sm font-medium text-gray-900 mt-2">
+                                    Action: {insight.suggestedAction}
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 )}
 
                 {/* Language Breakdown */}
                 {result.languageBreakdown?.length > 0 && (
-                  <div className="card">
-                    <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                      <Globe className="w-5 h-5 text-bazaar-500" />
-                      Language Breakdown
-                    </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {result.languageBreakdown.map((lb: any, i: number) => (
-                        <div key={i} className="p-3 bg-gray-50 rounded-xl text-center">
-                          <p className="text-sm font-medium text-gray-700">{lb.language}</p>
-                          <p className="text-lg font-bold text-gray-900">{lb.reviewCount} reviews</p>
-                          <p className={`text-sm font-medium ${lb.avgSentiment >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {lb.avgSentiment > 0 ? '+' : ''}{lb.avgSentiment}
-                          </p>
-                        </div>
-                      ))}
+                  <ScrollReveal>
+                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                      <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2 text-sm">
+                        <Globe className="w-4 h-4 text-bazaar-500" />
+                        Language Breakdown
+                      </h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {result.languageBreakdown.map((lb: any, i: number) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.08 }}
+                            className="p-3 bg-gray-50/80 rounded-xl text-center"
+                          >
+                            <p className="text-sm font-medium text-gray-700">{lb.language}</p>
+                            <p className="text-lg font-bold text-gray-900">{lb.reviewCount} reviews</p>
+                            <p className={`text-sm font-medium ${lb.avgSentiment >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              {lb.avgSentiment > 0 ? '+' : ''}{lb.avgSentiment}
+                            </p>
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 )}
 
                 {/* Hinglish Insights */}
                 {result.hinglishInsights && (
-                  <div className="card bg-gradient-to-r from-royal-50 to-saffron-50 border-royal-200">
-                    <p className="text-xs font-bold text-royal-600 uppercase tracking-wider mb-1 flex items-center gap-1">
-                      <Globe className="w-3 h-3" />
-                      Hinglish Intelligence
-                    </p>
-                    <p className="text-sm text-gray-700 leading-relaxed">{result.hinglishInsights}</p>
-                  </div>
+                  <ScrollReveal>
+                    <div className="bg-gradient-to-r from-royal-50 to-saffron-50 rounded-2xl p-5 border border-royal-200">
+                      <p className="text-xs font-bold text-royal-600 uppercase tracking-wider mb-1 flex items-center gap-1">
+                        <Globe className="w-3 h-3" />
+                        Hinglish Intelligence
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed">{result.hinglishInsights}</p>
+                    </div>
+                  </ScrollReveal>
                 )}
               </motion.div>
             )}
 
             {!result && !loading && (
-              <div className="card text-center py-16 text-gray-400">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
                 <MessageSquareText className="w-16 h-16 mx-auto mb-4 text-gray-200" />
                 <p className="text-lg font-medium">Paste reviews or load the Hinglish demo</p>
                 <p className="text-sm mt-2 font-hindi">"Product accha hai but delivery slow thi" — we understand this.</p>

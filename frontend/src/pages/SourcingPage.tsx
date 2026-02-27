@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Package, Search, MapPin, Star, Truck, ShieldCheck, ArrowRight, Check, IndianRupee, Filter, ChevronDown } from 'lucide-react'
+import { Package, Search, MapPin, Star, Truck, ShieldCheck, ArrowRight, Check, IndianRupee } from 'lucide-react'
 import { api } from '../utils/api'
+import { ScrollReveal } from '../components/AnimatedComponents'
 
 const CATEGORIES = ['All', 'Groceries', 'Fashion', 'Electronics', 'Beauty & Personal Care', 'Home & Kitchen']
 const CITIES = ['Lucknow', 'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Ahmedabad', 'Pune', 'Jaipur', 'Indore']
@@ -24,9 +25,6 @@ export default function SourcingPage() {
   async function loadSourcing() {
     setLoading(true)
     try {
-      const params = new URLSearchParams({ city })
-      if (selectedCategory !== 'All') params.set('category', selectedCategory)
-      if (search) params.set('search', search)
       const result = await api.getSourcing(city, selectedCategory === 'All' ? undefined : selectedCategory, search || undefined)
       setData(result)
     } catch (err) {
@@ -64,15 +62,20 @@ export default function SourcingPage() {
   ) || []
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-bazaar-500 flex items-center justify-center">
-          <Package className="w-6 h-6 text-white" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Smart Sourcing</h1>
-          <p className="text-sm text-gray-500">Find best wholesale prices from verified suppliers near you</p>
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <Package className="w-6 h-6 text-teal-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Smart Sourcing</h1>
+            <p className="text-sm text-white/60">Find best wholesale prices from verified suppliers near you</p>
+          </div>
         </div>
       </div>
 
@@ -80,17 +83,18 @@ export default function SourcingPage() {
       {data?.summary && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[
-            { label: 'Products Available', value: data.summary.totalProducts, icon: Package, color: 'text-bazaar-500', bg: 'bg-bazaar-50' },
-            { label: 'Nearby Wholesalers', value: data.summary.totalWholesalers, icon: MapPin, color: 'text-saffron-500', bg: 'bg-saffron-50' },
-            { label: 'Avg Savings vs MRP', value: data.summary.avgSavings, icon: IndianRupee, color: 'text-green-500', bg: 'bg-green-50' },
-            { label: 'Verified Suppliers', value: data.summary.verifiedWholesalers, icon: ShieldCheck, color: 'text-royal-500', bg: 'bg-royal-50' },
+            { label: 'Products Available', value: data.summary.totalProducts, icon: Package, color: 'text-bazaar-500', bg: 'bg-bazaar-50', border: 'border-bazaar-100' },
+            { label: 'Nearby Wholesalers', value: data.summary.totalWholesalers, icon: MapPin, color: 'text-saffron-500', bg: 'bg-saffron-50', border: 'border-saffron-100' },
+            { label: 'Avg Savings vs MRP', value: data.summary.avgSavings, icon: IndianRupee, color: 'text-green-500', bg: 'bg-green-50', border: 'border-green-100' },
+            { label: 'Verified Suppliers', value: data.summary.verifiedWholesalers, icon: ShieldCheck, color: 'text-royal-500', bg: 'bg-royal-50', border: 'border-royal-100' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="card"
+              whileHover={{ y: -2 }}
+              className={`bg-white rounded-2xl p-5 shadow-sm border ${stat.border} hover:shadow-md transition-all`}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -115,7 +119,7 @@ export default function SourcingPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search products... (e.g., Basmati Rice, Earbuds, Kurta)"
-            className="input-field pl-11 pr-4"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-bazaar-400 focus:ring-2 focus:ring-bazaar-100 outline-none transition-all bg-white text-sm"
           />
         </form>
         <select value={city} onChange={e => setCity(e.target.value)} className="input-field w-auto">
@@ -126,54 +130,62 @@ export default function SourcingPage() {
       {/* Category Tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
         {CATEGORIES.map(cat => (
-          <button
+          <motion.button
             key={cat}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               selectedCategory === cat
-                ? 'bg-bazaar-500 text-white shadow-lg shadow-bazaar-500/25'
+                ? 'bg-[#1E1B4B] text-white shadow-lg'
                 : 'bg-white border border-gray-200 text-gray-600 hover:border-bazaar-300 hover:text-bazaar-600'
             }`}
           >
             {cat}
-          </button>
+          </motion.button>
         ))}
       </div>
 
       {/* Wholesalers Row */}
       {data?.wholesalers && (
-        <div className="mb-6">
-          <h3 className="font-display font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-saffron-500" />
-            Wholesalers Near {city}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            {data.wholesalers.map((w: any) => (
-              <div key={w.id} className="card p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold text-gray-900 text-sm leading-tight">{w.name}</h4>
-                  {w.verified && <ShieldCheck className="w-4 h-4 text-green-500 flex-shrink-0" />}
-                </div>
-                <p className="text-xs text-gray-500 flex items-center gap-1 mb-1">
-                  <MapPin className="w-3 h-3" /> {w.area} — {w.distance}
-                </p>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="flex items-center gap-0.5 text-xs text-yellow-600">
-                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" /> {w.rating}
-                  </span>
-                  <span className="text-xs text-gray-400 flex items-center gap-0.5">
-                    <Truck className="w-3 h-3" /> {w.deliveryDays}d
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {w.specialties.map((s: string) => (
-                    <span key={s} className="text-[10px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-md">{s}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
+        <ScrollReveal>
+          <div className="mb-6">
+            <h3 className="font-display font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-saffron-500" />
+              Wholesalers Near {city}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              {data.wholesalers.map((w: any) => (
+                <motion.div
+                  key={w.id}
+                  whileHover={{ y: -2 }}
+                  className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-semibold text-gray-900 text-sm leading-tight">{w.name}</h4>
+                    {w.verified && <ShieldCheck className="w-4 h-4 text-green-500 flex-shrink-0" />}
+                  </div>
+                  <p className="text-xs text-gray-500 flex items-center gap-1 mb-1">
+                    <MapPin className="w-3 h-3" /> {w.area} — {w.distance}
+                  </p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex items-center gap-0.5 text-xs text-yellow-600">
+                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" /> {w.rating}
+                    </span>
+                    <span className="text-xs text-gray-400 flex items-center gap-0.5">
+                      <Truck className="w-3 h-3" /> {w.deliveryDays}d
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {w.specialties.map((s: string) => (
+                      <span key={s} className="text-[10px] px-2 py-0.5 bg-gray-100 text-gray-500 rounded-md">{s}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       )}
 
       {/* Products Grid */}
@@ -184,11 +196,11 @@ export default function SourcingPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1,2,3,4,5,6].map(i => (
-            <div key={i} className="card">
-              <div className="skeleton h-5 w-3/4 mb-3" />
-              <div className="skeleton h-8 w-1/2 mb-3" />
-              <div className="skeleton h-4 w-full mb-2" />
-              <div className="skeleton h-10 w-full" />
+            <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <div className="skeleton h-5 w-3/4 mb-3 rounded-lg" />
+              <div className="skeleton h-8 w-1/2 mb-3 rounded-lg" />
+              <div className="skeleton h-4 w-full mb-2 rounded-lg" />
+              <div className="skeleton h-10 w-full rounded-lg" />
             </div>
           ))}
         </div>
@@ -201,7 +213,8 @@ export default function SourcingPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.03 }}
-                className="card hover:-translate-y-0.5 transition-all group"
+                whileHover={{ y: -3 }}
+                className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div>
@@ -226,7 +239,7 @@ export default function SourcingPage() {
                     <MapPin className="w-3 h-3" /> {product.wholesaler.area}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Truck className="w-3 h-3" /> {product.wholesaler.deliveryDays}d delivery
+                    <Truck className="w-3 h-3" /> {product.wholesaler.deliveryDays}d
                   </span>
                   <span>MOQ: {product.moq}</span>
                 </div>
@@ -236,17 +249,19 @@ export default function SourcingPage() {
                     {product.wholesaler.name}
                     {product.wholesaler.verified && <ShieldCheck className="w-3 h-3 text-green-500 inline ml-1" />}
                   </span>
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => { setOrderModal(product); setOrderQuantity(product.moq.toString()); setOrderSuccess(null) }}
                     disabled={!product.inStock}
-                    className={`text-sm px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-1 ${
+                    className={`text-sm px-4 py-2 rounded-xl font-medium transition-all flex items-center gap-1 ${
                       product.inStock
-                        ? 'bg-bazaar-500 text-white hover:bg-bazaar-600 shadow-sm'
+                        ? 'bg-[#1E1B4B] text-white hover:bg-[#312e81] shadow-sm'
                         : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     }`}
                   >
                     {product.inStock ? <>Order <ArrowRight className="w-3 h-3" /></> : 'Out of Stock'}
-                  </button>
+                  </motion.button>
                 </div>
               </motion.div>
             ))}
@@ -255,7 +270,7 @@ export default function SourcingPage() {
       )}
 
       {filteredProducts.length === 0 && !loading && (
-        <div className="card text-center py-16 text-gray-400">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
           <Package className="w-16 h-16 mx-auto mb-4 text-gray-200" />
           <p className="text-lg font-medium">No products found</p>
           <p className="text-sm mt-2">Try a different search or category</p>
@@ -269,7 +284,7 @@ export default function SourcingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={() => { setOrderModal(null); setOrderSuccess(null) }}
           >
             <motion.div
@@ -281,9 +296,14 @@ export default function SourcingPage() {
             >
               {orderSuccess ? (
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
                     <Check className="w-8 h-8 text-green-600" />
-                  </div>
+                  </motion.div>
                   <h3 className="font-display text-xl font-bold text-gray-900 mb-2">Order Confirmed!</h3>
                   <p className="text-sm text-gray-500 mb-4">{orderSuccess.message}</p>
                   <div className="bg-gray-50 rounded-xl p-4 text-left space-y-2 mb-4">
@@ -306,7 +326,7 @@ export default function SourcingPage() {
                   </div>
                   <button
                     onClick={() => { setOrderModal(null); setOrderSuccess(null) }}
-                    className="btn-secondary w-full"
+                    className="btn-primary w-full"
                   >
                     Done
                   </button>
@@ -353,13 +373,15 @@ export default function SourcingPage() {
                     >
                       Cancel
                     </button>
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
                       onClick={handleOrder}
                       disabled={ordering || Number(orderQuantity) < orderModal.moq}
-                      className="flex-1 btn-secondary flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 btn-primary flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {ordering ? 'Placing...' : 'Confirm Order'}
-                    </button>
+                    </motion.button>
                   </div>
                 </>
               )}

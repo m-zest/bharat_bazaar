@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Languages, Copy, Check, RotateCcw, Zap, ChevronDown, ChevronUp, Search, Share2 } from 'lucide-react'
 import { api } from '../utils/api'
+import { ScrollReveal } from '../components/AnimatedComponents'
 
 const DEMO_PRODUCTS = [
   {
@@ -92,14 +93,20 @@ export default function ContentPage() {
   }
 
   return (
-    <div className="p-8 max-w-[1400px]">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-bazaar-100 flex items-center justify-center">
-          <Languages className="w-6 h-6 text-bazaar-600" />
+    <div className="p-6 lg:p-8 max-w-[1400px]">
+      {/* Page Header */}
+      <div className="page-header rounded-2xl mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-teal-400 rounded-full blur-[100px]" />
         </div>
-        <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900">Multilingual Content Generator</h1>
-          <p className="text-sm text-gray-500">Culturally adapted descriptions — not just translations</p>
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+            <Languages className="w-6 h-6 text-teal-300" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold">Multilingual Content Generator</h1>
+            <p className="text-sm text-white/60">Culturally adapted descriptions — not just translations</p>
+          </div>
         </div>
       </div>
 
@@ -107,19 +114,21 @@ export default function ContentPage() {
       <div className="flex flex-wrap gap-2 mb-6">
         <span className="text-sm text-gray-500 py-2">Quick Demo:</span>
         {DEMO_PRODUCTS.map(demo => (
-          <button
+          <motion.button
             key={demo.name}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => loadDemo(demo)}
-            className="text-sm px-4 py-2 bg-white border border-gray-200 rounded-lg hover:border-bazaar-300 hover:bg-bazaar-50 transition-all"
+            className="text-sm px-4 py-2 bg-white border border-gray-200 rounded-xl hover:border-bazaar-300 hover:bg-bazaar-50 transition-all shadow-sm"
           >
             {demo.name}
-          </button>
+          </motion.button>
         ))}
       </div>
 
       <div className="grid lg:grid-cols-5 gap-8">
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="lg:col-span-2 card space-y-4">
+        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 h-fit">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
             <input
@@ -161,27 +170,31 @@ export default function ContentPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">Target Languages</label>
             <div className="grid grid-cols-2 gap-2">
               {LANGUAGES.map(lang => (
-                <button
+                <motion.button
                   key={lang.code}
                   type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => toggleLang(lang.code)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-all ${
                     selectedLangs.includes(lang.code)
-                      ? 'border-bazaar-400 bg-bazaar-50 text-bazaar-700 font-medium'
+                      ? 'border-bazaar-400 bg-bazaar-50 text-bazaar-700 font-medium shadow-sm'
                       : 'border-gray-200 text-gray-500 hover:border-gray-300'
                   }`}
                 >
                   <span>{lang.flag}</span>
                   <span>{lang.name}</span>
                   <span className="text-xs opacity-60">{lang.nameNative}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
+            whileHover={{ scale: loading ? 1 : 1.01 }}
+            whileTap={{ scale: loading ? 1 : 0.99 }}
             className="btn-secondary w-full flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? (
@@ -195,7 +208,7 @@ export default function ContentPage() {
                 Generate Descriptions
               </>
             )}
-          </button>
+          </motion.button>
 
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>
@@ -208,13 +221,13 @@ export default function ContentPage() {
             {loading && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
                 {selectedLangs.map((_, i) => (
-                  <div key={i} className="card">
-                    <div className="skeleton h-6 w-24 mb-3" />
-                    <div className="skeleton h-4 w-full mb-2" />
-                    <div className="skeleton h-4 w-full mb-2" />
-                    <div className="skeleton h-4 w-3/4 mb-4" />
+                  <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div className="skeleton h-6 w-24 mb-3 rounded-lg" />
+                    <div className="skeleton h-4 w-full mb-2 rounded-lg" />
+                    <div className="skeleton h-4 w-full mb-2 rounded-lg" />
+                    <div className="skeleton h-4 w-3/4 mb-4 rounded-lg" />
                     <div className="space-y-2">
-                      {[1,2,3].map(j => <div key={j} className="skeleton h-4 w-5/6" />)}
+                      {[1,2,3].map(j => <div key={j} className="skeleton h-4 w-5/6 rounded-lg" />)}
                     </div>
                   </div>
                 ))}
@@ -233,7 +246,8 @@ export default function ContentPage() {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      className="card border border-gray-200 overflow-hidden"
+                      whileHover={{ y: -1 }}
+                      className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all overflow-hidden"
                     >
                       {/* Language Header */}
                       <div
@@ -248,20 +262,24 @@ export default function ContentPage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <button
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={(e) => { e.stopPropagation(); shareDescriptionWhatsApp(desc) }}
                             className="p-2 hover:bg-green-50 rounded-lg transition-all"
                             title="Share on WhatsApp"
                           >
                             <Share2 className="w-4 h-4 text-green-500" />
-                          </button>
-                          <button
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={(e) => { e.stopPropagation(); handleCopy(fullText, i) }}
                             className="p-2 hover:bg-gray-100 rounded-lg transition-all"
                             title="Copy to clipboard"
                           >
                             {copiedIdx === i ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-gray-400" />}
-                          </button>
+                          </motion.button>
                           {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
                         </div>
                       </div>
@@ -275,17 +293,12 @@ export default function ContentPage() {
                             transition={{ duration: 0.2 }}
                           >
                             <div className="mt-4 pt-4 border-t border-gray-100">
-                              {/* Title */}
                               <h4 className={`text-lg font-bold text-gray-900 mb-3 ${['hi', 'mr'].includes(desc.language) ? 'font-hindi' : ''}`}>
                                 {desc.title}
                               </h4>
-
-                              {/* Description */}
                               <p className={`text-gray-600 leading-relaxed whitespace-pre-wrap mb-4 ${['hi', 'mr'].includes(desc.language) ? 'font-hindi' : ''}`}>
                                 {desc.description}
                               </p>
-
-                              {/* Bullet Points */}
                               {desc.bulletPoints?.length > 0 && (
                                 <div className="mb-4">
                                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Selling Points</p>
@@ -299,16 +312,12 @@ export default function ContentPage() {
                                   </ul>
                                 </div>
                               )}
-
-                              {/* Cultural Notes */}
                               {desc.culturalNotes && (
-                                <div className="p-3 bg-saffron-50 rounded-lg mb-3">
+                                <div className="p-3 bg-saffron-50 rounded-xl mb-3 border border-saffron-100">
                                   <p className="text-xs font-semibold text-saffron-600 uppercase tracking-wider">Cultural Adaptation</p>
                                   <p className="text-sm text-saffron-700 mt-1">{desc.culturalNotes}</p>
                                 </div>
                               )}
-
-                              {/* SEO Keywords */}
                               {desc.localSearchTerms?.length > 0 && (
                                 <div>
                                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
@@ -316,7 +325,15 @@ export default function ContentPage() {
                                   </p>
                                   <div className="flex flex-wrap gap-1">
                                     {desc.localSearchTerms.map((kw: string, j: number) => (
-                                      <span key={j} className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md">{kw}</span>
+                                      <motion.span
+                                        key={j}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: j * 0.05 }}
+                                        className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md"
+                                      >
+                                        {kw}
+                                      </motion.span>
                                     ))}
                                   </div>
                                 </div>
@@ -332,7 +349,7 @@ export default function ContentPage() {
             )}
 
             {!result && !loading && (
-              <div className="card text-center py-16 text-gray-400">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
                 <Languages className="w-16 h-16 mx-auto mb-4 text-gray-200" />
                 <p className="text-lg font-medium">Generate multilingual product descriptions</p>
                 <p className="text-sm mt-2">Click a "Quick Demo" button to try with a pre-loaded product</p>
