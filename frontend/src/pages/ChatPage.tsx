@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, Send, RotateCcw, Sparkles, User, Bot, Mic, MicOff, Lightbulb } from 'lucide-react'
+import { MessageCircle, Send, RotateCcw, User, Bot, Mic, MicOff, Lightbulb } from 'lucide-react'
 import { api } from '../utils/api'
 
 interface Message {
@@ -31,8 +31,13 @@ export default function ChatPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [city] = useState('Lucknow')
+  const [isListening, setIsListening] = useState(false)
+  const [voiceSupported] = useState(() =>
+    typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
+  )
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const recognitionRef = useRef<any>(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -95,6 +100,44 @@ export default function ChatPage() {
       e.preventDefault()
       sendMessage()
     }
+  }
+
+  function toggleVoice() {
+    if (isListening) {
+      recognitionRef.current?.stop()
+      setIsListening(false)
+      return
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SpeechRecognition) return
+
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'hi-IN'
+    recognition.interimResults = true
+    recognition.continuous = false
+    recognitionRef.current = recognition
+
+    recognition.onstart = () => setIsListening(true)
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((r: any) => r[0].transcript)
+        .join('')
+      setInput(transcript)
+    }
+
+    recognition.onend = () => {
+      setIsListening(false)
+      // Auto-send if we got a transcript
+      if (input.trim()) {
+        setTimeout(() => sendMessage(), 200)
+      }
+    }
+
+    recognition.onerror = () => setIsListening(false)
+
+    recognition.start()
   }
 
   return (
@@ -209,10 +252,24 @@ export default function ChatPage() {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your question... (Hindi / English / Hinglish)"
+            placeholder={isListening ? 'Bol rahe hain... (Listening)' : 'Type your question... (Hindi / English / Hinglish)'}
             className="flex-1 input-field"
             disabled={loading}
           />
+          {voiceSupported && (
+            <button
+              onClick={toggleVoice}
+              disabled={loading}
+              className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 ${
+                isListening
+                  ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/25'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+              }`}
+              title={isListening ? 'Stop listening' : 'Speak in Hindi'}
+            >
+              {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            </button>
+          )}
           <button
             onClick={() => sendMessage()}
             disabled={!input.trim() || loading}
@@ -222,7 +279,7 @@ export default function ChatPage() {
           </button>
         </div>
         <p className="text-[10px] text-gray-400 mt-2 text-center">
-          Powered by Amazon Bedrock (Claude AI) — Your business data stays private
+          Powered by Amazon Bedrock (Claude AI) — {voiceSupported ? 'Tap mic to speak in Hindi' : 'Your business data stays private'}
         </p>
       </div>
     </div>

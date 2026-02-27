@@ -1,11 +1,14 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, Package, MessageCircle } from 'lucide-react'
+import { LayoutDashboard, IndianRupee, Languages, MessageSquareText, Store, Package, MessageCircle, GitCompare, Eye, ClipboardList } from 'lucide-react'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', labelHi: 'डैशबोर्ड', icon: LayoutDashboard },
   { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package },
   { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
   { path: '/chat', label: 'AI Advisor', labelHi: 'AI सलाहकार', icon: MessageCircle },
+  { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList },
+  { path: '/competitors', label: 'Competitors', labelHi: 'प्रतिस्पर्धी', icon: Eye },
+  { path: '/compare', label: 'Compare', labelHi: 'तुलना करें', icon: GitCompare },
   { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages },
   { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट', icon: MessageSquareText },
 ]
