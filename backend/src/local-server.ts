@@ -7,6 +7,9 @@ import { handler as dashboardHandler } from './handlers/dashboard';
 import { handler as sourcingHandler, orderHandler } from './handlers/sourcing';
 import { handler as chatHandler } from './handlers/chat';
 import { handler as weatherHandler } from './handlers/weather';
+import { handler as inventoryHandler, updateHandler as inventoryUpdateHandler, deleteHandler as inventoryDeleteHandler, quantityHandler as inventoryQuantityHandler } from './handlers/inventory';
+import { handler as compareHandler } from './handlers/compare';
+import { handler as competitorsHandler } from './handlers/competitors';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
@@ -72,6 +75,38 @@ app.get('/api/weather', async (req, res) => {
   res.status(result.statusCode).json(JSON.parse(result.body));
 });
 
+// Inventory (DynamoDB)
+app.get('/api/inventory', async (req, res) => {
+  const result = await inventoryHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+app.post('/api/inventory/update', async (req, res) => {
+  const result = await inventoryUpdateHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+app.post('/api/inventory/delete', async (req, res) => {
+  const result = await inventoryDeleteHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+app.post('/api/inventory/quantity', async (req, res) => {
+  const result = await inventoryQuantityHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+// AI Compare & Competitors (Bedrock)
+app.post('/api/compare', async (req, res) => {
+  const result = await compareHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+app.post('/api/competitors', async (req, res) => {
+  const result = await competitorsHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
 // Health check
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'healthy', service: 'BharatBazaar AI', version: '2.0.0' });
@@ -81,17 +116,23 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`
   ╔══════════════════════════════════════════════════╗
-  ║     BharatBazaar AI — API Server v2.0            ║
+  ║     BharatBazaar AI — API Server v3.0            ║
   ║     Running on http://localhost:${PORT}               ║
   ╠══════════════════════════════════════════════════╣
-  ║  POST /api/pricing/recommend                     ║
-  ║  POST /api/content/generate                      ║
-  ║  POST /api/sentiment/analyze                     ║
-  ║  POST /api/chat                                  ║
+  ║  POST /api/pricing/recommend     (Bedrock AI)    ║
+  ║  POST /api/content/generate      (Bedrock AI)    ║
+  ║  POST /api/sentiment/analyze     (Bedrock AI)    ║
+  ║  POST /api/chat                  (Bedrock AI)    ║
+  ║  POST /api/compare               (Bedrock AI)    ║
+  ║  POST /api/competitors           (Bedrock AI)    ║
   ║  GET  /api/dashboard                             ║
   ║  GET  /api/sourcing?city=Lucknow                 ║
-  ║  POST /api/sourcing/order                        ║
-  ║  GET  /api/weather?city=Lucknow                  ║
+  ║  POST /api/sourcing/order        (DynamoDB)      ║
+  ║  GET  /api/inventory             (DynamoDB)      ║
+  ║  POST /api/inventory/update      (DynamoDB)      ║
+  ║  POST /api/inventory/delete      (DynamoDB)      ║
+  ║  POST /api/inventory/quantity    (DynamoDB)      ║
+  ║  GET  /api/weather               (OpenWeather)   ║
   ╚══════════════════════════════════════════════════╝
   `);
 });
