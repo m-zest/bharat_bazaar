@@ -11,6 +11,13 @@
     }
   },
   "rewrites": [
+    { "source": "/api/inventory/update", "destination": "/api/inventory?action=update" },
+    { "source": "/api/inventory/delete", "destination": "/api/inventory?action=delete" },
+    { "source": "/api/inventory/quantity", "destination": "/api/inventory?action=quantity" },
+    { "source": "/api/sourcing/order", "destination": "/api/sourcing?action=order" },
+    { "source": "/api/pricing/recommend", "destination": "/api/pricing" },
+    { "source": "/api/content/generate", "destination": "/api/content" },
+    { "source": "/api/sentiment/analyze", "destination": "/api/sentiment" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
