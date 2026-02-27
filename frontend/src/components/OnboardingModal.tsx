@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Store, MapPin, ShoppingBag, ArrowRight, Sparkles, Check } from 'lucide-react'
+import { MapPin, ShoppingBag, ArrowRight, Sparkles, Check } from 'lucide-react'
+import { IconLogo } from './TarazuLogo'
 
 interface OnboardingData {
   storeName: string
@@ -54,7 +55,7 @@ export default function OnboardingModal({ onComplete }: Props) {
     // Step 0: Welcome
     <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="text-center">
       <div className="w-20 h-20 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-6">
-        <Store className="w-10 h-10 text-white" />
+        <IconLogo mode="dark" size={48} />
       </div>
       <h2 className="font-display text-2xl font-bold text-gray-900">BharatBazaar AI mein aapka swagat hai!</h2>
       <p className="text-gray-500 mt-2">Let's set up your store in 30 seconds</p>
@@ -71,7 +72,7 @@ export default function OnboardingModal({ onComplete }: Props) {
     <motion.div key="store" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl bg-saffron-100 flex items-center justify-center">
-          <Store className="w-5 h-5 text-saffron-600" />
+          <IconLogo mode="light" size={28} />
         </div>
         <div>
           <h3 className="font-display font-bold text-gray-900">Your Store Details</h3>

@@ -70,7 +70,9 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['Outfit', 'Poppins', 'system-ui', 'sans-serif'],
+        outfit: ['Outfit', 'system-ui', 'sans-serif'],
+        sora: ['Sora', 'system-ui', 'sans-serif'],
         hindi: ['Noto Sans Devanagari', 'sans-serif'],
       },
       animation: {
