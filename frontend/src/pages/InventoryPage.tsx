@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Package, Plus, Trash2, AlertTriangle, TrendingDown, ShoppingCart, Edit2, Check, X } from 'lucide-react'
+import { Package, Plus, Trash2, AlertTriangle, TrendingDown, ShoppingCart, Edit2, Check, X, RefreshCw, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { api } from '../utils/api'
 
 interface InventoryItem {
   id: string
@@ -15,62 +16,84 @@ interface InventoryItem {
   lastUpdated: string
 }
 
-const DEMO_INVENTORY: InventoryItem[] = [
-  { id: 'inv-1', name: 'Premium Basmati Rice 5kg', category: 'Groceries', costPrice: 320, sellingPrice: 449, quantity: 22, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString() },
-  { id: 'inv-2', name: 'Surf Excel 1kg', category: 'Groceries', costPrice: 155, sellingPrice: 210, quantity: 8, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString() },
-  { id: 'inv-3', name: 'Handloom Cotton Kurta', category: 'Fashion', costPrice: 450, sellingPrice: 899, quantity: 35, dailySellRate: 2, reorderLevel: 10, lastUpdated: new Date().toISOString() },
-  { id: 'inv-4', name: 'Wireless Bluetooth Earbuds', category: 'Electronics', costPrice: 600, sellingPrice: 1299, quantity: 12, dailySellRate: 1, reorderLevel: 5, lastUpdated: new Date().toISOString() },
-  { id: 'inv-5', name: 'Colgate MaxFresh 150g', category: 'Groceries', costPrice: 75, sellingPrice: 105, quantity: 45, dailySellRate: 4, reorderLevel: 20, lastUpdated: new Date().toISOString() },
-  { id: 'inv-6', name: 'Tata Salt 1kg', category: 'Groceries', costPrice: 22, sellingPrice: 28, quantity: 60, dailySellRate: 6, reorderLevel: 25, lastUpdated: new Date().toISOString() },
-]
-
-const STORAGE_KEY = 'bharatbazaar_inventory'
-
 export default function InventoryPage() {
-  const [inventory, setInventory] = useState<InventoryItem[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY)
-      return saved ? JSON.parse(saved) : DEMO_INVENTORY
-    } catch {
-      return DEMO_INVENTORY
-    }
-  })
+  const [inventory, setInventory] = useState<InventoryItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editQuantity, setEditQuantity] = useState('')
   const [newItem, setNewItem] = useState({ name: '', category: 'Groceries', costPrice: '', sellingPrice: '', quantity: '', dailySellRate: '', reorderLevel: '' })
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(inventory))
-  }, [inventory])
+  const fetchInventory = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const data = await api.getInventory()
+      setInventory(data.items || [])
+    } catch (err: any) {
+      setError(err.message || 'Failed to load inventory')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  function addItem() {
+  useEffect(() => {
+    fetchInventory()
+  }, [fetchInventory])
+
+  async function addItem() {
     if (!newItem.name || !newItem.costPrice || !newItem.quantity) return
     const item: InventoryItem = {
       id: `inv-${Date.now()}`,
       name: newItem.name,
       category: newItem.category,
       costPrice: Number(newItem.costPrice),
-      sellingPrice: Number(newItem.sellingPrice) || Number(newItem.costPrice) * 1.3,
+      sellingPrice: Number(newItem.sellingPrice) || Math.round(Number(newItem.costPrice) * 1.3),
       quantity: Number(newItem.quantity),
       dailySellRate: Number(newItem.dailySellRate) || 2,
       reorderLevel: Number(newItem.reorderLevel) || 10,
       lastUpdated: new Date().toISOString(),
     }
-    setInventory(prev => [...prev, item])
-    setNewItem({ name: '', category: 'Groceries', costPrice: '', sellingPrice: '', quantity: '', dailySellRate: '', reorderLevel: '' })
-    setShowAddForm(false)
+    try {
+      setSaving(true)
+      await api.updateInventoryItem({ item })
+      setInventory(prev => [...prev, item])
+      setNewItem({ name: '', category: 'Groceries', costPrice: '', sellingPrice: '', quantity: '', dailySellRate: '', reorderLevel: '' })
+      setShowAddForm(false)
+    } catch (err: any) {
+      setError(err.message || 'Failed to add item')
+    } finally {
+      setSaving(false)
+    }
   }
 
-  function removeItem(id: string) {
-    setInventory(prev => prev.filter(item => item.id !== id))
+  async function removeItem(id: string) {
+    try {
+      setSaving(true)
+      await api.deleteInventoryItem({ itemId: id })
+      setInventory(prev => prev.filter(item => item.id !== id))
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete item')
+    } finally {
+      setSaving(false)
+    }
   }
 
-  function updateQuantity(id: string) {
-    setInventory(prev => prev.map(item =>
-      item.id === id ? { ...item, quantity: Number(editQuantity), lastUpdated: new Date().toISOString() } : item
-    ))
-    setEditingId(null)
+  async function updateQuantity(id: string) {
+    try {
+      setSaving(true)
+      await api.updateInventoryQuantity({ itemId: id, quantity: Number(editQuantity) })
+      setInventory(prev => prev.map(item =>
+        item.id === id ? { ...item, quantity: Number(editQuantity), lastUpdated: new Date().toISOString() } : item
+      ))
+      setEditingId(null)
+    } catch (err: any) {
+      setError(err.message || 'Failed to update quantity')
+    } finally {
+      setSaving(false)
+    }
   }
 
   function getDaysLeft(item: InventoryItem) {
@@ -94,6 +117,17 @@ export default function InventoryPage() {
   const totalCost = inventory.reduce((sum, item) => sum + item.costPrice * item.quantity, 0)
   const lowStockCount = alerts.length
 
+  if (loading) {
+    return (
+      <div className="p-6 lg:p-8 max-w-[1400px] flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <Loader2 className="w-10 h-10 text-saffron-500 animate-spin mx-auto mb-4" />
+          <p className="text-gray-500 font-medium">Loading inventory from DynamoDB...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="p-6 lg:p-8 max-w-[1400px]">
       {/* Page Header */}
@@ -107,16 +141,33 @@ export default function InventoryPage() {
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold">Inventory Tracker</h1>
-            <p className="text-sm text-white/60">Track stock levels, get reorder alerts, never run out</p>
+            <p className="text-sm text-white/60">Persisted with AWS DynamoDB — real-time stock management</p>
           </div>
-          <button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="ml-auto flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white border border-white/20 px-4 py-2 rounded-xl text-sm font-medium hover:bg-white/25 transition-all"
-          >
-            <Plus className="w-4 h-4" /> Add Product
-          </button>
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              onClick={fetchInventory}
+              disabled={saving}
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 px-3 py-2 rounded-xl text-sm font-medium hover:bg-white/20 transition-all disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${saving ? 'animate-spin' : ''}`} />
+            </button>
+            <button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white border border-white/20 px-4 py-2 rounded-xl text-sm font-medium hover:bg-white/25 transition-all"
+            >
+              <Plus className="w-4 h-4" /> Add Product
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <p className="text-sm text-red-700">{error}</p>
+          <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -186,8 +237,8 @@ export default function InventoryPage() {
                 <input type="number" value={newItem.quantity} onChange={e => setNewItem({ ...newItem, quantity: e.target.value })} placeholder="Current quantity" className="input-field" required />
                 <input type="number" value={newItem.dailySellRate} onChange={e => setNewItem({ ...newItem, dailySellRate: e.target.value })} placeholder="Daily sell rate" className="input-field" />
                 <input type="number" value={newItem.reorderLevel} onChange={e => setNewItem({ ...newItem, reorderLevel: e.target.value })} placeholder="Reorder level" className="input-field" />
-                <button onClick={addItem} className="btn-primary flex items-center justify-center gap-2">
-                  <Plus className="w-4 h-4" /> Add
+                <button onClick={addItem} disabled={saving} className="btn-primary flex items-center justify-center gap-2 disabled:opacity-50">
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} {saving ? 'Saving...' : 'Add'}
                 </button>
               </div>
             </div>
@@ -212,7 +263,14 @@ export default function InventoryPage() {
             </tr>
           </thead>
           <tbody>
-            {inventory.map(item => {
+            {inventory.length === 0 ? (
+              <tr>
+                <td colSpan={9} className="text-center py-12 text-gray-400">
+                  <Package className="w-10 h-10 mx-auto mb-2 opacity-50" />
+                  <p>No inventory items yet. Add your first product above.</p>
+                </td>
+              </tr>
+            ) : inventory.map(item => {
               const status = getStatus(item)
               const daysLeft = getDaysLeft(item)
               return (
@@ -233,7 +291,9 @@ export default function InventoryPage() {
                           className="w-16 px-2 py-1 border border-saffron-300 rounded text-center text-sm"
                           autoFocus
                         />
-                        <button onClick={() => updateQuantity(item.id)} className="p-1 text-green-600 hover:bg-green-50 rounded"><Check className="w-4 h-4" /></button>
+                        <button onClick={() => updateQuantity(item.id)} disabled={saving} className="p-1 text-green-600 hover:bg-green-50 rounded disabled:opacity-50">
+                          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                        </button>
                         <button onClick={() => setEditingId(null)} className="p-1 text-gray-400 hover:bg-gray-50 rounded"><X className="w-4 h-4" /></button>
                       </div>
                     ) : (
@@ -260,7 +320,8 @@ export default function InventoryPage() {
                       </button>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                        disabled={saving}
+                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                         title="Remove product"
                       >
                         <Trash2 className="w-4 h-4" />

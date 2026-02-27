@@ -163,10 +163,46 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
       return error(400, `Unsupported city: ${city}`, 'INVALID_REQUEST');
     }
 
-    // In production, call OpenWeatherMap API here
-    // const apiKey = process.env.OPENWEATHER_API_KEY;
-    // const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}&units=metric`);
+    // Try real OpenWeatherMap API first, fall back to simulation
+    const apiKey = process.env.OPENWEATHER_API_KEY;
+    if (apiKey) {
+      try {
+        const owmRes = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${apiKey}&units=metric`
+        );
+        if (owmRes.ok) {
+          const owm = await owmRes.json() as any;
+          const condition = owm.weather?.[0]?.main || 'Clear';
+          const currentTemp = Math.round(owm.main?.temp || 25);
+          const iconMap: Record<string, string> = {
+            Clear: 'sun', Clouds: 'cloud-sun', Rain: 'cloud-rain',
+            Drizzle: 'cloud-rain', Thunderstorm: 'cloud-lightning',
+            Mist: 'cloud-fog', Haze: 'cloud-sun', Fog: 'cloud-fog',
+          };
 
+          // Use simulated forecast for 5-day (OWM free tier doesn't include it)
+          const simulated = generateWeather(city);
+
+          const realWeather: WeatherData = {
+            city,
+            temperature: currentTemp,
+            feelsLike: Math.round(owm.main?.feels_like || currentTemp),
+            humidity: owm.main?.humidity || 50,
+            condition,
+            conditionIcon: iconMap[condition] || 'cloud',
+            windSpeed: Math.round(owm.wind?.speed || 5),
+            forecast: simulated.forecast,
+            businessImpact: simulated.businessImpact,
+          };
+
+          return success(realWeather);
+        }
+      } catch (owmErr) {
+        console.warn('OpenWeatherMap failed, using simulation:', owmErr);
+      }
+    }
+
+    // Fallback to deterministic simulation
     const weather = generateWeather(city);
 
     return success(weather);

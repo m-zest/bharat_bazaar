@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { success, error } from '../utils/response';
 import { getWholesalersForCity, getWholesaleProducts, WHOLESALE_PRODUCTS } from '../data/wholesale-data';
 import { REGIONAL_DATA } from '../data/regional-data';
+import { saveOrder } from '../utils/dynamodb-client';
 
 export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
   try {
@@ -87,6 +88,22 @@ export async function orderHandler(event: APIGatewayProxyEvent): Promise<APIGate
 
     const totalAmount = product.wholesalePrice * quantity;
     const orderId = `BB-${Date.now().toString(36).toUpperCase()}`;
+
+    // Persist order to DynamoDB
+    try {
+      await saveOrder({
+        storeId: body.storeId || 'demo-store',
+        orderId,
+        productName,
+        wholesaler: wholesaler.name,
+        quantity,
+        totalAmount,
+        status: 'confirmed',
+        createdAt: new Date().toISOString(),
+      });
+    } catch (dbErr) {
+      console.warn('DynamoDB order save failed (non-blocking):', dbErr);
+    }
 
     return success({
       orderId,

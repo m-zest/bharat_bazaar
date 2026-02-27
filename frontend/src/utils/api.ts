@@ -98,4 +98,43 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(body),
     }),
+
+  // ── Inventory (DynamoDB) ──
+
+  getInventory: (storeId?: string) =>
+    request<any>(`/inventory${storeId ? `?storeId=${storeId}` : ''}`),
+
+  updateInventoryItem: (body: { storeId?: string; item: any }) =>
+    request<any>('/inventory/update', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  deleteInventoryItem: (body: { storeId?: string; itemId: string }) =>
+    request<any>('/inventory/delete', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  updateInventoryQuantity: (body: { storeId?: string; itemId: string; quantity: number }) =>
+    request<any>('/inventory/quantity', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  // ── Compare (Bedrock AI) ──
+
+  compareProducts: (body: { products: any[]; city?: string }) =>
+    request<any>('/compare', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  // ── Competitors (Bedrock AI) ──
+
+  analyzeCompetitors: (body: { products: any[]; city?: string }) =>
+    request<any>('/competitors', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
 };
