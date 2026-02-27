@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Store, IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles, Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail } from 'lucide-react'
+import { IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles, Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail } from 'lucide-react'
+import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
 
 /* ──────────────── DATA ──────────────── */
@@ -110,11 +111,8 @@ export default function Landing() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#F59E0B] flex items-center justify-center shadow-lg shadow-orange-500/20">
-              <Store className="w-[18px] h-[18px] text-white" />
-            </div>
-            <span className="font-extrabold text-[1.15rem] text-[#1a1a1a] tracking-tight">BharatBazaar</span>
+          <Link to="/" className="block">
+            <NavbarLogo mode={scrolled ? 'light' : 'light'} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -171,17 +169,28 @@ export default function Landing() {
                 </motion.div>
               </ScrollReveal>
 
-              <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-[#1a1a1a] leading-[0.95] tracking-tight">
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="block">
+              {/* Tarazu Full Logo */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mb-2">
+                <FullLogo mode="light" className="w-[340px] md:w-[380px] h-auto" />
+              </motion.div>
+
+              <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-[#1a1a1a] leading-[0.95] tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="block" style={{ fontWeight: 900 }}>
                   Bharat
                 </motion.span>
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="block bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">
+                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }} className="block bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent" style={{ fontWeight: 300 }}>
                   Bazaar
                 </motion.span>
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="block text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-[#666] font-bold mt-2">
+                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="block text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-[#666] font-bold mt-2">
                   AI Intelligence
                 </motion.span>
               </motion.h1>
+
+              {/* Tagline */}
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.65 }}
+                className="text-sm font-medium tracking-[3px] uppercase text-[#0D9488] mt-1" style={{ fontFamily: "'Sora', sans-serif" }}>
+                Weighed by Intelligence
+              </motion.p>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="mt-6 text-lg text-[#666] max-w-lg leading-relaxed">
                 The AI-powered market intelligence platform built for 12 million Indian retailers.
@@ -534,12 +543,15 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Giant BharatBazaar text */}
+        {/* Giant BharatBazaar watermark text + Tarazu icon */}
         <div className="bg-[#1a1a1a] pt-8 pb-2 overflow-hidden">
-          <div className="text-center">
-            <h2 className="text-[8rem] md:text-[12rem] lg:text-[16rem] font-extrabold text-white/[0.04] leading-none tracking-tighter select-none">
-              BharatBazaar
+          <div className="text-center relative">
+            <h2 className="text-[8rem] md:text-[12rem] lg:text-[16rem] font-extrabold text-white/[0.04] leading-none tracking-tighter select-none" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              <span style={{ fontWeight: 900 }}>Bharat</span><span style={{ fontWeight: 300 }}>Bazaar</span>
             </h2>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.06]">
+              <IconLogo mode="dark" size={160} />
+            </div>
           </div>
         </div>
 
@@ -548,11 +560,8 @@ export default function Landing() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
               <div className="col-span-2">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#F59E0B] flex items-center justify-center">
-                    <Store className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="font-extrabold text-lg">BharatBazaar</span>
+                <div className="mb-4">
+                  <NavbarLogo mode="dark" />
                 </div>
                 <p className="text-sm text-white/40 leading-relaxed max-w-xs">
                   AI-powered market intelligence for Indian retail. Built for the AI for Bharat Hackathon 2026.

@@ -2,9 +2,10 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, IndianRupee, Languages, MessageSquareText,
-  Store, Package, MessageCircle, GitCompare, Eye, ClipboardList,
+  Package, MessageCircle, GitCompare, Eye, ClipboardList,
   Menu, X, ChevronRight,
 } from 'lucide-react'
+import { SidebarLogo, NavbarLogo } from './TarazuLogo'
 import { useState } from 'react'
 
 const navItems = [
@@ -36,16 +37,10 @@ export default function Layout() {
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex w-72 flex-col bg-gradient-to-b from-[#1E1B4B] via-[#1E1B4B] to-[#312e81] text-white">
-        {/* Logo */}
+        {/* Logo — Tarazu */}
         <div className="p-6 border-b border-white/10">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-saffron-400 to-saffron-600 flex items-center justify-center shadow-lg shadow-saffron-500/30 group-hover:shadow-saffron-500/50 transition-all">
-              <Store className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-lg leading-tight bg-gradient-to-r from-saffron-300 to-saffron-500 bg-clip-text text-transparent">BharatBazaar</h1>
-              <p className="text-[10px] text-white/40 font-medium tracking-wider uppercase">AI Market Intelligence</p>
-            </div>
+          <Link to="/" className="block group">
+            <SidebarLogo mode="dark" className="group-hover:opacity-90 transition-opacity" />
           </Link>
         </div>
 
@@ -96,11 +91,8 @@ export default function Layout() {
 
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#1E1B4B]/95 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-saffron-400 to-saffron-600 flex items-center justify-center">
-            <Store className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-display font-bold text-white text-sm">BharatBazaar</span>
+        <Link to="/" className="block">
+          <NavbarLogo mode="dark" className="h-8 w-auto" />
         </Link>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
