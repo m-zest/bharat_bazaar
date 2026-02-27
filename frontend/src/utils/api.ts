@@ -13,7 +13,15 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const data = await response.json();
 
   if (!response.ok || !data.success) {
-    throw new Error(data.error?.message || 'Something went wrong');
+    const errorCode = data.error?.code;
+    const message = data.error?.message || 'Something went wrong';
+
+    // Provide user-friendly messages for rate limiting
+    if (response.status === 429 || errorCode === 'RATE_LIMITED') {
+      throw new Error(message);
+    }
+
+    throw new Error(message);
   }
 
   return data.data;

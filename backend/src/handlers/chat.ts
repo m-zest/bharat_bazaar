@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { invokeBedrockClaude } from '../utils/bedrock-client';
-import { success, error } from '../utils/response';
+import { invokeBedrockClaude, BedrockThrottleError } from '../utils/bedrock-client';
+import { success, error, throttled } from '../utils/response';
 import { REGIONAL_DATA, getUpcomingFestivals } from '../data/regional-data';
 import { WHOLESALE_PRODUCTS, getWholesalersForCity } from '../data/wholesale-data';
 import { DEMO_PRODUCTS, COMPETITOR_PRICES } from '../data/sample-data';
@@ -99,6 +99,9 @@ IMPORTANT RULES:
     });
   } catch (err: any) {
     console.error('Chat handler error:', err);
+    if (err instanceof BedrockThrottleError) {
+      return throttled(err.message, Math.round(err.retryAfterMs / 1000));
+    }
     return error(500, err.message || 'Internal server error');
   }
 }

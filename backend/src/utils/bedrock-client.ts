@@ -14,8 +14,35 @@ export interface BedrockOptions {
   systemPrompt?: string;
 }
 
+// Custom error class for throttling so handlers can detect it
+export class BedrockThrottleError extends Error {
+  public readonly isDailyQuota: boolean;
+  public readonly retryAfterMs: number;
+
+  constructor(message: string, isDailyQuota: boolean) {
+    super(message);
+    this.name = 'BedrockThrottleError';
+    this.isDailyQuota = isDailyQuota;
+    // Daily quota: suggest waiting longer; burst limit: shorter wait
+    this.retryAfterMs = isDailyQuota ? 3600000 : 60000;
+  }
+}
+
 async function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function isThrottleError(err: any): boolean {
+  return err.name === 'ThrottlingException' ||
+    err.message?.includes('Too many') ||
+    err.message?.includes('throttl') ||
+    err.$metadata?.httpStatusCode === 429;
+}
+
+function isDailyQuotaError(err: any): boolean {
+  return err.message?.includes('per day') ||
+    err.message?.includes('daily') ||
+    err.message?.includes('quota');
 }
 
 export async function invokeBedrockClaude(
@@ -44,7 +71,8 @@ export async function invokeBedrockClaude(
     body: new TextEncoder().encode(body),
   });
 
-  // Retry with exponential backoff for rate limiting
+  // Retry with exponential backoff for burst rate limiting only
+  // Daily quota errors are NOT retried (retrying wastes time and Vercel function timeout)
   const maxRetries = 3;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -52,16 +80,31 @@ export async function invokeBedrockClaude(
       const responseBody = JSON.parse(new TextDecoder().decode(response.body));
       return responseBody.content[0].text;
     } catch (err: any) {
-      const isThrottled = err.name === 'ThrottlingException' ||
-        err.message?.includes('Too many') ||
-        err.message?.includes('throttl') ||
-        err.$metadata?.httpStatusCode === 429;
+      if (isThrottleError(err)) {
+        const dailyQuota = isDailyQuotaError(err);
 
-      if (isThrottled && attempt < maxRetries) {
-        const delay = Math.pow(2, attempt + 1) * 1000; // 2s, 4s, 8s
-        console.log(`Bedrock throttled, retrying in ${delay}ms (attempt ${attempt + 1}/${maxRetries})`);
-        await sleep(delay);
-        continue;
+        // Don't retry daily quota limits — retrying won't help and wastes Vercel timeout budget
+        if (dailyQuota) {
+          console.error(`Bedrock daily quota exceeded: ${err.message}`);
+          throw new BedrockThrottleError(
+            'AI service daily limit reached. Please try again tomorrow or contact support.',
+            true
+          );
+        }
+
+        // Burst rate limit — retry with backoff
+        if (attempt < maxRetries) {
+          const delay = Math.pow(2, attempt + 1) * 1000; // 2s, 4s, 8s
+          console.log(`Bedrock throttled (burst), retrying in ${delay}ms (attempt ${attempt + 1}/${maxRetries})`);
+          await sleep(delay);
+          continue;
+        }
+
+        // Exhausted retries on burst limit
+        throw new BedrockThrottleError(
+          'AI service is temporarily busy. Please try again in a minute.',
+          false
+        );
       }
       throw err;
     }

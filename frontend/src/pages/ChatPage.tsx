@@ -73,10 +73,14 @@ export default function ChatPage() {
 
       setMessages(prev => [...prev, aiMsg])
     } catch (err: any) {
+      const isRateLimit = err.message?.includes('daily limit') || err.message?.includes('busy') || err.message?.includes('limit reached');
+      const errorContent = isRateLimit
+        ? `Maaf kijiye! ${err.message} Thodi der baad dobara try karein.`
+        : `Sorry, kuch problem aa gayi. ${err.message || 'Connection failed'}. Please try again in a moment.`;
       const errorMsg: Message = {
         id: `error-${Date.now()}`,
         role: 'assistant',
-        content: `Sorry, kuch problem aa gayi. Error: ${err.message || 'Connection failed'}. Please check that the backend server is running and AWS credentials are configured.`,
+        content: errorContent,
         timestamp: new Date(),
       }
       setMessages(prev => [...prev, errorMsg])
