@@ -169,11 +169,6 @@ export default function Landing() {
                 </motion.div>
               </ScrollReveal>
 
-              {/* Tarazu Full Logo */}
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="mb-2">
-                <FullLogo mode="light" className="w-[340px] md:w-[380px] h-auto" />
-              </motion.div>
-
               <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-[#1a1a1a] leading-[0.95] tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="block" style={{ fontWeight: 900 }}>
                   Bharat
