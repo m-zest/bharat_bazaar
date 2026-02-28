@@ -122,6 +122,14 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
+  // ── Vision (Bill Scanner) ──
+
+  scanBill: (body: { image: string; mimeType?: string }) =>
+    request<any>('/vision', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
   // ── Compare (Bedrock AI) ──
 
   compareProducts: (body: { products: any[]; city?: string }) =>
