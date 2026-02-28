@@ -227,7 +227,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="hidden lg:flex justify-center items-center"
+              className="hidden lg:flex justify-center items-start pt-24"
             >
               <PhoneMockup />
             </motion.div>
