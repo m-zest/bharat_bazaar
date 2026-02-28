@@ -10,11 +10,14 @@ import { handler as weatherHandler } from './handlers/weather';
 import { handler as inventoryHandler, updateHandler as inventoryUpdateHandler, deleteHandler as inventoryDeleteHandler, quantityHandler as inventoryQuantityHandler } from './handlers/inventory';
 import { handler as compareHandler } from './handlers/compare';
 import { handler as competitorsHandler } from './handlers/competitors';
+import { handler as visionHandler } from './handlers/vision';
+import { handler as whatsappHandler } from './handlers/whatsapp';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
 function createEvent(req: express.Request): APIGatewayProxyEvent {
   return {
@@ -107,6 +110,31 @@ app.post('/api/competitors', async (req, res) => {
   res.status(result.statusCode).json(JSON.parse(result.body));
 });
 
+// Vision (Bill Scanner — Bedrock/Gemini)
+app.post('/api/vision', async (req, res) => {
+  const result = await visionHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+// WhatsApp Webhook (Twilio)
+app.post('/api/whatsapp', async (req, res) => {
+  // Twilio sends form-urlencoded — reconstruct raw body for handler
+  const contentType = req.headers['content-type'] || '';
+  let rawBody: string;
+  if (contentType.includes('application/x-www-form-urlencoded')) {
+    rawBody = new URLSearchParams(req.body as Record<string, string>).toString();
+  } else {
+    rawBody = JSON.stringify(req.body);
+  }
+  const event = {
+    ...createEvent(req),
+    body: rawBody,
+  };
+  const result = await whatsappHandler(event);
+  res.setHeader('Content-Type', (result.headers?.['Content-Type'] as string) || 'text/xml');
+  res.status(result.statusCode).send(result.body);
+});
+
 // Health check
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'healthy', service: 'BharatBazaar AI', version: '2.0.0' });
@@ -133,6 +161,8 @@ app.listen(PORT, () => {
   ║  POST /api/inventory/delete      (DynamoDB)      ║
   ║  POST /api/inventory/quantity    (DynamoDB)      ║
   ║  GET  /api/weather               (OpenWeather)   ║
+  ║  POST /api/vision               (Bedrock Vision) ║
+  ║  POST /api/whatsapp             (Twilio)         ║
   ╚══════════════════════════════════════════════════╝
   `);
 });

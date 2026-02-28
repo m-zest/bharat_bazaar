@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, User, Mic, MicOff, IndianRupee, TrendingUp, CloudSun, Package, Sparkles } from 'lucide-react'
+import { Send, User, IndianRupee, CloudSun, Package, Sparkles } from 'lucide-react'
 import { api } from '../utils/api'
 import DemoModeBadge from '../components/DemoModeBadge'
 import { useToast } from '../components/Toast'
+import VoiceInput from '../components/VoiceInput'
+import VoiceOutput from '../components/VoiceOutput'
 
 interface Message {
   id: string
   role: 'user' | 'assistant'
   content: string
   timestamp: Date
+  voiceInitiated?: boolean
 }
 
 const QUICK_CHIPS = [
@@ -89,7 +92,7 @@ export default function ChatPage() {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Namaste! Main Munim-ji hoon — aapka AI hisaab-kitaab advisor. 🧮\n\nPuchiye kuch bhi — pricing, stock, mausam, ya competitor analysis. Hindi, English ya Hinglish mein baat karein!',
+      content: 'Namaste! Main Munim-ji hoon — aapka AI hisaab-kitaab advisor. 🧮\n\nPuchiye kuch bhi — pricing, stock, mausam, ya competitor analysis. Hindi, English ya Hinglish mein baat karein!\n\n🎤 Mic tap karke Hindi mein bol sakte hain!',
       timestamp: new Date(),
     }
   ])
@@ -97,32 +100,36 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false)
   const [city] = useState('Lucknow')
   const [demoMode, setDemoMode] = useState(false)
-  const [isListening, setIsListening] = useState(false)
-  const [voiceSupported] = useState(() =>
-    typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
-  )
+  const [voiceLang, setVoiceLang] = useState('hi-IN')
+  const [lastWasVoice, setLastWasVoice] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const recognitionRef = useRef<any>(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  async function sendMessage(text?: string) {
+  async function sendMessage(text?: string, fromVoice = false) {
     const msgText = text || input.trim()
     if (!msgText || loading) return
+
+    setLastWasVoice(fromVoice)
 
     const userMsg: Message = {
       id: `user-${Date.now()}`,
       role: 'user',
       content: msgText,
       timestamp: new Date(),
+      voiceInitiated: fromVoice,
     }
 
     setMessages(prev => [...prev, userMsg])
     setInput('')
     setLoading(true)
+
+    if (fromVoice) {
+      toast('info', '🎤 Voice mode — Munim-ji is listening')
+    }
 
     try {
       const history = messages
@@ -170,41 +177,14 @@ export default function ChatPage() {
     }
   }
 
-  function toggleVoice() {
-    if (isListening) {
-      recognitionRef.current?.stop()
-      setIsListening(false)
-      return
-    }
+  function handleVoiceResult(text: string) {
+    setInput(text)
+    // Auto-send after a short delay for voice input
+    setTimeout(() => sendMessage(text, true), 300)
+  }
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) return
-
-    const recognition = new SpeechRecognition()
-    recognition.lang = 'hi-IN'
-    recognition.interimResults = true
-    recognition.continuous = false
-    recognitionRef.current = recognition
-
-    recognition.onstart = () => setIsListening(true)
-
-    recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((r: any) => r[0].transcript)
-        .join('')
-      setInput(transcript)
-    }
-
-    recognition.onend = () => {
-      setIsListening(false)
-      if (input.trim()) {
-        setTimeout(() => sendMessage(), 200)
-      }
-    }
-
-    recognition.onerror = () => setIsListening(false)
-
-    recognition.start()
+  function handleVoiceInterim(text: string) {
+    setInput(text)
   }
 
   return (
@@ -220,7 +200,7 @@ export default function ChatPage() {
               Munim-ji
               <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
             </h1>
-            <p className="text-[10px] text-white/70">AI Business Advisor — online</p>
+            <p className="text-[10px] text-white/70">AI Business Advisor — speaks 8 Indian languages</p>
           </div>
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-white/50" />
@@ -256,7 +236,15 @@ export default function ChatPage() {
                   : 'bg-white rounded-2xl rounded-tl-sm shadow-sm border border-gray-100'
               } px-3.5 py-2.5`}>
                 {msg.role === 'assistant' && msg.id !== 'welcome' && (
-                  <p className="text-[10px] font-semibold text-emerald-600 mb-0.5">Munim-ji 🧮</p>
+                  <div className="flex items-center justify-between mb-0.5">
+                    <p className="text-[10px] font-semibold text-emerald-600">Munim-ji 🧮</p>
+                    <VoiceOutput
+                      text={msg.content}
+                      language={voiceLang}
+                      autoPlay={lastWasVoice && msg.id === messages[messages.length - 1]?.id}
+                      compact
+                    />
+                  </div>
                 )}
                 <p className={`text-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === 'assistant' ? 'text-gray-700' : ''
@@ -271,6 +259,10 @@ export default function ChatPage() {
                     {hasWeatherData(msg.content) && <WeatherCard />}
                     {hasInventoryData(msg.content) && <InventoryCard />}
                   </>
+                )}
+
+                {msg.role === 'user' && msg.voiceInitiated && (
+                  <p className="text-[9px] text-white/50 mt-0.5">🎤 voice</p>
                 )}
 
                 <p className={`text-[10px] mt-1 ${
@@ -332,9 +324,16 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Input Area — WhatsApp-style */}
+      {/* Input Area — WhatsApp-style with Voice */}
       <div className="px-3 py-2.5 bg-[#f0f2f5]">
         <div className="flex items-center gap-2 max-w-4xl mx-auto">
+          <VoiceInput
+            onResult={handleVoiceResult}
+            onInterim={handleVoiceInterim}
+            language={voiceLang}
+            onLanguageChange={setVoiceLang}
+            disabled={loading}
+          />
           <div className="flex-1 relative">
             <input
               ref={inputRef}
@@ -342,43 +341,11 @@ export default function ChatPage() {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={isListening ? 'Bol rahe hain...' : 'Message Munim-ji...'}
+              placeholder="Message Munim-ji..."
               className="w-full px-4 py-2.5 rounded-full border-0 bg-white text-sm shadow-sm focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
               disabled={loading}
             />
-            {isListening && (
-              <motion.div
-                className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-0.5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {[0, 1, 2, 3, 4].map(i => (
-                  <motion.span
-                    key={i}
-                    className="w-0.5 bg-red-500 rounded-full"
-                    animate={{ height: [8, 16, 8] }}
-                    transition={{ duration: 0.4, delay: i * 0.1, repeat: Infinity }}
-                  />
-                ))}
-              </motion.div>
-            )}
           </div>
-          {voiceSupported && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleVoice}
-              disabled={loading}
-              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all disabled:opacity-40 ${
-                isListening
-                  ? 'bg-red-500 text-white shadow-lg shadow-red-500/30'
-                  : 'bg-white text-gray-500 hover:bg-gray-100 shadow-sm'
-              }`}
-              title={isListening ? 'Stop listening' : 'Speak in Hindi'}
-            >
-              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-            </motion.button>
-          )}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

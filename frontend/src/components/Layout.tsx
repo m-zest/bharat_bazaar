@@ -3,16 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, IndianRupee, Languages, MessageSquareText,
   Package, MessageCircle, GitCompare, Eye, ClipboardList,
-  Menu, X, ChevronRight,
+  Menu, X, ChevronRight, Camera,
 } from 'lucide-react'
 import { SidebarLogo, NavbarLogo } from './TarazuLogo'
 import { useState, useEffect } from 'react'
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', labelHi: 'डैशबोर्ड', icon: LayoutDashboard },
+  { path: '/scanner', label: 'Bill Scanner', labelHi: 'बिल स्कैनर', icon: Camera },
   { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package },
   { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
-  { path: '/chat', label: 'AI Advisor', labelHi: 'AI सलाहकार', icon: MessageCircle },
+  { path: '/chat', label: 'Munim-ji AI', labelHi: 'मुनीम-जी AI', icon: MessageCircle },
   { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList },
   { path: '/competitors', label: 'Competitors', labelHi: 'प्रतिस्पर्धी', icon: Eye },
   { path: '/compare', label: 'Compare', labelHi: 'तुलना करें', icon: GitCompare },
@@ -22,7 +23,7 @@ const navItems = [
 
 const mobileNav = [
   { path: '/dashboard', label: 'Home', icon: LayoutDashboard },
-  { path: '/sourcing', label: 'Source', icon: Package },
+  { path: '/scanner', label: 'Scan', icon: Camera },
   { path: '/pricing', label: 'Price', icon: IndianRupee },
   { path: '/chat', label: 'Chat', icon: MessageCircle },
   { path: '/inventory', label: 'Stock', icon: ClipboardList },
@@ -31,6 +32,7 @@ const mobileNav = [
 // Page title mapping
 const pageTitles: Record<string, string> = {
   '/dashboard': 'Dashboard — BharatBazaar AI',
+  '/scanner': 'Khata Scanner — BharatBazaar AI',
   '/pricing': 'AI Pricing — BharatBazaar AI',
   '/chat': 'Munim-ji AI Advisor — BharatBazaar AI',
   '/content': 'Content Generator — BharatBazaar AI',

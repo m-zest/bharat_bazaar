@@ -5,6 +5,7 @@ import { IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sp
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
 import PhoneMockup from '../components/PhoneMockup'
+import WhatsAppDemo from '../components/WhatsAppDemo'
 
 /* ──────────────── DATA ──────────────── */
 
@@ -452,6 +453,11 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════
+          WHATSAPP DEMO — Try Munim-ji on WhatsApp
+          ═══════════════════════════════════════════ */}
+      <WhatsAppDemo />
 
       {/* ═══════════════════════════════════════════
           FOOTER CTA + FOOTER

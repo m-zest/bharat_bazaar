@@ -9,6 +9,7 @@ import ChatPage from './pages/ChatPage'
 import ComparePage from './pages/ComparePage'
 import InventoryPage from './pages/InventoryPage'
 import CompetitorPage from './pages/CompetitorPage'
+import ScannerPage from './pages/ScannerPage'
 import Layout from './components/Layout'
 import { ToastProvider } from './components/Toast'
 
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/scanner" element={<ScannerPage />} />
           <Route path="/sourcing" element={<SourcingPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/chat" element={<ChatPage />} />
