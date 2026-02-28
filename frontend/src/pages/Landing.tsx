@@ -1,95 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles, Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail } from 'lucide-react'
+import { IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles, Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail, ChevronDown } from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
 import PhoneMockup from '../components/PhoneMockup'
 import WhatsAppDemo from '../components/WhatsAppDemo'
-
-/* ──────────────── DATA ──────────────── */
-
-const NAV_LINKS = [
-  { label: 'Features', href: '#features' },
-  { label: 'How it works', href: '#showcase' },
-  { label: 'Benefits', href: '#benefits' },
-  { label: 'Testimonials', href: '#testimonials' },
-]
-
-const FEATURE_CARDS = [
-  { icon: IndianRupee, title: 'Smart Pricing', subtitle: 'AI-optimized prices for your region', bg: 'bg-[#FEF3C7]', route: '/pricing' },
-  { icon: Languages, title: 'AI Content', subtitle: 'Descriptions in 6 Indian languages', bg: 'bg-[#F0FDFA]', route: '/content' },
-  { icon: MessageSquareText, title: 'Sentiment', subtitle: 'Understands Hinglish reviews', bg: 'bg-[#FFF7ED]', route: '/sentiment' },
-  { icon: Package, title: 'Sourcing', subtitle: 'Wholesale prices near you', bg: 'bg-[#FEF3C7]', route: '/sourcing' },
-]
-
-const SHOWCASE_TABS = [
-  {
-    id: 'pricing',
-    label: 'Pricing',
-    cards: [
-      { title: 'Competitive Strategy', price: '₹415', confidence: 92, change: '+18% demand', color: 'text-blue-600', bg: 'bg-blue-50', icon: '🎯' },
-      { title: 'Premium Strategy', price: '₹469', confidence: 87, change: '+12% revenue', color: 'text-orange-600', bg: 'bg-orange-50', icon: '✨' },
-      { title: 'Value Strategy', price: '₹389', confidence: 78, change: '+35% volume', color: 'text-teal-600', bg: 'bg-teal-50', icon: '🛡️' },
-    ],
-  },
-  {
-    id: 'content',
-    label: 'Content',
-    cards: [
-      { title: 'English Description', price: 'Premium aged rice...', confidence: 95, change: 'SEO optimized', color: 'text-blue-600', bg: 'bg-blue-50', icon: '🇬🇧' },
-      { title: 'Hindi Description', price: 'प्रीमियम बासमती चावल...', confidence: 90, change: 'Culturally adapted', color: 'text-orange-600', bg: 'bg-orange-50', icon: '🇮🇳' },
-      { title: 'Tamil Description', price: 'பிரீமியம் பாஸ்மதி...', confidence: 88, change: 'Regional keywords', color: 'text-teal-600', bg: 'bg-teal-50', icon: '🇮🇳' },
-    ],
-  },
-  {
-    id: 'sourcing',
-    label: 'Sourcing',
-    cards: [
-      { title: 'Gupta Wholesale', price: '₹285/5kg', confidence: 96, change: 'Save ₹35', color: 'text-green-600', bg: 'bg-green-50', icon: '🏪' },
-      { title: 'Mehta Distributors', price: '₹295/5kg', confidence: 92, change: '2-day delivery', color: 'text-blue-600', bg: 'bg-blue-50', icon: '🚛' },
-      { title: 'Sharma Trading', price: '₹310/5kg', confidence: 85, change: 'Verified ✓', color: 'text-orange-600', bg: 'bg-orange-50', icon: '✅' },
-    ],
-  },
-]
-
-const BENEFITS = [
-  { icon: Globe, title: '6 Indian Languages', desc: 'Hindi, Tamil, Bengali, Gujarati, Marathi & English. Not translations — true cultural adaptation.', color: 'bg-[#FEF3C7]', iconColor: 'text-orange-500' },
-  { icon: BarChart3, title: 'Real Market Data', desc: 'Live competitor prices from Amazon, Flipkart, BigBasket. Festival trends. Weather impact analysis.', color: 'bg-[#F0FDFA]', iconColor: 'text-teal-500' },
-  { icon: Zap, title: 'Zero Setup', desc: 'No login, no credit card, no downloads. Open the link and start exploring in under 30 seconds.', color: 'bg-[#FFF7ED]', iconColor: 'text-orange-500' },
-]
-
-const TESTIMONIALS = [
-  {
-    quote: '"Pehle main gut feeling se price karta tha. Ab BharatBazaar AI batata hai ki competitor ne kya price rakha hai, weather ka kya impact hoga. Mera profit 20% badh gaya hai."',
-    name: 'Ramesh Sharma',
-    role: 'Kirana Store Owner, Lucknow',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=face',
-    featured: true,
-  },
-  {
-    quote: '"The multilingual content generator is a game-changer. I list products in Hindi, Tamil, and English simultaneously. My conversion rate on Flipkart increased by 35%."',
-    name: 'Priya Menon',
-    role: 'D2C Founder, Mumbai',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face',
-    badge: 'Verified User',
-  },
-]
-
-const FOOTER_LINKS: Record<string, string[]> = {
-  Features: ['Smart Pricing', 'AI Content', 'Sentiment Analysis', 'Smart Sourcing', 'AI Advisor'],
-  Resources: ['Documentation', 'API Reference', 'Case Studies', 'Blog'],
-  Company: ['About ParityAI', 'Careers', 'Contact', 'Press Kit'],
-}
+import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
 
 /* ──────────────── COMPONENT ──────────────── */
 
 export default function Landing() {
   const navigate = useNavigate()
+  const { lang, setLang, t } = useLanguage()
   const [activeTab, setActiveTab] = useState('pricing')
   const [scrolled, setScrolled] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
+  const langRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -97,13 +24,101 @@ export default function Landing() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const currentLang = LANGUAGES.find(l => l.code === lang)!
+
+  const NAV_LINKS = [
+    { label: t('nav.features'), href: '#features' },
+    { label: t('nav.howItWorks'), href: '#showcase' },
+    { label: t('nav.benefits'), href: '#benefits' },
+    { label: t('nav.testimonials'), href: '#testimonials' },
+  ]
+
+  const FEATURE_CARDS = [
+    { icon: IndianRupee, title: t('features.smartPricing'), subtitle: t('features.smartPricingSub'), bg: 'bg-[#FEF3C7]', route: '/pricing' },
+    { icon: Languages, title: t('features.aiContent'), subtitle: t('features.aiContentSub'), bg: 'bg-[#F0FDFA]', route: '/content' },
+    { icon: MessageSquareText, title: t('features.sentiment'), subtitle: t('features.sentimentSub'), bg: 'bg-[#FFF7ED]', route: '/sentiment' },
+    { icon: Package, title: t('features.sourcing'), subtitle: t('features.sourcingSub'), bg: 'bg-[#FEF3C7]', route: '/sourcing' },
+  ]
+
+  const SHOWCASE_TABS = [
+    {
+      id: 'pricing',
+      label: t('features.smartPricing'),
+      cards: [
+        { title: 'Competitive Strategy', price: '\u20B9415', confidence: 92, change: '+18% demand', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83C\uDFAF' },
+        { title: 'Premium Strategy', price: '\u20B9469', confidence: 87, change: '+12% revenue', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\u2728' },
+        { title: 'Value Strategy', price: '\u20B9389', confidence: 78, change: '+35% volume', color: 'text-teal-600', bg: 'bg-teal-50', icon: '\uD83D\uDEE1\uFE0F' },
+      ],
+    },
+    {
+      id: 'content',
+      label: t('features.aiContent'),
+      cards: [
+        { title: 'English Description', price: 'Premium aged rice...', confidence: 95, change: 'SEO optimized', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83C\uDDEC\uD83C\uDDE7' },
+        { title: 'Hindi Description', price: '\u092A\u094D\u0930\u0940\u092E\u093F\u092F\u092E \u092C\u093E\u0938\u092E\u0924\u0940 \u091A\u093E\u0935\u0932...', confidence: 90, change: 'Culturally adapted', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
+        { title: 'Tamil Description', price: '\u0BAA\u0BBF\u0BB0\u0BC0\u0BAE\u0BBF\u0BAF\u0BAE\u0BCD \u0BAA\u0BBE\u0BB8\u0BCD\u0BAE\u0BA4\u0BBF...', confidence: 88, change: 'Regional keywords', color: 'text-teal-600', bg: 'bg-teal-50', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
+      ],
+    },
+    {
+      id: 'sourcing',
+      label: t('features.sourcing'),
+      cards: [
+        { title: 'Gupta Wholesale', price: '\u20B9285/5kg', confidence: 96, change: 'Save \u20B935', color: 'text-green-600', bg: 'bg-green-50', icon: '\uD83C\uDFEA' },
+        { title: 'Mehta Distributors', price: '\u20B9295/5kg', confidence: 92, change: '2-day delivery', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83D\uDE9B' },
+        { title: 'Sharma Trading', price: '\u20B9310/5kg', confidence: 85, change: 'Verified \u2713', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\u2705' },
+      ],
+    },
+  ]
+
+  const BENEFITS = [
+    { icon: Globe, title: t('benefits.languages'), desc: t('benefits.languagesDesc'), color: 'bg-[#FEF3C7]', iconColor: 'text-orange-500' },
+    { icon: BarChart3, title: t('benefits.marketData'), desc: t('benefits.marketDataDesc'), color: 'bg-[#F0FDFA]', iconColor: 'text-teal-500' },
+    { icon: Zap, title: t('benefits.zeroSetup'), desc: t('benefits.zeroSetupDesc'), color: 'bg-[#FFF7ED]', iconColor: 'text-orange-500' },
+  ]
+
+  const TESTIMONIALS = [
+    {
+      quote: '"Pehle main gut feeling se price karta tha. Ab BharatBazaar AI batata hai ki competitor ne kya price rakha hai, weather ka kya impact hoga. Mera profit 20% badh gaya hai."',
+      name: 'Ramesh Sharma',
+      role: 'Kirana Store Owner, Lucknow',
+      rating: 5,
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=face',
+      featured: true,
+    },
+    {
+      quote: '"The multilingual content generator is a game-changer. I list products in Hindi, Tamil, and English simultaneously. My conversion rate on Flipkart increased by 35%."',
+      name: 'Priya Menon',
+      role: 'D2C Founder, Mumbai',
+      rating: 5,
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face',
+      badge: 'Verified User',
+    },
+  ]
+
+  const FOOTER_LINKS: Record<string, string[]> = {
+    [t('footer.features')]: ['Smart Pricing', 'AI Content', 'Sentiment Analysis', 'Smart Sourcing', 'AI Advisor'],
+    [t('footer.resources')]: ['Documentation', 'API Reference', 'Case Studies', 'Blog'],
+    [t('footer.company')]: ['About ParityAI', 'Careers', 'Contact', 'Press Kit'],
+  }
+
   const activeShowcase = SHOWCASE_TABS.find(t => t.id === activeTab)!
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
 
       {/* ═══════════════════════════════════════════
-          NAVBAR — Minimal, pill CTA, dot indicator
+          NAVBAR — Minimal, pill CTA, language selector
           ═══════════════════════════════════════════ */}
       <motion.header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -125,22 +140,70 @@ export default function Landing() {
             ))}
           </nav>
 
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2 bg-[#1a1a1a] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-            Try Demo
-          </motion.button>
+          <div className="flex items-center gap-3">
+            {/* Language Selector */}
+            <div ref={langRef} className="relative">
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setLangOpen(!langOpen)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors border ${
+                  scrolled
+                    ? 'border-gray-200 bg-white text-[#1a1a1a] hover:border-[#F97316]'
+                    : 'border-[#F97316]/20 bg-white/70 backdrop-blur-sm text-[#666] hover:border-[#F97316]'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-[#F97316]" />
+                <span className="hidden sm:inline">{currentLang.native}</span>
+                <span className="sm:hidden">{currentLang.code.toUpperCase()}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} />
+              </motion.button>
+
+              <AnimatePresence>
+                {langOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50 overflow-hidden"
+                  >
+                    {LANGUAGES.map(l => (
+                      <button
+                        key={l.code}
+                        onClick={() => { setLang(l.code); setLangOpen(false) }}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                          lang === l.code
+                            ? 'bg-[#FFF7ED] text-[#F97316] font-semibold'
+                            : 'text-[#666] hover:bg-gray-50'
+                        }`}
+                      >
+                        <span className="font-medium flex-1 text-left">{l.native}</span>
+                        <span className="text-xs text-[#999]">{l.label}</span>
+                        {lang === l.code && <Check className="w-3.5 h-3.5 text-[#F97316]" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center gap-2 bg-[#1a1a1a] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+              {t('nav.tryDemo')}
+            </motion.button>
+          </div>
         </div>
       </motion.header>
 
       {/* ═══════════════════════════════════════════
           HERO — Giant text, silk gradient, floating cards
           ═══════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
         {/* Saffron silk gradient background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#FFEDD5] to-[#FEF3C7]" />
@@ -164,55 +227,54 @@ export default function Landing() {
               <ScrollReveal>
                 <motion.div
                   whileHover={{ scale: 1.03 }}
-                  className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-[#666] mb-8 border border-[#F97316]/20 shadow-sm"
+                  className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-[#666] mb-6 border border-[#F97316]/20 shadow-sm"
                 >
                   <Sparkles className="w-4 h-4 text-[#F97316]" />
-                  Powered by Amazon Bedrock
+                  {t('hero.badge')}
                 </motion.div>
               </ScrollReveal>
 
               <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-[#1a1a1a] leading-[0.95] tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="block" style={{ fontWeight: 900 }}>
-                  Bharat
+                  {t('hero.title1')}
                 </motion.span>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }} className="block bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent" style={{ fontWeight: 300 }}>
-                  Bazaar
+                  {t('hero.title2')}
                 </motion.span>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="block text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-[#666] font-bold mt-2">
-                  AI Intelligence
+                  {t('hero.title3')}
                 </motion.span>
               </motion.h1>
 
               {/* Tagline */}
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.65 }}
                 className="text-sm font-medium tracking-[3px] uppercase text-[#0D9488] mt-1" style={{ fontFamily: "'Sora', sans-serif" }}>
-                Weighed by Intelligence
+                {t('hero.tagline')}
               </motion.p>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="mt-6 text-lg text-[#666] max-w-lg leading-relaxed">
-                The AI-powered market intelligence platform built for 12 million Indian retailers.
-                Smart pricing, multilingual content, and real-time insights — in your language.
+                {t('hero.desc')}
               </motion.p>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} className="mt-8 flex flex-wrap items-center gap-3">
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
                   className="flex items-center gap-2.5 bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors shadow-xl shadow-black/10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
-                  Explore Demo
+                  {t('hero.exploreDemo')}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/chat')}
                   className="flex items-center gap-2 text-[#1a1a1a] px-6 py-3.5 rounded-full text-sm font-semibold border-2 border-[#e5e5e5] hover:border-[#F97316] transition-colors">
                   <MessageCircle className="w-4 h-4" />
-                  Ask AI in Hindi
+                  {t('hero.askAI')}
                 </motion.button>
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1 }} className="mt-12 flex items-center gap-8">
                 {[
-                  { value: '12M+', label: 'Kirana Stores' },
-                  { value: '10', label: 'Cities' },
-                  { value: '₹40L', label: 'Prize Pool' },
+                  { value: '12M+', label: t('hero.stat1Label') },
+                  { value: '10', label: t('hero.stat2Label') },
+                  { value: '\u20B940L', label: t('hero.stat3Label') },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <p className="text-2xl font-extrabold text-[#1a1a1a]">{stat.value}</p>
@@ -243,16 +305,16 @@ export default function Landing() {
           <div className="flex items-end justify-between mb-12">
             <ScrollReveal>
               <div>
-                <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Our AI Features</p>
-                <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
-                  Everything your store<br />needs to grow
+                <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('features.subtitle')}</p>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight whitespace-pre-line">
+                  {t('features.title')}
                 </h2>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <motion.button whileHover={{ gap: '12px' }} onClick={() => navigate('/dashboard')}
                 className="hidden md:flex items-center gap-2 text-sm font-semibold text-[#1a1a1a] hover:text-[#F97316] transition-colors">
-                Explore All Features <ArrowRight className="w-4 h-4" />
+                {t('features.exploreAll')} <ArrowRight className="w-4 h-4" />
               </motion.button>
             </ScrollReveal>
           </div>
@@ -290,9 +352,9 @@ export default function Landing() {
       <section id="showcase" className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="mb-12">
-            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">See it in action</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
-              What BharatBazaar AI<br />can do for you
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('showcase.subtitle')}</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight whitespace-pre-line">
+              {t('showcase.title')}
             </h2>
           </ScrollReveal>
 
@@ -329,13 +391,13 @@ export default function Landing() {
                 whileHover={{ y: -4, scale: 1.02 }} onClick={() => navigate('/dashboard')}
                 className="bg-gradient-to-br from-[#F97316] to-[#F59E0B] rounded-2xl p-5 shadow-lg cursor-pointer flex flex-col justify-between text-white min-h-[180px]">
                 <div>
-                  <h4 className="font-bold text-lg">Explore 8+ more features</h4>
-                  <p className="text-sm text-white/70 mt-1">Inventory, competitors, compare & more</p>
+                  <h4 className="font-bold text-lg">{t('showcase.explore')}</h4>
+                  <p className="text-sm text-white/70 mt-1">{t('showcase.exploreSub')}</p>
                 </div>
                 <motion.div whileHover={{ scale: 1.03 }}
                   className="flex items-center gap-2 bg-white text-[#1a1a1a] px-4 py-2 rounded-full text-sm font-semibold w-fit mt-4">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
-                  View Dashboard
+                  {t('showcase.viewDashboard')}
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -354,8 +416,8 @@ export default function Landing() {
                 <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80&fit=crop" alt="Indian kirana store" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
-                  <p className="text-sm font-medium text-white/70">Built for every</p>
-                  <p className="text-2xl font-extrabold">Indian Retailer</p>
+                  <p className="text-sm font-medium text-white/70">{t('promo.builtFor')}</p>
+                  <p className="text-2xl font-extrabold">{t('promo.indianRetailer')}</p>
                 </div>
               </motion.div>
             </ScrollReveal>
@@ -365,15 +427,15 @@ export default function Landing() {
                 <div className="absolute top-[-50px] right-[-50px] w-[200px] h-[200px] rounded-full bg-white/10" />
                 <div className="absolute bottom-[-80px] left-[-40px] w-[250px] h-[250px] rounded-full bg-white/5" />
                 <div className="relative z-10">
-                  <p className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">Open for All</p>
-                  <h3 className="text-3xl lg:text-4xl font-extrabold text-white leading-tight">Free for All<br />Retailers</h3>
+                  <p className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">{t('promo.openForAll')}</p>
+                  <h3 className="text-3xl lg:text-4xl font-extrabold text-white leading-tight whitespace-pre-line">{t('promo.freeForAll')}</h3>
                   <p className="text-white/80 mt-4 text-lg leading-relaxed max-w-md">
-                    AI-powered intelligence that was only available to Amazon & Flipkart. Now free for every dukandaar across India.
+                    {t('promo.desc')}
                   </p>
                   <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
                     className="mt-8 flex items-center gap-2.5 bg-white text-[#1a1a1a] px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/10 hover:shadow-2xl transition-shadow">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
-                    Start Free
+                    {t('promo.startFree')}
                     <ArrowRight className="w-4 h-4" />
                   </motion.button>
                 </div>
@@ -389,10 +451,10 @@ export default function Landing() {
       <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
-            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">What makes us different</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">Why BharatBazaar AI?</h2>
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('benefits.subtitle')}</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">{t('benefits.title')}</h2>
             <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
-              Purpose-built for Indian retail. Not a generic SaaS — every feature understands your market.
+              {t('benefits.desc')}
             </p>
           </ScrollReveal>
 
@@ -421,29 +483,29 @@ export default function Landing() {
       <section id="testimonials" className="py-24 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
-            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Testimonials</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">Built for Indian Retailers</h2>
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('testimonials.subtitle')}</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">{t('testimonials.title')}</h2>
           </ScrollReveal>
 
           <div className="grid lg:grid-cols-2 gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 0.15}>
+            {TESTIMONIALS.map((testimonial, i) => (
+              <ScrollReveal key={testimonial.name} delay={i * 0.15}>
                 <motion.div whileHover={{ y: -4 }} className="bg-[#FAFAF9] rounded-2xl p-8 border border-gray-100">
                   <div className="flex gap-1 mb-4">
-                    {[...Array(t.rating)].map((_, j) => (
+                    {[...Array(testimonial.rating)].map((_, j) => (
                       <Star key={j} className="w-5 h-5 fill-[#F97316] text-[#F97316]" />
                     ))}
                   </div>
-                  <p className="text-[#1a1a1a] text-lg font-medium leading-relaxed mb-6">{t.quote}</p>
+                  <p className="text-[#1a1a1a] text-lg font-medium leading-relaxed mb-6">{testimonial.quote}</p>
                   <div className="flex items-center gap-3">
-                    <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full object-cover" />
+                    <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
                     <div>
-                      <p className="font-bold text-[#1a1a1a] text-sm">{t.name}</p>
-                      <p className="text-xs text-[#999]">{t.role}</p>
+                      <p className="font-bold text-[#1a1a1a] text-sm">{testimonial.name}</p>
+                      <p className="text-xs text-[#999]">{testimonial.role}</p>
                     </div>
-                    {t.badge && (
+                    {testimonial.badge && (
                       <span className="ml-auto text-[10px] font-semibold bg-green-50 text-green-600 px-3 py-1 rounded-full flex items-center gap-1">
-                        <Check className="w-3 h-3" /> {t.badge}
+                        <Check className="w-3 h-3" /> {testimonial.badge}
                       </span>
                     )}
                   </div>
@@ -472,18 +534,18 @@ export default function Landing() {
           </div>
           <div className="max-w-3xl mx-auto text-center relative z-10">
             <ScrollReveal>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Transform your retail<br />business today</h2>
-              <p className="text-white/80 mt-4 text-lg">Join the AI revolution. No login needed — start in 30 seconds.</p>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight whitespace-pre-line">{t('cta.title')}</h2>
+              <p className="text-white/80 mt-4 text-lg">{t('cta.desc')}</p>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
                 <div className="flex-1 w-full relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#999]" />
-                  <input type="email" placeholder="Enter your email" className="w-full pl-11 pr-4 py-3.5 rounded-full text-sm border-0 outline-none shadow-lg" />
+                  <input type="email" placeholder={t('cta.emailPlaceholder')} className="w-full pl-11 pr-4 py-3.5 rounded-full text-sm border-0 outline-none shadow-lg" />
                 </div>
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
                   className="bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/20 whitespace-nowrap">
-                  Get Started
+                  {t('cta.getStarted')}
                 </motion.button>
               </div>
             </ScrollReveal>
@@ -511,7 +573,7 @@ export default function Landing() {
                   <NavbarLogo mode="dark" />
                 </div>
                 <p className="text-sm text-white/40 leading-relaxed max-w-xs">
-                  AI-powered market intelligence for Indian retail. Built for the AI for Bharat Hackathon 2026.
+                  {t('footer.desc')}
                 </p>
                 <div className="flex items-center gap-3 mt-6">
                   {['AWS', 'Bedrock', 'React', 'Vercel'].map(tech => (
