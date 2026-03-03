@@ -190,7 +190,7 @@ export default function Landing() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/login')}
               className="flex items-center gap-2 bg-[#1a1a1a] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
@@ -257,7 +257,7 @@ export default function Landing() {
               </motion.p>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} className="mt-8 flex flex-wrap items-center gap-3">
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
                   className="flex items-center gap-2.5 bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors shadow-xl shadow-black/10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
                   {t('hero.exploreDemo')}
@@ -312,7 +312,7 @@ export default function Landing() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <motion.button whileHover={{ gap: '12px' }} onClick={() => navigate('/dashboard')}
+              <motion.button whileHover={{ gap: '12px' }} onClick={() => navigate('/login')}
                 className="hidden md:flex items-center gap-2 text-sm font-semibold text-[#1a1a1a] hover:text-[#F97316] transition-colors">
                 {t('features.exploreAll')} <ArrowRight className="w-4 h-4" />
               </motion.button>
@@ -388,7 +388,7 @@ export default function Landing() {
               ))}
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                whileHover={{ y: -4, scale: 1.02 }} onClick={() => navigate('/dashboard')}
+                whileHover={{ y: -4, scale: 1.02 }} onClick={() => navigate('/login')}
                 className="bg-gradient-to-br from-[#F97316] to-[#F59E0B] rounded-2xl p-5 shadow-lg cursor-pointer flex flex-col justify-between text-white min-h-[180px]">
                 <div>
                   <h4 className="font-bold text-lg">{t('showcase.explore')}</h4>
@@ -432,7 +432,7 @@ export default function Landing() {
                   <p className="text-white/80 mt-4 text-lg leading-relaxed max-w-md">
                     {t('promo.desc')}
                   </p>
-                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
+                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
                     className="mt-8 flex items-center gap-2.5 bg-white text-[#1a1a1a] px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/10 hover:shadow-2xl transition-shadow">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
                     {t('promo.startFree')}
@@ -543,7 +543,7 @@ export default function Landing() {
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#999]" />
                   <input type="email" placeholder={t('cta.emailPlaceholder')} className="w-full pl-11 pr-4 py-3.5 rounded-full text-sm border-0 outline-none shadow-lg" />
                 </div>
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/dashboard')}
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
                   className="bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/20 whitespace-nowrap">
                   {t('cta.getStarted')}
                 </motion.button>

@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Package, Search, MapPin, Star, Truck, ShieldCheck, ArrowRight, Check, IndianRupee } from 'lucide-react'
+import { Package, Search, MapPin, Star, Truck, ShieldCheck, ArrowRight, Check, IndianRupee, ShoppingCart } from 'lucide-react'
 import { api } from '../utils/api'
 import { ScrollReveal } from '../components/AnimatedComponents'
 import { useToast } from '../components/Toast'
+import { useCart } from '../utils/CartContext'
 
 const CATEGORIES = ['All', 'Groceries', 'Fashion', 'Electronics', 'Beauty & Personal Care', 'Home & Kitchen']
 const CITIES = ['Lucknow', 'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Ahmedabad', 'Pune', 'Jaipur', 'Indore']
 
 export default function SourcingPage() {
   const { toast } = useToast()
+  const { addItem } = useCart()
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [city, setCity] = useState('Lucknow')
@@ -253,19 +255,51 @@ export default function SourcingPage() {
                     {product.wholesaler.name}
                     {product.wholesaler.verified && <ShieldCheck className="w-3 h-3 text-green-500 inline ml-1" />}
                   </span>
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => { setOrderModal(product); setOrderQuantity(product.moq.toString()); setOrderSuccess(null) }}
-                    disabled={!product.inStock}
-                    className={`text-sm px-4 py-2 rounded-xl font-medium transition-all flex items-center gap-1 ${
-                      product.inStock
-                        ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-sm shadow-orange-500/25'
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    }`}
-                  >
-                    {product.inStock ? <>Order <ArrowRight className="w-3 h-3" /></> : 'Out of Stock'}
-                  </motion.button>
+                  <div className="flex items-center gap-1.5">
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => {
+                        if (!product.inStock) return
+                        addItem({
+                          id: `${product.productName}-${product.wholesaler.id}`,
+                          name: product.productName,
+                          category: product.category,
+                          wholesalePrice: product.wholesalePrice,
+                          mrp: product.mrp,
+                          unit: product.unit,
+                          quantity: product.moq,
+                          moq: product.moq,
+                          wholesaler: product.wholesaler.name,
+                          wholesalerId: product.wholesaler.id,
+                          city,
+                          savings: parseInt(product.savings) || 0,
+                        })
+                        toast('success', `${product.productName} added to cart`)
+                      }}
+                      disabled={!product.inStock}
+                      className={`text-sm px-3 py-2 rounded-xl font-medium transition-all flex items-center gap-1 ${
+                        product.inStock
+                          ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      <ShoppingCart className="w-3.5 h-3.5" />
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => { setOrderModal(product); setOrderQuantity(product.moq.toString()); setOrderSuccess(null) }}
+                      disabled={!product.inStock}
+                      className={`text-sm px-4 py-2 rounded-xl font-medium transition-all flex items-center gap-1 ${
+                        product.inStock
+                          ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-sm shadow-orange-500/25'
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      {product.inStock ? <>Order <ArrowRight className="w-3 h-3" /></> : 'Out of Stock'}
+                    </motion.button>
+                  </div>
                 </div>
               </motion.div>
             ))}

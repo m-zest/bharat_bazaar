@@ -12,6 +12,7 @@ import { handler as compareHandler } from './handlers/compare';
 import { handler as competitorsHandler } from './handlers/competitors';
 import { handler as visionHandler } from './handlers/vision';
 import { handler as whatsappHandler } from './handlers/whatsapp';
+import { handler as ordersHandler } from './handlers/orders';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
@@ -75,6 +76,12 @@ app.post('/api/sourcing/order', async (req, res) => {
 
 app.get('/api/weather', async (req, res) => {
   const result = await weatherHandler(createEvent(req));
+  res.status(result.statusCode).json(JSON.parse(result.body));
+});
+
+// Orders (DynamoDB)
+app.get('/api/orders', async (req, res) => {
+  const result = await ordersHandler(createEvent(req));
   res.status(result.statusCode).json(JSON.parse(result.body));
 });
 

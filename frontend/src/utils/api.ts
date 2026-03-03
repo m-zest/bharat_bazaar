@@ -99,6 +99,11 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
+  // ── Orders (DynamoDB) ──
+
+  getOrders: (storeId?: string) =>
+    request<any>(`/orders${storeId ? `?storeId=${storeId}` : ''}`),
+
   // ── Inventory (DynamoDB) ──
 
   getInventory: (storeId?: string) =>

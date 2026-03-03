@@ -13,6 +13,7 @@ import { handler as compareHandler } from './handlers/compare';
 import { handler as competitorsHandler } from './handlers/competitors';
 import { handler as visionHandler } from './handlers/vision';
 import { handler as whatsappHandler } from './handlers/whatsapp';
+import { handler as ordersHandler } from './handlers/orders';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 const app = express();
@@ -100,6 +101,9 @@ app.get('/api/sourcing', wrapHandler(sourcingHandler));
 app.post('/api/sourcing/order', wrapHandler(orderHandler));
 app.get('/api/weather', wrapHandler(weatherHandler));
 
+// Orders (DynamoDB)
+app.get('/api/orders', wrapHandler(ordersHandler));
+
 // Inventory (DynamoDB)
 app.get('/api/inventory', wrapHandler(inventoryHandler));
 app.post('/api/inventory/update', wrapHandler(inventoryUpdateHandler));
@@ -161,6 +165,7 @@ app.listen(PORT, '0.0.0.0', () => {
   ║  GET  /api/dashboard                                 ║
   ║  GET  /api/sourcing?city=Lucknow                     ║
   ║  POST /api/sourcing/order        (DynamoDB)          ║
+  ║  GET  /api/orders                (DynamoDB)          ║
   ║  GET  /api/inventory             (DynamoDB)          ║
   ║  POST /api/inventory/update      (DynamoDB)          ║
   ║  POST /api/inventory/delete      (DynamoDB)          ║
