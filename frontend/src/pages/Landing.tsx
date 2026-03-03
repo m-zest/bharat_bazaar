@@ -3,9 +3,9 @@ import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles,
-  Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail, ChevronDown,
-  Camera, ClipboardList, ShoppingCart, Truck, MapPin, Bell, Eye, GitCompare,
-  Shield, Users, TrendingUp, Receipt, BookOpen, Database, Cloud, Cpu, Lock,
+  Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, ChevronDown,
+  ShoppingCart, Truck, MapPin, Eye, Receipt,
+  Shield, Database, Cpu, Lock,
   Server, Layers, CheckCircle2, ArrowDown,
 } from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
@@ -14,6 +14,7 @@ import PhoneMockup from '../components/PhoneMockup'
 import WhatsAppDemo from '../components/WhatsAppDemo'
 import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
 import DatabaseWithRestApi from '../components/ui/database-with-rest-api'
+import { Hero195 } from '../components/ui/hero-195'
 
 /* ──────────────── COMPONENT ──────────────── */
 
@@ -111,28 +112,6 @@ export default function Landing() {
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face',
       badge: 'Verified User',
     },
-  ]
-
-  // ── All Platform Features ──
-  const PLATFORM_FEATURES = [
-    { icon: BarChart3, label: 'AI Dashboard', desc: 'Real-time business command center with charts', route: '/dashboard', color: 'bg-blue-500' },
-    { icon: Camera, label: 'Bill Scanner', desc: 'OCR-powered invoice scanning with Claude Vision', route: '/scanner', color: 'bg-purple-500' },
-    { icon: Package, label: 'Smart Sourcing', desc: '130+ wholesale products from 40+ verified suppliers', route: '/sourcing', color: 'bg-teal-500' },
-    { icon: IndianRupee, label: 'AI Pricing', desc: '3 strategies per product with confidence scores', route: '/pricing', color: 'bg-amber-500' },
-    { icon: MessageCircle, label: 'Munim-ji AI', desc: 'Hinglish business advisor with full context', route: '/chat', color: 'bg-green-500' },
-    { icon: ClipboardList, label: 'Inventory', desc: 'DynamoDB-backed real-time stock management', route: '/inventory', color: 'bg-indigo-500' },
-    { icon: ShoppingCart, label: 'Cart & Checkout', desc: 'Full e-commerce order flow with payment', route: '/cart', color: 'bg-orange-500' },
-    { icon: Truck, label: 'Delivery Tracking', desc: '6-step live shipment timeline with agent info', route: '/tracking', color: 'bg-cyan-500' },
-    { icon: Receipt, label: 'Order History', desc: 'Complete order management with status filters', route: '/orders', color: 'bg-rose-500' },
-    { icon: Eye, label: 'Competitor Monitor', desc: 'Track Amazon, Flipkart, JioMart prices', route: '/competitors', color: 'bg-red-500' },
-    { icon: GitCompare, label: 'Product Compare', desc: 'Side-by-side AI analysis of margins & demand', route: '/compare', color: 'bg-violet-500' },
-    { icon: Languages, label: 'Content Generator', desc: '6 Indian languages with cultural adaptation', route: '/content', color: 'bg-emerald-500' },
-    { icon: MessageSquareText, label: 'Sentiment Analysis', desc: 'Hinglish review analysis with sarcasm detection', route: '/sentiment', color: 'bg-pink-500' },
-    { icon: BookOpen, label: 'Customer Khata', desc: 'Digital credit ledger for regular customers', route: '/khata', color: 'bg-yellow-500' },
-    { icon: Receipt, label: 'GST Invoices', desc: 'Auto-generate GST-compliant invoices', route: '/invoices', color: 'bg-lime-500' },
-    { icon: Bell, label: 'Smart Notifications', desc: 'AI-powered alerts for stock, pricing & orders', route: '/notifications', color: 'bg-sky-500' },
-    { icon: BarChart3, label: 'Business Reports', desc: 'Revenue charts, category analysis, top products', route: '/reports', color: 'bg-fuchsia-500' },
-    { icon: Users, label: 'Store Profile', desc: 'GST-verified store settings & integrations', route: '/profile', color: 'bg-slate-500' },
   ]
 
   // ── Order Flow Steps ──
@@ -342,54 +321,10 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           PLATFORM OVERVIEW — All 18 features grid
           ═══════════════════════════════════════════ */}
-      <section id="platform" className="py-24 px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <ScrollReveal className="text-center mb-14">
-            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Complete Platform</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
-              18 Features. One Platform.
-            </h2>
-            <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
-              Everything an Indian SMB needs — from AI pricing to delivery tracking, all powered by AWS Bedrock & DynamoDB.
-            </p>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {PLATFORM_FEATURES.map((feature, i) => (
-              <motion.div
-                key={feature.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.03 }}
-                whileHover={{ y: -4, scale: 1.03 }}
-                onClick={() => navigate('/login')}
-                className="bg-white rounded-2xl p-4 border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <div className={`w-10 h-10 ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className="w-5 h-5 text-white" />
-                </div>
-                <h4 className="text-xs font-bold text-[#1a1a1a] mb-1">{feature.label}</h4>
-                <p className="text-[10px] text-[#999] leading-tight">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Login CTA */}
-          <ScrollReveal className="text-center mt-10">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/login')}
-              className="inline-flex items-center gap-2.5 bg-[#1a1a1a] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors shadow-xl shadow-black/10"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-              Try All Features — Login with admin/admin
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* ═══════════════════════════════════════════
+          PLATFORM FEATURES — Interactive tabbed showcase (Hero195)
+          ═══════════════════════════════════════════ */}
+      <Hero195 />
 
       {/* ═══════════════════════════════════════════
           ORDER FLOW — Visual step-by-step
