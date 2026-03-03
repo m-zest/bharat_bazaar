@@ -13,23 +13,23 @@ export default function WhatsAppDemo() {
   const whatsappLink = 'https://wa.me/14155238886?text=join%20BharatBazaar'
 
   return (
-    <section className="py-14 px-6 lg:px-8 bg-[#ECE5DD]/30">
+    <section className="py-14 px-6 lg:px-8 bg-[#111113]">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left — Info */}
           <ScrollReveal>
             <div>
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp Integration
               </div>
 
-              <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1a1a1a] tracking-tight leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-100 tracking-tight leading-tight">
                 Try Munim-ji on<br />
-                <span className="text-green-600">WhatsApp</span> — Live Demo
+                <span className="text-green-400">WhatsApp</span> — Live Demo
               </h2>
 
-              <p className="text-[#666] mt-4 text-lg leading-relaxed max-w-md">
+              <p className="text-gray-400 mt-4 text-lg leading-relaxed max-w-md">
                 Text our AI advisor from your phone. Ask about prices, stock levels,
                 weather impact — all in Hindi or English.
               </p>
@@ -38,11 +38,11 @@ export default function WhatsAppDemo() {
                 {COMMANDS.map((cmd) => (
                   <div
                     key={cmd.cmd}
-                    className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-100"
+                    className="flex items-center gap-3 bg-[#1a1a1d] rounded-xl px-4 py-3 shadow-sm border border-[#2a2a2d]"
                   >
                     <span className="text-lg">{cmd.emoji}</span>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-gray-900">"{cmd.cmd}"</p>
+                      <p className="text-sm font-semibold text-gray-200">"{cmd.cmd}"</p>
                       <p className="text-xs text-gray-500">{cmd.desc}</p>
                     </div>
                   </div>

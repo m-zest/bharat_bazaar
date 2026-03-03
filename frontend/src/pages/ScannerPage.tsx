@@ -167,7 +167,7 @@ export default function ScannerPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-sm border-2 border-dashed border-gray-200 hover:border-orange-300 transition-colors"
+          className="bg-[#1a1a1d] rounded-2xl shadow-sm border-2 border-dashed border-[#333] hover:border-orange-500/30 transition-colors"
         >
           <label className="flex flex-col items-center justify-center py-16 px-8 cursor-pointer">
             <input
@@ -178,10 +178,10 @@ export default function ScannerPage() {
               onChange={handleFileSelect}
               className="hidden"
             />
-            <div className="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded-2xl bg-orange-500/5 flex items-center justify-center mb-4">
               <Camera className="w-10 h-10 text-orange-400" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Upload Wholesale Bill</h3>
+            <h3 className="text-lg font-bold text-gray-100 mb-1">Upload Wholesale Bill</h3>
             <p className="text-sm text-gray-500 text-center max-w-xs">
               Take a photo of your wholesale bill or upload from gallery. AI will extract all items automatically.
             </p>
@@ -190,7 +190,7 @@ export default function ScannerPage() {
                 <Camera className="w-4 h-4" />
                 Take Photo
               </div>
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold">
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.03] text-gray-300 rounded-xl text-sm font-semibold">
                 <Upload className="w-4 h-4" />
                 Upload File
               </div>
@@ -206,7 +206,7 @@ export default function ScannerPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] overflow-hidden"
           >
             {/* Image with scanning overlay */}
             {imagePreview && (
@@ -231,11 +231,11 @@ export default function ScannerPage() {
             {/* Status */}
             <div className="p-6 text-center">
               <Loader2 className="w-8 h-8 mx-auto mb-3 text-orange-500 animate-spin" />
-              <p className="text-sm font-semibold text-gray-700 mb-2">
+              <p className="text-sm font-semibold text-gray-300 mb-2">
                 {SCAN_STAGES[scanStage]}
               </p>
               {/* Progress bar */}
-              <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden max-w-xs mx-auto">
+              <div className="w-full h-2 bg-white/[0.03] rounded-full overflow-hidden max-w-xs mx-auto">
                 <motion.div
                   className="h-full bg-gradient-to-r from-orange-400 to-green-500 rounded-full"
                   animate={{ width: `${((scanStage + 1) / SCAN_STAGES.length) * 100}%` }}
@@ -258,9 +258,9 @@ export default function ScannerPage() {
           {/* Image preview (small) */}
           {imagePreview && (
             <div className="flex gap-4 items-start">
-              <img src={imagePreview} alt="Scanned bill" className="w-20 h-20 rounded-xl object-cover border border-gray-200" />
+              <img src={imagePreview} alt="Scanned bill" className="w-20 h-20 rounded-xl object-cover border border-[#2a2a2d]" />
               <div>
-                <p className="text-sm font-bold text-gray-900">
+                <p className="text-sm font-bold text-gray-100">
                   {items.length} items detected
                 </p>
                 <p className="text-xs text-gray-500">
@@ -271,22 +271,22 @@ export default function ScannerPage() {
           )}
 
           {/* Items list */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="px-5 py-3 bg-green-50 border-b border-green-100 flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-semibold text-green-700">
+          <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] overflow-hidden">
+            <div className="px-5 py-3 bg-green-500/10 border-b border-green-500/20 flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-semibold text-green-400">
                 {items.filter(i => i.checked).length} of {items.length} items selected
               </span>
             </div>
 
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-[#2a2a2d]">
               {items.map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className={`flex items-center gap-4 px-5 py-3 hover:bg-gray-50 transition-colors ${
+                  className={`flex items-center gap-4 px-5 py-3 hover:bg-white/[0.06] transition-colors ${
                     !item.checked ? 'opacity-50' : ''
                   }`}
                 >
@@ -295,14 +295,14 @@ export default function ScannerPage() {
                     className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border-2 transition-colors ${
                       item.checked
                         ? 'bg-green-500 border-green-500 text-white'
-                        : 'border-gray-300 bg-white'
+                        : 'border-[#333] bg-[#141416]'
                     }`}
                   >
                     {item.checked && <Check className="w-3 h-3" />}
                   </button>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900">{item.name}</p>
+                    <p className="text-sm font-semibold text-gray-100">{item.name}</p>
                     {item.nameHi && (
                       <p className="text-[10px] text-gray-400 font-hindi">{item.nameHi}</p>
                     )}
@@ -312,10 +312,10 @@ export default function ScannerPage() {
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-sm font-bold text-gray-100">
                       ₹{item.totalPrice.toLocaleString('en-IN')}
                     </p>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.03] text-gray-500">
                       {item.category}
                     </span>
                   </div>
@@ -324,9 +324,9 @@ export default function ScannerPage() {
             </div>
 
             {/* Total */}
-            <div className="px-5 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-              <span className="text-sm font-semibold text-gray-700">Total</span>
-              <span className="text-lg font-bold text-gray-900">
+            <div className="px-5 py-3 bg-white/[0.03] border-t border-[#2a2a2d] flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-300">Total</span>
+              <span className="text-lg font-bold text-gray-100">
                 ₹{items.filter(i => i.checked).reduce((sum, i) => sum + i.totalPrice, 0).toLocaleString('en-IN')}
               </span>
             </div>
@@ -353,7 +353,7 @@ export default function ScannerPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={reset}
-              className="flex items-center gap-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-colors"
+              className="flex items-center gap-2 px-4 py-3 bg-white/[0.03] text-gray-300 rounded-xl text-sm font-semibold hover:bg-white/[0.06] transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               Scan Another
@@ -363,7 +363,7 @@ export default function ScannerPage() {
           {/* Quick link to inventory */}
           <button
             onClick={() => navigate('/inventory')}
-            className="flex items-center gap-2 text-sm text-orange-600 font-medium hover:text-orange-700 transition-colors"
+            className="flex items-center gap-2 text-sm text-orange-400 font-medium hover:text-orange-300 transition-colors"
           >
             View Inventory <ArrowRight className="w-4 h-4" />
           </button>

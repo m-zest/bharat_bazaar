@@ -67,22 +67,22 @@ export default function CompetitorPage() {
       </div>
 
       {error && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl text-sm mb-6">
+        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-4 py-3 rounded-xl text-sm mb-6">
           AI features temporarily limited. Our servers are experiencing high demand. Please try again in a few minutes.
         </div>
       )}
 
       {loading && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-20">
+        <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] text-center py-20">
           <Loader2 className="w-12 h-12 mx-auto mb-4 text-saffron-400 animate-spin" />
-          <p className="text-lg font-medium text-gray-600">AI is scanning competitor prices...</p>
+          <p className="text-lg font-medium text-gray-400">AI is scanning competitor prices...</p>
           <p className="text-sm text-gray-400 mt-1">Analyzing Amazon, Flipkart, BigBasket, JioMart & more</p>
         </div>
       )}
 
       {!loading && !result && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
-          <Eye className="w-16 h-16 mx-auto mb-4 text-gray-200" />
+        <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] text-center py-16 text-gray-400">
+          <Eye className="w-16 h-16 mx-auto mb-4 text-gray-600" />
           <p className="text-lg font-medium">Click "Analyze Competitors" to scan pricing data</p>
           <p className="text-sm mt-1">AI will analyze competitor prices, trends, and give you strategic advice</p>
         </div>
@@ -114,23 +114,23 @@ export default function CompetitorPage() {
 
           {/* Price Alerts */}
           {alerts.length > 0 && (
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-red-200 bg-red-50/50 mb-6">
-              <h3 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
+            <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-red-500/20 mb-6">
+              <h3 className="font-semibold text-red-400 mb-3 flex items-center gap-2">
                 <Bell className="w-5 h-5" /> AI Price Alerts ({alerts.length})
               </h3>
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {alerts.map((alert: any, i: number) => (
-                  <div key={i} className={`flex items-start gap-3 p-3 rounded-xl bg-white border ${
-                    alert.severity === 'high' ? 'border-red-200' : alert.severity === 'medium' ? 'border-yellow-200' : 'border-gray-200'
+                  <div key={i} className={`flex items-start gap-3 p-3 rounded-xl bg-white/[0.03] border ${
+                    alert.severity === 'high' ? 'border-red-500/20' : alert.severity === 'medium' ? 'border-yellow-500/20' : 'border-[#2a2a2d]'
                   }`}>
                     <AlertTriangle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
                       alert.severity === 'high' ? 'text-red-500' : alert.severity === 'medium' ? 'text-yellow-500' : 'text-gray-400'
                     }`} />
                     <div className="flex-1">
-                      <p className="text-xs font-semibold text-gray-700">{alert.product}</p>
+                      <p className="text-xs font-semibold text-gray-300">{alert.product}</p>
                       <p className="text-xs text-gray-500">{alert.message}</p>
                       {alert.actionItem && (
-                        <p className="text-xs text-saffron-600 font-medium mt-1">{alert.actionItem}</p>
+                        <p className="text-xs text-saffron-400 font-medium mt-1">{alert.actionItem}</p>
                       )}
                     </div>
                   </div>
@@ -155,24 +155,24 @@ export default function CompetitorPage() {
                 <motion.div
                   key={product.name}
                   layout
-                  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all"
+                  className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] overflow-hidden hover:shadow-md transition-all"
                 >
                   <div className="flex items-center justify-between cursor-pointer" onClick={() => setExpandedProduct(isExpanded ? null : product.name)}>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                      <h3 className="font-semibold text-gray-100">{product.name}</h3>
                       <span className="text-xs text-gray-400">{product.category}</span>
                     </div>
                     <div className="flex items-center gap-6">
                       <div className="text-right">
                         <p className="text-xs text-gray-400">Your Price</p>
-                        <p className="text-xl font-display font-bold text-saffron-600">Rs.{product.yourPrice}</p>
+                        <p className="text-xl font-display font-bold text-saffron-400">Rs.{product.yourPrice}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-gray-400">Avg Competitor</p>
-                        <p className="text-xl font-display font-bold text-gray-700">Rs.{avgCompetitorPrice}</p>
+                        <p className="text-xl font-display font-bold text-gray-300">Rs.{avgCompetitorPrice}</p>
                       </div>
                       <div className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
-                        yourPosition === 'below' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        yourPosition === 'below' ? 'bg-green-500/15 text-green-400' : 'bg-red-500/15 text-red-400'
                       }`}>
                         <span className="flex items-center gap-1">
                           {yourPosition === 'below' ? <TrendingDown className="w-4 h-4" /> : <TrendingUp className="w-4 h-4" />}
@@ -181,17 +181,17 @@ export default function CompetitorPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-gray-400">Margin</p>
-                        <p className="text-lg font-bold text-green-600">{margin}%</p>
+                        <p className="text-lg font-bold text-green-400">{margin}%</p>
                       </div>
                     </div>
                   </div>
 
                   {isExpanded && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-4 pt-4 border-t border-gray-100">
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="mt-4 pt-4 border-t border-[#2a2a2d]">
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                           <thead>
-                            <tr className="border-b border-gray-100">
+                            <tr className="border-b border-[#2a2a2d]">
                               <th className="text-left py-2 px-3 text-gray-500 font-medium">Seller</th>
                               <th className="text-center py-2 px-3 text-gray-500 font-medium">Current Price</th>
                               <th className="text-center py-2 px-3 text-gray-500 font-medium">Previous</th>
@@ -203,43 +203,43 @@ export default function CompetitorPage() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="bg-saffron-50 font-medium">
-                              <td className="py-2 px-3 text-saffron-700 font-semibold">You (Sharma Store)</td>
-                              <td className="text-center py-2 px-3 font-display font-bold text-saffron-600">Rs.{product.yourPrice}</td>
+                            <tr className="bg-saffron-500/10 font-medium">
+                              <td className="py-2 px-3 text-saffron-400 font-semibold">You (Sharma Store)</td>
+                              <td className="text-center py-2 px-3 font-display font-bold text-saffron-400">Rs.{product.yourPrice}</td>
                               <td className="text-center py-2 px-3">—</td>
                               <td className="text-center py-2 px-3">—</td>
                               <td className="text-center py-2 px-3">—</td>
                               <td className="text-center py-2 px-3">—</td>
-                              <td className="text-center py-2 px-3 text-green-600">In Stock</td>
+                              <td className="text-center py-2 px-3 text-green-400">In Stock</td>
                               <td className="text-center py-2 px-3">Now</td>
                             </tr>
                             {competitors.map((comp: any) => {
                               const priceChange = (comp.price || 0) - (comp.prevPrice || comp.price || 0)
                               const vsYou = (comp.price || 0) - product.yourPrice
                               return (
-                                <tr key={comp.seller} className="border-b border-gray-50 hover:bg-gray-50/50">
-                                  <td className="py-2 px-3 font-medium text-gray-700">{comp.seller}</td>
+                                <tr key={comp.seller} className="border-b border-[#2a2a2d] hover:bg-white/[0.06]">
+                                  <td className="py-2 px-3 font-medium text-gray-300">{comp.seller}</td>
                                   <td className="text-center py-2 px-3 font-mono font-medium">Rs.{comp.price}</td>
                                   <td className="text-center py-2 px-3 font-mono text-gray-400">Rs.{comp.prevPrice || comp.price}</td>
                                   <td className="text-center py-2 px-3">
                                     {priceChange === 0 ? (
                                       <span className="text-gray-400 flex items-center justify-center gap-1"><Minus className="w-3 h-3" /> —</span>
                                     ) : priceChange < 0 ? (
-                                      <span className="text-green-600 flex items-center justify-center gap-1"><TrendingDown className="w-3 h-3" /> Rs.{Math.abs(priceChange)}</span>
+                                      <span className="text-green-400 flex items-center justify-center gap-1"><TrendingDown className="w-3 h-3" /> Rs.{Math.abs(priceChange)}</span>
                                     ) : (
-                                      <span className="text-red-600 flex items-center justify-center gap-1"><TrendingUp className="w-3 h-3" /> +Rs.{priceChange}</span>
+                                      <span className="text-red-400 flex items-center justify-center gap-1"><TrendingUp className="w-3 h-3" /> +Rs.{priceChange}</span>
                                     )}
                                   </td>
                                   <td className="text-center py-2 px-3">
-                                    <span className={`font-medium ${vsYou > 0 ? 'text-green-600' : vsYou < 0 ? 'text-red-600' : 'text-gray-400'}`}>
+                                    <span className={`font-medium ${vsYou > 0 ? 'text-green-400' : vsYou < 0 ? 'text-red-400' : 'text-gray-400'}`}>
                                       {vsYou > 0 ? `+Rs.${vsYou}` : vsYou < 0 ? `-Rs.${Math.abs(vsYou)}` : 'Same'}
                                     </span>
                                   </td>
                                   <td className="text-center py-2 px-3">
-                                    {comp.rating ? <span className="text-yellow-600">{comp.rating}/5</span> : <span className="text-gray-300">—</span>}
+                                    {comp.rating ? <span className="text-yellow-400">{comp.rating}/5</span> : <span className="text-gray-300">—</span>}
                                   </td>
                                   <td className="text-center py-2 px-3">
-                                    <span className={`text-xs px-2 py-0.5 rounded-full ${comp.inStock !== false ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                    <span className={`text-xs px-2 py-0.5 rounded-full ${comp.inStock !== false ? 'bg-green-500/15 text-green-400' : 'bg-red-500/15 text-red-400'}`}>
                                       {comp.inStock !== false ? 'Yes' : 'No'}
                                     </span>
                                   </td>
@@ -253,8 +253,8 @@ export default function CompetitorPage() {
 
                       {/* Price Trend */}
                       {product.priceHistory && product.priceHistory.length > 0 && (
-                        <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                          <h4 className="text-sm font-semibold text-gray-700 mb-2">7-Day Price Trend</h4>
+                        <div className="mt-4 p-4 bg-white/[0.03] rounded-xl">
+                          <h4 className="text-sm font-semibold text-gray-300 mb-2">7-Day Price Trend</h4>
                           <div className="flex items-center gap-6">
                             {product.priceHistory.map((h: any, i: number) => (
                               <div key={i} className="text-center flex-1">

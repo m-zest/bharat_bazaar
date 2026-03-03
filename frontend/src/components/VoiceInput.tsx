@@ -135,7 +135,7 @@ export default function VoiceInput({
         <div className="relative" ref={langPickerRef}>
           <button
             onClick={() => setShowLangPicker(!showLangPicker)}
-            className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium bg-white/[0.06] hover:bg-white/[0.1] text-gray-400 transition-colors"
           >
             {currentLang.flag} {currentLang.name}
             <ChevronDown className="w-3 h-3" />
@@ -147,7 +147,7 @@ export default function VoiceInput({
                 initial={{ opacity: 0, y: -4, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -4, scale: 0.95 }}
-                className="absolute bottom-full mb-1 left-0 bg-white rounded-xl shadow-lg border border-gray-200 p-1 z-50 min-w-[140px]"
+                className="absolute bottom-full mb-1 left-0 bg-[#1a1a1d] rounded-xl shadow-lg border border-[#2a2a2d] p-1 z-50 min-w-[140px]"
               >
                 {LANGUAGES.map(lang => (
                   <button
@@ -158,8 +158,8 @@ export default function VoiceInput({
                     }}
                     className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                       language === lang.code
-                        ? 'bg-orange-50 text-orange-600'
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'bg-orange-500/10 text-orange-400'
+                        : 'text-gray-400 hover:bg-white/[0.06]'
                     }`}
                   >
                     <span>{lang.flag}</span>
@@ -186,7 +186,7 @@ export default function VoiceInput({
         } ${
           isListening
             ? 'bg-red-500 text-white shadow-lg shadow-red-500/30'
-            : 'bg-white text-gray-500 hover:bg-gray-100 shadow-sm border border-gray-200'
+            : 'bg-[#1a1a1d] text-gray-400 hover:bg-white/[0.06] shadow-sm border border-[#2a2a2d]'
         }`}
         title={isListening ? 'Stop listening' : `Speak in ${currentLang.label}`}
       >
@@ -220,7 +220,7 @@ export default function VoiceInput({
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-full mb-2 left-0 right-0 bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2 text-xs text-gray-600 min-w-[200px] z-50"
+            className="absolute bottom-full mb-2 left-0 right-0 bg-[#1a1a1d] rounded-lg shadow-lg border border-[#2a2a2d] px-3 py-2 text-xs text-gray-300 min-w-[200px] z-50"
           >
             <span className="text-red-500 mr-1">●</span>
             {interimText}

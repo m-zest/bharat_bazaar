@@ -36,10 +36,10 @@ export default function ProfilePage() {
   }
 
   const stats = [
-    { label: 'Monthly Revenue', value: '₹4.2L', icon: IndianRupee, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'Products Listed', value: '156', icon: Package, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Customer Base', value: '850+', icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Growth Rate', value: '+23%', icon: TrendingUp, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { label: 'Monthly Revenue', value: '₹4.2L', icon: IndianRupee, color: 'text-green-400', bg: 'bg-green-500/10' },
+    { label: 'Products Listed', value: '156', icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { label: 'Customer Base', value: '850+', icon: Users, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { label: 'Growth Rate', value: '+23%', icon: TrendingUp, color: 'text-orange-400', bg: 'bg-orange-500/10' },
   ]
 
   return (
@@ -47,14 +47,14 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Store Profile</h1>
-          <p className="text-slate-500 text-sm">Manage your store details and settings</p>
+          <h1 className="text-2xl font-bold text-gray-100">Store Profile</h1>
+          <p className="text-gray-400 text-sm">Manage your store details and settings</p>
         </div>
         {saved && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 text-green-400 rounded-xl text-sm font-medium"
           >
             <CheckCircle2 className="w-4 h-4" />
             Settings saved!
@@ -101,27 +101,27 @@ export default function ProfilePage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-xl border border-slate-200 p-4"
+            className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-4"
           >
             <div className={`w-8 h-8 ${stat.bg} rounded-lg flex items-center justify-center mb-2`}>
               <stat.icon className={`w-4 h-4 ${stat.color}`} />
             </div>
-            <p className="text-xl font-bold text-slate-800">{stat.value}</p>
-            <p className="text-xs text-slate-500">{stat.label}</p>
+            <p className="text-xl font-bold text-gray-100">{stat.value}</p>
+            <p className="text-xs text-gray-400">{stat.label}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Details Form */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-bold text-slate-800">Store Details</h3>
+          <h3 className="font-bold text-gray-100">Store Details</h3>
           <button
             onClick={() => editing ? handleSave() : setEditing(true)}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               editing
                 ? 'bg-green-500 hover:bg-green-600 text-white'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                : 'bg-white/[0.03] hover:bg-white/[0.06] text-gray-300'
             }`}
           >
             {editing ? <Save className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
@@ -145,17 +145,17 @@ export default function ProfilePage() {
             { label: 'Established', key: 'established', icon: Award },
           ].map(field => (
             <div key={field.key}>
-              <label className="block text-xs font-medium text-slate-500 mb-1">{field.label}</label>
+              <label className="block text-xs font-medium text-gray-400 mb-1">{field.label}</label>
               <div className="relative">
-                <field.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <field.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
                   value={(form as any)[field.key]}
                   onChange={e => setForm({ ...form, [field.key]: e.target.value })}
                   disabled={!editing}
                   className={`w-full pl-10 pr-4 py-2.5 border rounded-xl text-sm transition-all outline-none ${
                     editing
-                      ? 'bg-white border-slate-200 focus:ring-2 focus:ring-orange-500'
-                      : 'bg-slate-50 border-slate-100 text-slate-700'
+                      ? 'bg-[#141416] border-[#333] text-gray-100 focus:ring-2 focus:ring-orange-500'
+                      : 'bg-white/[0.03] border-[#2a2a2d] text-gray-300'
                   }`}
                 />
               </div>
@@ -163,17 +163,17 @@ export default function ProfilePage() {
           ))}
 
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-slate-500 mb-1">Full Address</label>
+            <label className="block text-xs font-medium text-gray-400 mb-1">Full Address</label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+              <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-500" />
               <textarea
                 value={`${form.address}, ${form.city}, ${form.state} - ${form.pincode}`}
                 disabled={!editing}
                 rows={2}
                 className={`w-full pl-10 pr-4 py-2.5 border rounded-xl text-sm transition-all outline-none resize-none ${
                   editing
-                    ? 'bg-white border-slate-200 focus:ring-2 focus:ring-orange-500'
-                    : 'bg-slate-50 border-slate-100 text-slate-700'
+                    ? 'bg-[#141416] border-[#333] text-gray-100 focus:ring-2 focus:ring-orange-500'
+                    : 'bg-white/[0.03] border-[#2a2a2d] text-gray-300'
                 }`}
               />
             </div>
@@ -182,8 +182,8 @@ export default function ProfilePage() {
       </div>
 
       {/* AWS Integration Info */}
-      <div className="mt-6 bg-slate-50 rounded-xl border border-slate-200 p-5">
-        <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+      <div className="mt-6 bg-white/[0.03] rounded-xl border border-[#2a2a2d] p-5">
+        <h3 className="font-bold text-gray-100 mb-3 flex items-center gap-2">
           <Globe className="w-4 h-4 text-orange-500" />
           Platform Integrations
         </h3>
@@ -193,13 +193,13 @@ export default function ProfilePage() {
             { name: 'DynamoDB', status: 'Active', desc: 'Inventory & order storage' },
             { name: 'WhatsApp Business', status: 'Configured', desc: 'Customer notifications' },
           ].map(integration => (
-            <div key={integration.name} className="bg-white rounded-lg border border-slate-200 p-3">
+            <div key={integration.name} className="bg-[#1a1a1d] rounded-lg border border-[#2a2a2d] p-3">
               <div className="flex items-center gap-1.5 mb-1">
                 <span className="w-2 h-2 bg-green-400 rounded-full" />
-                <span className="text-xs text-green-600 font-medium">{integration.status}</span>
+                <span className="text-xs text-green-400 font-medium">{integration.status}</span>
               </div>
-              <p className="text-sm font-semibold text-slate-800">{integration.name}</p>
-              <p className="text-xs text-slate-400">{integration.desc}</p>
+              <p className="text-sm font-semibold text-gray-100">{integration.name}</p>
+              <p className="text-xs text-gray-500">{integration.desc}</p>
             </div>
           ))}
         </div>

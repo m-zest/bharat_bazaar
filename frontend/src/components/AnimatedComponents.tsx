@@ -283,7 +283,7 @@ export function GradientBorderCard({
 }) {
   return (
     <div className={`relative p-[2px] rounded-2xl ${active ? 'gradient-border' : ''} ${className}`}>
-      <div className="bg-white rounded-2xl p-6 h-full">
+      <div className="bg-[#1a1a1d] rounded-2xl p-6 h-full">
         {children}
       </div>
     </div>

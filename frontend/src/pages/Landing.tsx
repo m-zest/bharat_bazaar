@@ -53,10 +53,10 @@ export default function Landing() {
   ]
 
   const FEATURE_CARDS = [
-    { icon: IndianRupee, title: t('features.smartPricing'), subtitle: t('features.smartPricingSub'), bg: 'bg-[#FEF3C7]', route: '/pricing' },
-    { icon: Languages, title: t('features.aiContent'), subtitle: t('features.aiContentSub'), bg: 'bg-[#F0FDFA]', route: '/content' },
-    { icon: MessageSquareText, title: t('features.sentiment'), subtitle: t('features.sentimentSub'), bg: 'bg-[#FFF7ED]', route: '/sentiment' },
-    { icon: Package, title: t('features.sourcing'), subtitle: t('features.sourcingSub'), bg: 'bg-[#FEF3C7]', route: '/sourcing' },
+    { icon: IndianRupee, title: t('features.smartPricing'), subtitle: t('features.smartPricingSub'), bg: 'bg-orange-500/10', route: '/pricing' },
+    { icon: Languages, title: t('features.aiContent'), subtitle: t('features.aiContentSub'), bg: 'bg-teal-500/10', route: '/content' },
+    { icon: MessageSquareText, title: t('features.sentiment'), subtitle: t('features.sentimentSub'), bg: 'bg-purple-500/10', route: '/sentiment' },
+    { icon: Package, title: t('features.sourcing'), subtitle: t('features.sourcingSub'), bg: 'bg-amber-500/10', route: '/sourcing' },
   ]
 
   const SHOWCASE_TABS = [
@@ -64,35 +64,35 @@ export default function Landing() {
       id: 'pricing',
       label: t('features.smartPricing'),
       cards: [
-        { title: 'Competitive Strategy', price: '\u20B9415', confidence: 92, change: '+18% demand', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83C\uDFAF' },
-        { title: 'Premium Strategy', price: '\u20B9469', confidence: 87, change: '+12% revenue', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\u2728' },
-        { title: 'Value Strategy', price: '\u20B9389', confidence: 78, change: '+35% volume', color: 'text-teal-600', bg: 'bg-teal-50', icon: '\uD83D\uDEE1\uFE0F' },
+        { title: 'Competitive Strategy', price: '\u20B9415', confidence: 92, change: '+18% demand', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: '\uD83C\uDFAF' },
+        { title: 'Premium Strategy', price: '\u20B9469', confidence: 87, change: '+12% revenue', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: '\u2728' },
+        { title: 'Value Strategy', price: '\u20B9389', confidence: 78, change: '+35% volume', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: '\uD83D\uDEE1\uFE0F' },
       ],
     },
     {
       id: 'content',
       label: t('features.aiContent'),
       cards: [
-        { title: 'English Description', price: 'Premium aged rice...', confidence: 95, change: 'SEO optimized', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83C\uDDEC\uD83C\uDDE7' },
-        { title: 'Hindi Description', price: '\u092A\u094D\u0930\u0940\u092E\u093F\u092F\u092E \u092C\u093E\u0938\u092E\u0924\u0940 \u091A\u093E\u0935\u0932...', confidence: 90, change: 'Culturally adapted', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
-        { title: 'Tamil Description', price: '\u0BAA\u0BBF\u0BB0\u0BC0\u0BAE\u0BBF\u0BAF\u0BAE\u0BCD \u0BAA\u0BBE\u0BB8\u0BCD\u0BAE\u0BA4\u0BBF...', confidence: 88, change: 'Regional keywords', color: 'text-teal-600', bg: 'bg-teal-50', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
+        { title: 'English Description', price: 'Premium aged rice...', confidence: 95, change: 'SEO optimized', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: '\uD83C\uDDEC\uD83C\uDDE7' },
+        { title: 'Hindi Description', price: '\u092A\u094D\u0930\u0940\u092E\u093F\u092F\u092E \u092C\u093E\u0938\u092E\u0924\u0940 \u091A\u093E\u0935\u0932...', confidence: 90, change: 'Culturally adapted', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
+        { title: 'Tamil Description', price: '\u0BAA\u0BBF\u0BB0\u0BC0\u0BAE\u0BBF\u0BAF\u0BAE\u0BCD \u0BAA\u0BBE\u0BB8\u0BCD\u0BAE\u0BA4\u0BBF...', confidence: 88, change: 'Regional keywords', color: 'text-teal-400', bg: 'bg-teal-500/10', icon: '\uD83C\uDDEE\uD83C\uDDF3' },
       ],
     },
     {
       id: 'sourcing',
       label: t('features.sourcing'),
       cards: [
-        { title: 'Gupta Wholesale', price: '\u20B9285/5kg', confidence: 96, change: 'Save \u20B935', color: 'text-green-600', bg: 'bg-green-50', icon: '\uD83C\uDFEA' },
-        { title: 'Mehta Distributors', price: '\u20B9295/5kg', confidence: 92, change: '2-day delivery', color: 'text-blue-600', bg: 'bg-blue-50', icon: '\uD83D\uDE9B' },
-        { title: 'Sharma Trading', price: '\u20B9310/5kg', confidence: 85, change: 'Verified \u2713', color: 'text-orange-600', bg: 'bg-orange-50', icon: '\u2705' },
+        { title: 'Gupta Wholesale', price: '\u20B9285/5kg', confidence: 96, change: 'Save \u20B935', color: 'text-green-400', bg: 'bg-green-500/10', icon: '\uD83C\uDFEA' },
+        { title: 'Mehta Distributors', price: '\u20B9295/5kg', confidence: 92, change: '2-day delivery', color: 'text-blue-400', bg: 'bg-blue-500/10', icon: '\uD83D\uDE9B' },
+        { title: 'Sharma Trading', price: '\u20B9310/5kg', confidence: 85, change: 'Verified \u2713', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: '\u2705' },
       ],
     },
   ]
 
   const BENEFITS = [
-    { icon: Globe, title: t('benefits.languages'), desc: t('benefits.languagesDesc'), color: 'bg-[#FEF3C7]', iconColor: 'text-orange-500' },
-    { icon: BarChart3, title: t('benefits.marketData'), desc: t('benefits.marketDataDesc'), color: 'bg-[#F0FDFA]', iconColor: 'text-teal-500' },
-    { icon: Zap, title: t('benefits.zeroSetup'), desc: t('benefits.zeroSetupDesc'), color: 'bg-[#FFF7ED]', iconColor: 'text-orange-500' },
+    { icon: Globe, title: t('benefits.languages'), desc: t('benefits.languagesDesc'), color: 'bg-orange-500/10', iconColor: 'text-orange-400' },
+    { icon: BarChart3, title: t('benefits.marketData'), desc: t('benefits.marketDataDesc'), color: 'bg-teal-500/10', iconColor: 'text-teal-400' },
+    { icon: Zap, title: t('benefits.zeroSetup'), desc: t('benefits.zeroSetupDesc'), color: 'bg-purple-500/10', iconColor: 'text-purple-400' },
   ]
 
   const TESTIMONIALS = [
@@ -143,24 +143,24 @@ export default function Landing() {
   const activeShowcase = SHOWCASE_TABS.find(t => t.id === activeTab)!
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-[#0c0c0d] overflow-hidden">
 
       {/* ═══ NAVBAR ═══ */}
       <motion.header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/80 backdrop-blur-xl shadow-sm border-b border-gray-100'
+            ? 'bg-[#0c0c0d]/80 backdrop-blur-xl shadow-sm border-b border-[#222]'
             : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link to="/" className="block">
-            <NavbarLogo mode={scrolled ? 'light' : 'light'} />
+            <NavbarLogo mode="dark" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map(link => (
-              <a key={link.label} href={link.href} className="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors font-medium">
+              <a key={link.label} href={link.href} className="text-sm text-gray-400 hover:text-gray-100 transition-colors font-medium">
                 {link.label}
               </a>
             ))}
@@ -172,11 +172,7 @@ export default function Landing() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setLangOpen(!langOpen)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors border ${
-                  scrolled
-                    ? 'border-gray-200 bg-white text-[#1a1a1a] hover:border-[#F97316]'
-                    : 'border-[#F97316]/20 bg-white/70 backdrop-blur-sm text-[#666] hover:border-[#F97316]'
-                }`}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors border border-[#333] bg-white/5 text-gray-300 hover:border-orange-500/50"
               >
                 <Globe className="w-3.5 h-3.5 text-[#F97316]" />
                 <span className="hidden sm:inline">{currentLang.native}</span>
@@ -191,7 +187,7 @@ export default function Landing() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50 overflow-hidden"
+                    className="absolute right-0 mt-2 w-48 bg-[#1a1a1d] rounded-xl shadow-xl border border-[#333] py-1.5 z-50 overflow-hidden"
                   >
                     {LANGUAGES.map(l => (
                       <button
@@ -199,12 +195,12 @@ export default function Landing() {
                         onClick={() => { setLang(l.code); setLangOpen(false) }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                           lang === l.code
-                            ? 'bg-[#FFF7ED] text-[#F97316] font-semibold'
-                            : 'text-[#666] hover:bg-gray-50'
+                            ? 'bg-orange-500/10 text-orange-400 font-semibold'
+                            : 'text-gray-400 hover:bg-white/5'
                         }`}
                       >
                         <span className="font-medium flex-1 text-left">{l.native}</span>
-                        <span className="text-xs text-[#999]">{l.label}</span>
+                        <span className="text-xs text-gray-500">{l.label}</span>
                         {lang === l.code && <Check className="w-3.5 h-3.5 text-[#F97316]" />}
                       </button>
                     ))}
@@ -217,9 +213,9 @@ export default function Landing() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/login')}
-              className="flex items-center gap-2 bg-[#1a1a1a] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors"
+              className="flex items-center gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
               {t('nav.tryDemo')}
             </motion.button>
           </div>
@@ -229,16 +225,16 @@ export default function Landing() {
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#FFEDD5] to-[#FEF3C7]" />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-30">
-            <div className="absolute top-[10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#F97316]/40 to-[#F59E0B]/20 blur-[100px]" />
-            <div className="absolute top-[30%] right-[10%] w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-[#FB923C]/30 to-transparent blur-[80px]" />
+          <div className="absolute inset-0 bg-[#0c0c0d]" />
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-40">
+            <div className="absolute top-[10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#F97316]/15 to-[#F59E0B]/5 blur-[120px]" />
+            <div className="absolute top-[30%] right-[10%] w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-[#FB923C]/10 to-transparent blur-[100px]" />
           </div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] opacity-20">
-            <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#0D9488]/20 to-transparent blur-[100px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] opacity-30">
+            <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#0D9488]/10 to-transparent blur-[120px]" />
           </div>
           <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: `linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
           }} />
         </div>
@@ -249,43 +245,43 @@ export default function Landing() {
               <ScrollReveal>
                 <motion.div
                   whileHover={{ scale: 1.03 }}
-                  className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-[#666] mb-6 border border-[#F97316]/20 shadow-sm"
+                  className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-gray-300 mb-6 border border-orange-500/20 shadow-sm"
                 >
                   <Sparkles className="w-4 h-4 text-[#F97316]" />
                   {t('hero.badge')}
                 </motion.div>
               </ScrollReveal>
 
-              <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-[#1a1a1a] leading-[0.95] tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              <motion.h1 className="text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-extrabold text-gray-100 leading-[0.95] tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="block" style={{ fontWeight: 900 }}>
                   {t('hero.title1')}
                 </motion.span>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }} className="block bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent" style={{ fontWeight: 300 }}>
                   {t('hero.title2')}
                 </motion.span>
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="block text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-[#666] font-bold mt-2">
+                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="block text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-gray-400 font-bold mt-2">
                   {t('hero.title3')}
                 </motion.span>
               </motion.h1>
 
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.65 }}
-                className="text-sm font-medium tracking-[3px] uppercase text-[#0D9488] mt-1" style={{ fontFamily: "'Sora', sans-serif" }}>
+                className="text-sm font-medium tracking-[3px] uppercase text-teal-400 mt-1" style={{ fontFamily: "'Sora', sans-serif" }}>
                 {t('hero.tagline')}
               </motion.p>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="mt-6 text-lg text-[#666] max-w-lg leading-relaxed">
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="mt-6 text-lg text-gray-400 max-w-lg leading-relaxed">
                 {t('hero.desc')}
               </motion.p>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} className="mt-8 flex flex-wrap items-center gap-3">
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
-                  className="flex items-center gap-2.5 bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors shadow-xl shadow-black/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
+                  className="flex items-center gap-2.5 bg-orange-500 text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white" />
                   {t('hero.exploreDemo')}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
-                  className="flex items-center gap-2 text-[#1a1a1a] px-6 py-3.5 rounded-full text-sm font-semibold border-2 border-[#e5e5e5] hover:border-[#F97316] transition-colors">
+                  className="flex items-center gap-2 text-gray-200 px-6 py-3.5 rounded-full text-sm font-semibold border border-[#333] hover:border-orange-500/50 transition-colors">
                   <MessageCircle className="w-4 h-4" />
                   {t('hero.askAI')}
                 </motion.button>
@@ -299,8 +295,8 @@ export default function Landing() {
                   { value: '14', label: 'API Endpoints' },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-2xl font-extrabold text-[#1a1a1a]">{stat.value}</p>
-                    <p className="text-xs text-[#999] font-medium mt-0.5">{stat.label}</p>
+                    <p className="text-2xl font-extrabold text-gray-100">{stat.value}</p>
+                    <p className="text-xs text-gray-500 font-medium mt-0.5">{stat.label}</p>
                   </div>
                 ))}
               </motion.div>
@@ -329,14 +325,14 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           ORDER FLOW — Visual step-by-step
           ═══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
+      <section className="py-24 px-6 lg:px-8 bg-[#111113]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">End-to-End Commerce</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">
               Complete Order Flow
             </h2>
-            <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-400 mt-4 text-lg max-w-2xl mx-auto">
               From product discovery to delivery tracking — a fully integrated B2B commerce experience for Indian retailers.
             </p>
           </ScrollReveal>
@@ -351,13 +347,13 @@ export default function Landing() {
                 transition={{ delay: i * 0.1 }}
                 className="relative"
               >
-                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all text-center h-full">
+                <div className="bg-[#1a1a1d] rounded-2xl p-5 border border-[#2a2a2d] shadow-sm hover:shadow-md hover:shadow-black/20 transition-all text-center h-full">
                   <div className={`w-12 h-12 ${step.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
                     <step.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-1">Step {step.step}</div>
-                  <h4 className="text-sm font-bold text-[#1a1a1a] mb-1">{step.title}</h4>
-                  <p className="text-[10px] text-[#999]">{step.desc}</p>
+                  <h4 className="text-sm font-bold text-gray-200 mb-1">{step.title}</h4>
+                  <p className="text-[10px] text-gray-500">{step.desc}</p>
                 </div>
                 {i < ORDER_FLOW.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-2 z-10">
@@ -373,20 +369,20 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           FEATURED CATEGORIES — 4 cards
           ═══════════════════════════════════════════ */}
-      <section id="features" className="py-24 px-6 lg:px-8 bg-white">
+      <section id="features" className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">
             <ScrollReveal>
               <div>
                 <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('features.subtitle')}</p>
-                <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight whitespace-pre-line">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight whitespace-pre-line">
                   {t('features.title')}
                 </h2>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <motion.button whileHover={{ gap: '12px' }} onClick={() => navigate('/login')}
-                className="hidden md:flex items-center gap-2 text-sm font-semibold text-[#1a1a1a] hover:text-[#F97316] transition-colors">
+                className="hidden md:flex items-center gap-2 text-sm font-semibold text-gray-300 hover:text-[#F97316] transition-colors">
                 {t('features.exploreAll')} <ArrowRight className="w-4 h-4" />
               </motion.button>
             </ScrollReveal>
@@ -397,20 +393,20 @@ export default function Landing() {
               <StaggerItem key={card.title}>
                 <motion.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}
                   onClick={() => navigate('/login')}
-                  className={`${card.bg} rounded-3xl p-6 lg:p-8 cursor-pointer group relative overflow-hidden h-[260px] lg:h-[300px] flex flex-col justify-between transition-shadow hover:shadow-xl`}>
+                  className={`${card.bg} rounded-3xl p-6 lg:p-8 cursor-pointer group relative overflow-hidden h-[260px] lg:h-[300px] flex flex-col justify-between transition-shadow hover:shadow-xl hover:shadow-black/30 border border-[#2a2a2d]`}>
                   <div className="self-end">
-                    <div className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-sm group-hover:bg-white group-hover:shadow-md transition-all">
-                      <ArrowUpRight className="w-5 h-5 text-[#1a1a1a] group-hover:text-[#F97316] transition-colors" />
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shadow-sm group-hover:bg-white/15 transition-all">
+                      <ArrowUpRight className="w-5 h-5 text-gray-300 group-hover:text-orange-400 transition-colors" />
                     </div>
                   </div>
                   <div className="flex-1 flex items-center justify-center">
-                    <div className="w-20 h-20 rounded-2xl bg-white/60 backdrop-blur-sm flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                    <div className="w-20 h-20 rounded-2xl bg-white/5 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
                       <card.icon className="w-10 h-10 text-[#F97316]" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#1a1a1a]">{card.title}</h3>
-                    <p className="text-xs text-[#999] mt-0.5">{card.subtitle}</p>
+                    <h3 className="text-lg font-bold text-gray-200">{card.title}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">{card.subtitle}</p>
                   </div>
                 </motion.div>
               </StaggerItem>
@@ -422,20 +418,20 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           PRODUCT SHOWCASE — Tabs + demo cards
           ═══════════════════════════════════════════ */}
-      <section id="showcase" className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
+      <section id="showcase" className="py-24 px-6 lg:px-8 bg-[#111113]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="mb-12">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('showcase.subtitle')}</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight whitespace-pre-line">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight whitespace-pre-line">
               {t('showcase.title')}
             </h2>
           </ScrollReveal>
 
-          <div className="flex items-center gap-1 mb-10 bg-gray-100 rounded-full p-1 w-fit">
+          <div className="flex items-center gap-1 mb-10 bg-white/5 rounded-full p-1 w-fit border border-[#2a2a2d]">
             {SHOWCASE_TABS.map(tab => (
               <motion.button key={tab.id} onClick={() => setActiveTab(tab.id)} whileTap={{ scale: 0.97 }}
                 className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
-                  activeTab === tab.id ? 'bg-[#1a1a1a] text-white shadow-lg' : 'text-[#666] hover:text-[#1a1a1a]'
+                  activeTab === tab.id ? 'bg-orange-500 text-white shadow-lg' : 'text-gray-400 hover:text-gray-200'
                 }`}>
                 {tab.label}
               </motion.button>
@@ -448,14 +444,14 @@ export default function Landing() {
               {activeShowcase.cards.map((card, i) => (
                 <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer"
+                  className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] hover:shadow-lg hover:shadow-black/20 transition-all cursor-pointer"
                   onClick={() => navigate('/login')}>
                   <span className="text-2xl mb-3 block">{card.icon}</span>
-                  <h4 className="font-bold text-[#1a1a1a] text-sm mb-1">{card.title}</h4>
+                  <h4 className="font-bold text-gray-200 text-sm mb-1">{card.title}</h4>
                   <p className={`text-xl font-extrabold ${card.color} mb-2`}>{card.price}</p>
                   <div className="flex items-center justify-between">
                     <span className={`text-[10px] font-medium ${card.bg} px-2 py-0.5 rounded-full ${card.color}`}>{card.change}</span>
-                    <span className="text-[10px] text-[#999]">{card.confidence}%</span>
+                    <span className="text-[10px] text-gray-500">{card.confidence}%</span>
                   </div>
                 </motion.div>
               ))}
@@ -620,11 +616,11 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           IMPACT NUMBERS — Big stats with context
           ═══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-8 bg-gradient-to-br from-[#FFF7ED] via-white to-[#F0FDFA]">
+      <section className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Built for Bharat</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">
               Designed for 12M+ Indian SMBs
             </h2>
           </ScrollReveal>
@@ -638,14 +634,14 @@ export default function Landing() {
             ].map((stat, i) => (
               <ScrollReveal key={stat.label} delay={i * 0.1}>
                 <motion.div whileHover={{ y: -4 }}
-                  className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all h-full"
+                  className="bg-[#1a1a1d] rounded-2xl p-6 border border-[#2a2a2d] shadow-sm hover:shadow-lg hover:shadow-black/20 transition-all h-full"
                 >
-                  <div className="w-10 h-10 bg-[#FFF7ED] rounded-xl flex items-center justify-center mb-3">
-                    <stat.icon className="w-5 h-5 text-[#F97316]" />
+                  <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center mb-3">
+                    <stat.icon className="w-5 h-5 text-orange-400" />
                   </div>
-                  <p className="text-3xl font-extrabold text-[#1a1a1a]">{stat.value}</p>
-                  <p className="text-sm font-bold text-[#1a1a1a] mt-1">{stat.label}</p>
-                  <p className="text-xs text-[#999] mt-1 leading-relaxed">{stat.desc}</p>
+                  <p className="text-3xl font-extrabold text-gray-100">{stat.value}</p>
+                  <p className="text-sm font-bold text-gray-200 mt-1">{stat.label}</p>
+                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">{stat.desc}</p>
                 </motion.div>
               </ScrollReveal>
             ))}
@@ -654,7 +650,7 @@ export default function Landing() {
       </section>
 
       {/* ═══ PROMOTIONAL SPLIT ═══ */}
-      <section className="py-24 px-6 lg:px-8 bg-white">
+      <section className="py-24 px-6 lg:px-8 bg-[#111113]">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-6">
             <ScrollReveal direction="left">
@@ -692,12 +688,12 @@ export default function Landing() {
       </section>
 
       {/* ═══ BENEFITS ═══ */}
-      <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
+      <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('benefits.subtitle')}</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">{t('benefits.title')}</h2>
-            <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">{t('benefits.title')}</h2>
+            <p className="text-gray-400 mt-4 text-lg max-w-2xl mx-auto">
               {t('benefits.desc')}
             </p>
           </ScrollReveal>
@@ -706,13 +702,13 @@ export default function Landing() {
             {BENEFITS.map((b) => (
               <StaggerItem key={b.title}>
                 <motion.div whileHover={{ y: -6, scale: 1.02 }}
-                  className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-all relative">
+                  className="bg-[#1a1a1d] rounded-2xl p-8 shadow-sm border border-[#2a2a2d] hover:shadow-lg hover:shadow-black/20 transition-all relative">
                   <div className={`absolute top-6 right-6 w-12 h-12 ${b.color} rounded-xl flex items-center justify-center`}>
                     <b.icon className={`w-6 h-6 ${b.iconColor}`} />
                   </div>
                   <div className="mt-2">
-                    <h4 className="text-xl font-extrabold text-[#1a1a1a] mb-2">{b.title}</h4>
-                    <p className="text-[#666] text-sm leading-relaxed">{b.desc}</p>
+                    <h4 className="text-xl font-extrabold text-gray-100 mb-2">{b.title}</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">{b.desc}</p>
                   </div>
                 </motion.div>
               </StaggerItem>
@@ -722,31 +718,31 @@ export default function Landing() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section id="testimonials" className="py-24 px-6 lg:px-8 bg-white">
+      <section id="testimonials" className="py-24 px-6 lg:px-8 bg-[#111113]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('testimonials.subtitle')}</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">{t('testimonials.title')}</h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">{t('testimonials.title')}</h2>
           </ScrollReveal>
 
           <div className="grid lg:grid-cols-2 gap-6">
             {TESTIMONIALS.map((testimonial, i) => (
               <ScrollReveal key={testimonial.name} delay={i * 0.15}>
-                <motion.div whileHover={{ y: -4 }} className="bg-[#FAFAF9] rounded-2xl p-8 border border-gray-100">
+                <motion.div whileHover={{ y: -4 }} className="bg-[#1a1a1d] rounded-2xl p-8 border border-[#2a2a2d]">
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, j) => (
                       <Star key={j} className="w-5 h-5 fill-[#F97316] text-[#F97316]" />
                     ))}
                   </div>
-                  <p className="text-[#1a1a1a] text-lg font-medium leading-relaxed mb-6">{testimonial.quote}</p>
+                  <p className="text-gray-200 text-lg font-medium leading-relaxed mb-6">{testimonial.quote}</p>
                   <div className="flex items-center gap-3">
                     <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
                     <div>
-                      <p className="font-bold text-[#1a1a1a] text-sm">{testimonial.name}</p>
-                      <p className="text-xs text-[#999]">{testimonial.role}</p>
+                      <p className="font-bold text-gray-200 text-sm">{testimonial.name}</p>
+                      <p className="text-xs text-gray-500">{testimonial.role}</p>
                     </div>
                     {testimonial.badge && (
-                      <span className="ml-auto text-[10px] font-semibold bg-green-50 text-green-600 px-3 py-1 rounded-full flex items-center gap-1">
+                      <span className="ml-auto text-[10px] font-semibold bg-green-500/10 text-green-400 px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="w-3 h-3" /> {testimonial.badge}
                       </span>
                     )}

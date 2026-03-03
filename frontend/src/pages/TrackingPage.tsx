@@ -112,23 +112,23 @@ export default function TrackingPage() {
     <div className="p-6 lg:p-8 max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-800">Delivery Tracking</h1>
-        <p className="text-slate-500 text-sm">Track your wholesale orders in real-time</p>
+        <h1 className="text-2xl font-bold text-gray-100">Delivery Tracking</h1>
+        <p className="text-gray-400 text-sm">Track your wholesale orders in real-time</p>
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6">
+      <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-4 mb-6">
         <form
           onSubmit={e => { e.preventDefault(); handleTrack() }}
           className="flex gap-2"
         >
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
               placeholder="Enter Order ID (e.g., BB-ORD-2024-002)"
-              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+              className="w-full pl-10 pr-4 py-3 bg-[#141416] border border-[#333] rounded-xl text-sm text-gray-100 placeholder:text-gray-500 focus:ring-2 focus:ring-orange-500 outline-none"
             />
           </div>
           <button
@@ -148,12 +148,12 @@ export default function TrackingPage() {
         </form>
         {/* Quick links */}
         <div className="flex gap-2 mt-3 flex-wrap">
-          <span className="text-xs text-slate-400">Quick track:</span>
+          <span className="text-xs text-gray-500">Quick track:</span>
           {Object.keys(DEMO_TRACKING).map(id => (
             <button
               key={id}
               onClick={() => { setSearchInput(id); handleTrack(id) }}
-              className="text-xs text-orange-600 hover:text-orange-700 font-medium hover:underline"
+              className="text-xs text-orange-400 hover:text-orange-300 font-medium hover:underline"
             >
               {id}
             </button>
@@ -168,16 +168,16 @@ export default function TrackingPage() {
           animate={{ opacity: 1, y: 0 }}
         >
           {/* Order Info */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
+          <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5 mb-4">
             <div className="flex items-center justify-between flex-wrap gap-3">
               <div>
-                <p className="text-xs text-slate-400 mb-1">Order ID</p>
-                <p className="font-bold text-slate-800">{tracking.orderId}</p>
-                <p className="text-sm text-slate-500 mt-0.5">{tracking.product}</p>
+                <p className="text-xs text-gray-500 mb-1">Order ID</p>
+                <p className="font-bold text-gray-100">{tracking.orderId}</p>
+                <p className="text-sm text-gray-400 mt-0.5">{tracking.product}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-slate-400 mb-1">Estimated Delivery</p>
-                <p className="font-semibold text-green-600 flex items-center gap-1">
+                <p className="text-xs text-gray-500 mb-1">Estimated Delivery</p>
+                <p className="font-semibold text-green-400 flex items-center gap-1">
                   <Clock className="w-4 h-4" />
                   {tracking.eta}
                 </p>
@@ -186,8 +186,8 @@ export default function TrackingPage() {
           </div>
 
           {/* Timeline */}
-          <div className="bg-white rounded-xl border border-slate-200 p-5">
-            <h3 className="font-bold text-slate-800 mb-6">Shipment Progress</h3>
+          <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5">
+            <h3 className="font-bold text-gray-100 mb-6">Shipment Progress</h3>
             <div className="relative">
               {tracking.steps.map((step, i) => (
                 <motion.div
@@ -200,17 +200,17 @@ export default function TrackingPage() {
                   {/* Connector Line */}
                   {i < tracking.steps.length - 1 && (
                     <div className={`absolute left-[19px] top-10 w-0.5 h-full ${
-                      step.completed ? 'bg-green-400' : 'bg-slate-200'
+                      step.completed ? 'bg-green-400' : 'bg-[#2a2a2d]'
                     }`} />
                   )}
 
                   {/* Icon */}
                   <div className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                     step.active
-                      ? 'bg-orange-500 text-white ring-4 ring-orange-100'
+                      ? 'bg-orange-500 text-white ring-4 ring-orange-500/15'
                       : step.completed
                         ? 'bg-green-500 text-white'
-                        : 'bg-slate-100 text-slate-400'
+                        : 'bg-white/[0.03] text-gray-500'
                   }`}>
                     <step.icon className="w-4.5 h-4.5" />
                     {step.active && (
@@ -222,25 +222,25 @@ export default function TrackingPage() {
                   <div className={`pb-8 flex-1 ${i === tracking.steps.length - 1 ? 'pb-0' : ''}`}>
                     <div className="flex items-center gap-2">
                       <h4 className={`text-sm font-semibold ${
-                        step.completed || step.active ? 'text-slate-800' : 'text-slate-400'
+                        step.completed || step.active ? 'text-gray-100' : 'text-gray-500'
                       }`}>
                         {step.label}
                       </h4>
                       {step.active && (
-                        <span className="px-2 py-0.5 bg-orange-100 text-orange-600 text-[10px] font-bold rounded-full">
+                        <span className="px-2 py-0.5 bg-orange-500/15 text-orange-400 text-[10px] font-bold rounded-full">
                           CURRENT
                         </span>
                       )}
                     </div>
-                    <p className={`text-xs mt-0.5 ${step.completed || step.active ? 'text-slate-500' : 'text-slate-300'}`}>
+                    <p className={`text-xs mt-0.5 ${step.completed || step.active ? 'text-gray-400' : 'text-gray-600'}`}>
                       {step.description}
                     </p>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className={`text-xs ${step.completed || step.active ? 'text-slate-400' : 'text-slate-300'}`}>
+                      <span className={`text-xs ${step.completed || step.active ? 'text-gray-500' : 'text-gray-600'}`}>
                         {step.time}
                       </span>
                       {step.location && (
-                        <span className="text-xs text-slate-400 flex items-center gap-0.5">
+                        <span className="text-xs text-gray-500 flex items-center gap-0.5">
                           <MapPin className="w-3 h-3" />
                           {step.location}
                         </span>
@@ -284,10 +284,10 @@ export default function TrackingPage() {
       {/* No tracking shown yet */}
       {!tracking && !searching && (
         <div className="text-center py-16">
-          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Truck className="w-8 h-8 text-slate-300" />
+          <div className="w-16 h-16 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-4">
+            <Truck className="w-8 h-8 text-gray-600" />
           </div>
-          <p className="text-slate-500 text-sm">Enter an order ID to track your delivery</p>
+          <p className="text-gray-400 text-sm">Enter an order ID to track your delivery</p>
         </div>
       )}
     </div>

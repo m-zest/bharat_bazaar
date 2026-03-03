@@ -22,9 +22,9 @@ const strategyIcons: Record<string, any> = {
 }
 
 const strategyGradients: Record<string, { gradient: string; glow: string; badge: string; text: string }> = {
-  competitive: { gradient: 'from-blue-500 to-indigo-600', glow: 'shadow-blue-500/20', badge: 'bg-blue-100 text-blue-700', text: 'text-blue-600' },
-  premium: { gradient: 'from-saffron-400 to-orange-500', glow: 'shadow-saffron-500/20', badge: 'bg-saffron-100 text-saffron-700', text: 'text-saffron-600' },
-  value: { gradient: 'from-bazaar-400 to-teal-500', glow: 'shadow-bazaar-500/20', badge: 'bg-bazaar-100 text-bazaar-700', text: 'text-bazaar-600' },
+  competitive: { gradient: 'from-blue-500 to-indigo-600', glow: 'shadow-blue-500/20', badge: 'bg-blue-500/15 text-blue-400', text: 'text-blue-400' },
+  premium: { gradient: 'from-saffron-400 to-orange-500', glow: 'shadow-saffron-500/20', badge: 'bg-saffron-500/15 text-saffron-400', text: 'text-saffron-400' },
+  value: { gradient: 'from-bazaar-400 to-teal-500', glow: 'shadow-bazaar-500/20', badge: 'bg-bazaar-500/15 text-bazaar-400', text: 'text-bazaar-400' },
 }
 
 export default function PricingPage() {
@@ -204,7 +204,7 @@ export default function PricingPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => loadDemo(demo)}
-            className="text-sm px-4 py-2 bg-white border border-gray-200 rounded-xl hover:border-saffron-300 hover:bg-saffron-50 transition-all shadow-sm"
+            className="text-sm px-4 py-2 bg-[#1a1a1d] border border-[#2a2a2d] rounded-xl hover:border-saffron-300 hover:bg-saffron-500/10 transition-all shadow-sm shadow-black/20"
           >
             {demo.name}
           </motion.button>
@@ -213,9 +213,9 @@ export default function PricingPage() {
 
       <div className="grid lg:grid-cols-5 gap-8">
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 h-fit">
+        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-[#1a1a1d] rounded-2xl p-6 shadow-sm shadow-black/20 border border-[#2a2a2d] space-y-4 h-fit">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Product Name</label>
             <input
               type="text"
               value={productName}
@@ -226,7 +226,7 @@ export default function PricingPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
             <select value={category} onChange={e => setCategory(e.target.value)} className="input-field">
               {['Electronics', 'Fashion', 'Groceries', 'Home & Kitchen', 'Beauty & Personal Care', 'Books & Stationery', 'Sports & Fitness', 'Toys & Baby Products'].map(c => (
                 <option key={c} value={c}>{c}</option>
@@ -235,7 +235,7 @@ export default function PricingPage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Cost Price (₹)</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Cost Price (₹)</label>
               <input
                 type="number"
                 value={costPrice}
@@ -246,7 +246,7 @@ export default function PricingPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Current Price (₹)</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Current Price (₹)</label>
               <input
                 type="number"
                 value={currentPrice}
@@ -262,15 +262,15 @@ export default function PricingPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className={`p-3 rounded-xl ${marginPct >= 30 ? 'bg-green-50 border border-green-200' : marginPct >= 15 ? 'bg-yellow-50 border border-yellow-200' : 'bg-red-50 border border-red-200'}`}
+              className={`p-3 rounded-xl ${marginPct >= 30 ? 'bg-green-500/10 border border-green-500/20' : marginPct >= 15 ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-red-500/10 border border-red-500/20'}`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-gray-600">Current Margin</span>
-                <span className={`text-lg font-bold ${marginPct >= 30 ? 'text-green-600' : marginPct >= 15 ? 'text-yellow-600' : 'text-red-600'}`}>
+                <span className="text-xs font-medium text-gray-400">Current Margin</span>
+                <span className={`text-lg font-bold ${marginPct >= 30 ? 'text-green-400' : marginPct >= 15 ? 'text-yellow-400' : 'text-red-400'}`}>
                   {marginPct}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+              <div className="w-full bg-[#2a2a2d] rounded-full h-1.5 mt-2">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${Math.min(marginPct, 100)}%` }}
@@ -281,7 +281,7 @@ export default function PricingPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">City / Region</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">City / Region</label>
             <select value={city} onChange={e => setCity(e.target.value)} className="input-field">
               {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
@@ -308,7 +308,7 @@ export default function PricingPage() {
           </motion.button>
 
           {error && (
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
+            <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-sm text-amber-400">
               AI features temporarily limited. Our servers are experiencing high demand. Please try again in a few minutes.
             </div>
           )}
@@ -325,7 +325,7 @@ export default function PricingPage() {
                 className="space-y-4"
               >
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                  <div key={i} className="bg-[#1a1a1d] rounded-2xl p-6 shadow-sm shadow-black/20 border border-[#2a2a2d]">
                     <div className="skeleton h-6 w-32 mb-3 rounded-lg" />
                     <div className="skeleton h-10 w-24 mb-3 rounded-lg" />
                     <div className="skeleton h-4 w-full mb-2 rounded-lg" />
@@ -343,20 +343,20 @@ export default function PricingPage() {
               >
                 {/* Market Context */}
                 <ScrollReveal>
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-2xl p-5 border border-gray-200">
-                    <h3 className="font-semibold text-gray-700 mb-3 text-sm uppercase tracking-wider">Market Context — {city}</h3>
+                  <div className="bg-gradient-to-br from-white/[0.03] to-white/[0.05] rounded-2xl p-5 border border-[#2a2a2d]">
+                    <h3 className="font-semibold text-gray-300 mb-3 text-sm uppercase tracking-wider">Market Context — {city}</h3>
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider">Avg Competitor</p>
-                        <p className="text-xl font-bold text-gray-900 font-display">₹{result.marketContext?.averageCompetitorPrice}</p>
+                        <p className="text-xl font-bold text-gray-100 font-display">₹{result.marketContext?.averageCompetitorPrice}</p>
                       </div>
                       <div>
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider">Price Range</p>
-                        <p className="text-xl font-bold text-gray-900 font-display">₹{result.marketContext?.priceRange?.min} — ₹{result.marketContext?.priceRange?.max}</p>
+                        <p className="text-xl font-bold text-gray-100 font-display">₹{result.marketContext?.priceRange?.min} — ₹{result.marketContext?.priceRange?.max}</p>
                       </div>
                       <div>
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider">Purchasing Power</p>
-                        <p className="text-xl font-bold text-gray-900 font-display">{result.marketContext?.regionalPurchasingPower}/100</p>
+                        <p className="text-xl font-bold text-gray-100 font-display">{result.marketContext?.regionalPurchasingPower}/100</p>
                       </div>
                     </div>
                   </div>
@@ -373,7 +373,7 @@ export default function PricingPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.12 }}
                       whileHover={{ y: -2 }}
-                      className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg ${style.glow} transition-all`}
+                      className={`bg-[#1a1a1d] rounded-2xl overflow-hidden shadow-sm shadow-black/20 border border-[#2a2a2d] hover:shadow-lg ${style.glow} transition-all`}
                     >
                       {/* Gradient top accent */}
                       <div className={`h-1 bg-gradient-to-r ${style.gradient}`} />
@@ -388,14 +388,14 @@ export default function PricingPage() {
                                 {rec.strategy} Strategy
                               </span>
                               <div className="flex items-baseline gap-1 mt-0.5">
-                                <span className="text-3xl font-display font-extrabold text-gray-900">₹{rec.suggestedPrice}</span>
+                                <span className="text-3xl font-display font-extrabold text-gray-100">₹{rec.suggestedPrice}</span>
                               </div>
                             </div>
                           </div>
                           <div className="text-right">
                             <p className="text-[10px] text-gray-500 uppercase">Confidence</p>
                             <div className="flex items-center gap-1.5">
-                              <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="w-16 h-1.5 bg-white/[0.03] rounded-full overflow-hidden">
                                 <motion.div
                                   initial={{ width: 0 }}
                                   animate={{ width: `${rec.confidenceScore}%` }}
@@ -407,7 +407,7 @@ export default function PricingPage() {
                             </div>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 leading-relaxed mb-3">{rec.reasoning}</p>
+                        <p className="text-sm text-gray-400 leading-relaxed mb-3">{rec.reasoning}</p>
                         <div className="flex gap-4 text-sm">
                           <span className="flex items-center gap-1">
                             {rec.expectedImpact?.demandChange?.startsWith('+') ?
@@ -422,7 +422,7 @@ export default function PricingPage() {
                             Revenue: <span className="font-medium">{rec.expectedImpact?.revenueChange}</span>
                           </span>
                           {rec.expectedImpact?.monthlyProfitImpact && (
-                            <span className="font-semibold text-green-600">
+                            <span className="font-semibold text-green-400">
                               {rec.expectedImpact.monthlyProfitImpact}
                             </span>
                           )}
@@ -435,14 +435,14 @@ export default function PricingPage() {
                 {/* Festival Insight */}
                 {result.festivalInsight && (
                   <ScrollReveal>
-                    <div className="bg-gradient-to-r from-saffron-50 to-orange-50 rounded-2xl p-5 border border-saffron-200">
+                    <div className="bg-gradient-to-r from-saffron-500/10 to-orange-500/10 rounded-2xl p-5 border border-saffron-500/20">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-saffron-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-saffron-500/15 rounded-xl flex items-center justify-center flex-shrink-0">
                           <Sparkles className="w-5 h-5 text-saffron-500" />
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-saffron-600 uppercase tracking-wider">Festival Insight</p>
-                          <p className="text-sm text-gray-700 mt-1">{result.festivalInsight}</p>
+                          <p className="text-xs font-semibold text-saffron-400 uppercase tracking-wider">Festival Insight</p>
+                          <p className="text-sm text-gray-300 mt-1">{result.festivalInsight}</p>
                         </div>
                       </div>
                     </div>
@@ -467,8 +467,8 @@ export default function PricingPage() {
             )}
 
             {!result && !loading && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
-                <IndianRupee className="w-16 h-16 mx-auto mb-4 text-gray-200" />
+              <div className="bg-[#1a1a1d] rounded-2xl shadow-sm shadow-black/20 border border-[#2a2a2d] text-center py-16 text-gray-400">
+                <IndianRupee className="w-16 h-16 mx-auto mb-4 text-gray-600" />
                 <p className="text-lg font-medium">Enter a product to get AI pricing strategies</p>
                 <p className="text-sm mt-2">Or click a "Quick Demo" button above to try instantly</p>
               </div>
