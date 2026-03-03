@@ -5,11 +5,13 @@ import {
   Package, MessageCircle, GitCompare, Eye, ClipboardList,
   Menu, X, ChevronRight, Camera, ShoppingCart, Truck,
   Bell, BarChart3, User, LogOut, Store, MapPin, Receipt, BookOpen,
+  Sun, Moon,
 } from 'lucide-react'
 import { SidebarLogo, NavbarLogo } from './TarazuLogo'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../utils/AuthContext'
 import { useCart } from '../utils/CartContext'
+import { useTheme } from '../utils/ThemeContext'
 
 const navSections = [
   {
@@ -90,6 +92,7 @@ export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, logout } = useAuth()
   const { totalItems } = useCart()
+  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
     document.title = pageTitles[location.pathname] || 'BharatBazaar AI — Weighed by Intelligence'
@@ -104,11 +107,18 @@ export default function Layout() {
     <div className="flex h-screen bg-[#0c0c0d] overflow-hidden">
       {/* Desktop Sidebar — Dark Theme */}
       <aside className="hidden lg:flex w-72 flex-col bg-[#141416] border-r border-[#222]">
-        {/* Logo */}
-        <div className="p-6 border-b border-[#222]">
+        {/* Logo + Theme Toggle */}
+        <div className="p-6 border-b border-[#222] flex items-center justify-between">
           <Link to="/" className="block group">
-            <SidebarLogo mode="dark" className="group-hover:opacity-80 transition-opacity" />
+            <SidebarLogo mode={theme === 'dark' ? 'dark' : 'light'} className="group-hover:opacity-80 transition-opacity" />
           </Link>
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-orange-400 hover:bg-white/[0.06] transition-all"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
         </div>
 
         {/* Nav Items — Sectioned */}
@@ -196,9 +206,15 @@ export default function Layout() {
       {/* Mobile Header — Dark */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#141416]/90 backdrop-blur-xl border-b border-[#222] px-4 py-3 flex items-center justify-between">
         <Link to="/" className="block">
-          <NavbarLogo mode="dark" className="h-8 w-auto" />
+          <NavbarLogo mode={theme === 'dark' ? 'dark' : 'light'} className="h-8 w-auto" />
         </Link>
         <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-300"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
           {totalItems > 0 && (
             <Link to="/cart" className="relative p-2">
               <ShoppingCart className="w-5 h-5 text-gray-300" />

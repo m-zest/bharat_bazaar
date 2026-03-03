@@ -436,8 +436,7 @@ export function Hero195() {
             See Every Feature in Action
           </h2>
           <p className="text-gray-400 mt-4 text-lg max-w-2xl mx-auto">
-            Explore real UI previews — AI pricing, chat, invoices, tracking & more.
-            Login as <span className="font-bold text-gray-200">admin / admin</span> to try everything live.
+            Explore real UI previews — AI pricing, multilingual chat, GST invoices, delivery tracking & more.
           </p>
         </motion.div>
 
@@ -480,10 +479,9 @@ export function Hero195() {
             <div className="mt-8 pt-6 border-t border-[#2a2a2d] flex items-center gap-8 flex-wrap justify-center">
               {[
                 { value: '18', label: 'Features' },
-                { value: '7', label: 'AI Models' },
-                { value: '14', label: 'API Endpoints' },
                 { value: '6', label: 'Languages' },
                 { value: '10', label: 'Cities' },
+                { value: '100%', label: 'Serverless' },
               ].map(stat => (
                 <div key={stat.label} className="text-center">
                   <p className="text-2xl font-extrabold text-gray-200">{stat.value}</p>
@@ -508,7 +506,7 @@ export function Hero195() {
             className="inline-flex items-center gap-2.5 bg-orange-500 text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/20"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            Try All 18 Features — Login as admin/admin
+            Explore All 18 Features
             <ArrowRight className="w-4 h-4" />
           </motion.button>
         </motion.div>
