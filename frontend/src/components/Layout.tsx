@@ -4,7 +4,7 @@ import {
   LayoutDashboard, IndianRupee, Languages, MessageSquareText,
   Package, MessageCircle, GitCompare, Eye, ClipboardList,
   Menu, X, ChevronRight, Camera, ShoppingCart, Truck,
-  Bell, BarChart3, User, LogOut, Store, MapPin,
+  Bell, BarChart3, User, LogOut, Store, MapPin, Receipt, BookOpen,
 } from 'lucide-react'
 import { SidebarLogo, NavbarLogo } from './TarazuLogo'
 import { useState, useEffect } from 'react'
@@ -28,6 +28,8 @@ const navSections = [
       { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList },
       { path: '/orders', label: 'Order History', labelHi: 'ऑर्डर हिस्ट्री', icon: ShoppingCart },
       { path: '/tracking', label: 'Delivery Tracking', labelHi: 'डिलीवरी ट्रैकिंग', icon: Truck },
+      { path: '/invoices', label: 'GST Invoices', labelHi: 'GST बिल', icon: Receipt },
+      { path: '/khata', label: 'Customer Khata', labelHi: 'ग्राहक खाता', icon: BookOpen },
     ],
   },
   {
@@ -78,6 +80,8 @@ const pageTitles: Record<string, string> = {
   '/profile': 'Store Profile — BharatBazaar AI',
   '/notifications': 'Notifications — BharatBazaar AI',
   '/reports': 'Business Reports — BharatBazaar AI',
+  '/invoices': 'GST Invoices — BharatBazaar AI',
+  '/khata': 'Customer Khata — BharatBazaar AI',
 }
 
 export default function Layout() {
