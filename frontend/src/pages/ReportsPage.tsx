@@ -47,10 +47,10 @@ export default function ReportsPage() {
   const [period, setPeriod] = useState('monthly')
 
   const kpis = [
-    { label: 'Total Revenue', value: '₹4.25L', change: '+12.3%', positive: true, icon: IndianRupee, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'Total Orders', value: '232', change: '+8.1%', positive: true, icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Avg. Order Value', value: '₹1,832', change: '+3.7%', positive: true, icon: Target, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { label: 'Profit Margin', value: '23.1%', change: '-1.2%', positive: false, icon: TrendingUp, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { label: 'Total Revenue', value: '₹4.25L', change: '+12.3%', positive: true, icon: IndianRupee, color: 'text-green-400', bg: 'bg-green-500/10' },
+    { label: 'Total Orders', value: '232', change: '+8.1%', positive: true, icon: ShoppingCart, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { label: 'Avg. Order Value', value: '₹1,832', change: '+3.7%', positive: true, icon: Target, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { label: 'Profit Margin', value: '23.1%', change: '-1.2%', positive: false, icon: TrendingUp, color: 'text-orange-400', bg: 'bg-orange-500/10' },
   ]
 
   return (
@@ -58,24 +58,24 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Business Reports</h1>
-          <p className="text-slate-500 text-sm">Analytics and insights for Sharma Kirana Store</p>
+          <h1 className="text-2xl font-bold text-gray-100">Business Reports</h1>
+          <p className="text-gray-400 text-sm">Analytics and insights for Sharma Kirana Store</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex bg-white border border-slate-200 rounded-lg p-0.5">
+          <div className="flex bg-[#1a1a1d] border border-[#2a2a2d] rounded-lg p-0.5">
             {['weekly', 'monthly', 'yearly'].map(p => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all capitalize ${
-                  period === p ? 'bg-orange-500 text-white' : 'text-slate-600 hover:bg-slate-50'
+                  period === p ? 'bg-orange-500 text-white' : 'text-gray-400 hover:bg-white/[0.06]'
                 }`}
               >
                 {p}
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+          <button className="flex items-center gap-1.5 px-4 py-2 bg-[#1a1a1d] border border-[#2a2a2d] rounded-lg text-sm font-medium text-gray-300 hover:bg-white/[0.06] transition-colors">
             <Download className="w-3.5 h-3.5" />
             Export
           </button>
@@ -90,19 +90,19 @@ export default function ReportsPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-xl border border-slate-200 p-4"
+            className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-4"
           >
             <div className="flex items-center justify-between mb-2">
               <div className={`w-8 h-8 ${kpi.bg} rounded-lg flex items-center justify-center`}>
                 <kpi.icon className={`w-4 h-4 ${kpi.color}`} />
               </div>
-              <span className={`flex items-center gap-0.5 text-xs font-medium ${kpi.positive ? 'text-green-600' : 'text-red-500'}`}>
+              <span className={`flex items-center gap-0.5 text-xs font-medium ${kpi.positive ? 'text-green-400' : 'text-red-400'}`}>
                 {kpi.positive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                 {kpi.change}
               </span>
             </div>
-            <p className="text-xl font-bold text-slate-800">{kpi.value}</p>
-            <p className="text-xs text-slate-500">{kpi.label}</p>
+            <p className="text-xl font-bold text-gray-100">{kpi.value}</p>
+            <p className="text-xs text-gray-400">{kpi.label}</p>
           </motion.div>
         ))}
       </div>
@@ -114,20 +114,20 @@ export default function ReportsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5"
+          className="lg:col-span-2 bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5"
         >
-          <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <h3 className="font-bold text-gray-100 mb-4 flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-orange-500" />
             Revenue & Profit Trend
           </h3>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2d" />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#94a3b8' }} />
               <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} tickFormatter={v => `₹${(v/1000).toFixed(0)}K`} />
               <Tooltip
                 formatter={(value: number) => `₹${value.toLocaleString('en-IN')}`}
-                contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0' }}
+                contentStyle={{ borderRadius: 12, background: '#1a1a1d', color: '#e5e7eb', border: '1px solid #2a2a2d' }}
               />
               <Legend />
               <Area type="monotone" dataKey="revenue" stroke="#f97316" fill="#fed7aa" fillOpacity={0.5} name="Revenue" />
@@ -141,9 +141,9 @@ export default function ReportsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-xl border border-slate-200 p-5"
+          className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5"
         >
-          <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <h3 className="font-bold text-gray-100 mb-4 flex items-center gap-2">
             <PieChart className="w-4 h-4 text-orange-500" />
             Sales by Category
           </h3>
@@ -164,7 +164,7 @@ export default function ReportsPage() {
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
                   {cat.name}
                 </span>
-                <span className="font-medium text-slate-700">{cat.value}%</span>
+                <span className="font-medium text-gray-300">{cat.value}%</span>
               </div>
             ))}
           </div>
@@ -178,18 +178,18 @@ export default function ReportsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-xl border border-slate-200 p-5"
+          className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5"
         >
-          <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <h3 className="font-bold text-gray-100 mb-4 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-orange-500" />
             This Week&apos;s Daily Sales
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={dailySales}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2d" />
               <XAxis dataKey="day" tick={{ fontSize: 12, fill: '#94a3b8' }} />
               <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} tickFormatter={v => `₹${(v/1000).toFixed(0)}K`} />
-              <Tooltip formatter={(value: number) => `₹${value.toLocaleString('en-IN')}`} contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0' }} />
+              <Tooltip formatter={(value: number) => `₹${value.toLocaleString('en-IN')}`} contentStyle={{ borderRadius: 12, background: '#1a1a1d', color: '#e5e7eb', border: '1px solid #2a2a2d' }} />
               <Bar dataKey="sales" fill="#f97316" radius={[6, 6, 0, 0]} name="Sales" />
             </BarChart>
           </ResponsiveContainer>
@@ -200,9 +200,9 @@ export default function ReportsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white rounded-xl border border-slate-200 p-5"
+          className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-5"
         >
-          <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <h3 className="font-bold text-gray-100 mb-4 flex items-center gap-2">
             <Award className="w-4 h-4 text-orange-500" />
             Top Selling Products
           </h3>
@@ -210,18 +210,18 @@ export default function ReportsPage() {
             {topProducts.map((product, i) => (
               <div key={product.name} className="flex items-center gap-3">
                 <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
-                  i === 0 ? 'bg-amber-100 text-amber-700' :
-                  i === 1 ? 'bg-slate-100 text-slate-600' :
-                  i === 2 ? 'bg-orange-100 text-orange-700' :
-                  'bg-slate-50 text-slate-500'
+                  i === 0 ? 'bg-amber-500/15 text-amber-400' :
+                  i === 1 ? 'bg-white/[0.03] text-gray-400' :
+                  i === 2 ? 'bg-orange-500/15 text-orange-400' :
+                  'bg-white/[0.03] text-gray-400'
                 }`}>
                   #{i + 1}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-800 truncate">{product.name}</p>
-                  <p className="text-xs text-slate-400">{product.sold} sold &middot; ₹{(product.revenue / 1000).toFixed(1)}K revenue</p>
+                  <p className="text-sm font-medium text-gray-100 truncate">{product.name}</p>
+                  <p className="text-xs text-gray-500">{product.sold} sold &middot; ₹{(product.revenue / 1000).toFixed(1)}K revenue</p>
                 </div>
-                <span className={`flex items-center gap-0.5 text-xs font-medium ${product.trend >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                <span className={`flex items-center gap-0.5 text-xs font-medium ${product.trend >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {product.trend >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                   {Math.abs(product.trend)}%
                 </span>

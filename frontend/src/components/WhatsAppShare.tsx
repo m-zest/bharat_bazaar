@@ -19,7 +19,7 @@ export default function WhatsAppShare({ text, label = 'WhatsApp', compact = fals
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={handleShare}
-        className="p-2 hover:bg-green-50 rounded-lg transition-all"
+        className="p-2 hover:bg-green-500/10 rounded-lg transition-all"
         title="Share on WhatsApp"
       >
         <Share2 className="w-4 h-4 text-green-500" />

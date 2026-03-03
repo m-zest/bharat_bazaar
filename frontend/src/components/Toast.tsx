@@ -28,10 +28,10 @@ const icons = {
 }
 
 const styles = {
-  success: 'border-l-4 border-l-green-500 bg-white',
-  error: 'border-l-4 border-l-red-500 bg-white',
-  info: 'border-l-4 border-l-blue-500 bg-white',
-  warning: 'border-l-4 border-l-amber-500 bg-white',
+  success: 'border-l-4 border-l-green-500 bg-[#1a1a1d] border border-[#2a2a2d]',
+  error: 'border-l-4 border-l-red-500 bg-[#1a1a1d] border border-[#2a2a2d]',
+  info: 'border-l-4 border-l-blue-500 bg-[#1a1a1d] border border-[#2a2a2d]',
+  warning: 'border-l-4 border-l-amber-500 bg-[#1a1a1d] border border-[#2a2a2d]',
 }
 
 const iconColors = {
@@ -73,8 +73,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 className={`${styles[t.type]} rounded-xl shadow-lg shadow-black/10 px-4 py-3 flex items-center gap-3 min-w-[280px]`}
               >
                 <Icon className={`w-5 h-5 flex-shrink-0 ${iconColors[t.type]}`} />
-                <p className="text-sm text-slate-700 font-medium flex-1">{t.message}</p>
-                <button onClick={() => removeToast(t.id)} className="text-slate-400 hover:text-slate-600 flex-shrink-0">
+                <p className="text-sm text-gray-200 font-medium flex-1">{t.message}</p>
+                <button onClick={() => removeToast(t.id)} className="text-gray-500 hover:text-gray-300 flex-shrink-0">
                   <X className="w-4 h-4" />
                 </button>
               </motion.div>

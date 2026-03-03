@@ -93,8 +93,8 @@ export default function VoiceOutput({
           : 'w-6 h-6 rounded-md'
       } ${
         isSpeaking
-          ? 'text-emerald-500'
-          : 'text-gray-400 hover:text-gray-600'
+          ? 'text-orange-400'
+          : 'text-gray-500 hover:text-gray-300'
       }`}
       title={isSpeaking ? 'Stop speaking' : 'Listen to response'}
     >
@@ -107,9 +107,9 @@ export default function VoiceOutput({
             animate={{ opacity: [1, 0.4, 1] }}
             transition={{ duration: 0.6, repeat: Infinity }}
           >
-            <div className="w-0.5 h-1 bg-emerald-400 rounded-full" />
-            <div className="w-0.5 h-1.5 bg-emerald-400 rounded-full" />
-            <div className="w-0.5 h-1 bg-emerald-400 rounded-full" />
+            <div className="w-0.5 h-1 bg-orange-400 rounded-full" />
+            <div className="w-0.5 h-1.5 bg-orange-400 rounded-full" />
+            <div className="w-0.5 h-1 bg-orange-400 rounded-full" />
           </motion.div>
         </motion.div>
       ) : (

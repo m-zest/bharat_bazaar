@@ -57,13 +57,13 @@ export default function OnboardingModal({ onComplete }: Props) {
       <div className="w-20 h-20 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-6">
         <IconLogo mode="dark" size={48} />
       </div>
-      <h2 className="font-display text-2xl font-bold text-gray-900">BharatBazaar AI mein aapka swagat hai!</h2>
+      <h2 className="font-display text-2xl font-bold text-gray-100">BharatBazaar AI mein aapka swagat hai!</h2>
       <p className="text-gray-500 mt-2">Let's set up your store in 30 seconds</p>
       <p className="text-sm text-saffron-500 mt-1 font-hindi">30 second mein apni dukaan setup karein</p>
       <button onClick={() => setStep(1)} className="btn-primary mt-8 px-8 py-3 flex items-center gap-2 mx-auto">
         Shuru Karein <ArrowRight className="w-4 h-4" />
       </button>
-      <button onClick={() => { localStorage.setItem(STORAGE_KEY, 'skipped'); onComplete(data) }} className="text-sm text-gray-400 mt-4 hover:text-gray-600">
+      <button onClick={() => { localStorage.setItem(STORAGE_KEY, 'skipped'); onComplete(data) }} className="text-sm text-gray-500 mt-4 hover:text-gray-300">
         Skip — use demo store
       </button>
     </motion.div>,
@@ -71,17 +71,17 @@ export default function OnboardingModal({ onComplete }: Props) {
     // Step 1: Store Info
     <motion.div key="store" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-saffron-100 flex items-center justify-center">
-          <IconLogo mode="light" size={28} />
+        <div className="w-10 h-10 rounded-xl bg-saffron-500/10 flex items-center justify-center">
+          <IconLogo mode="dark" size={28} />
         </div>
         <div>
-          <h3 className="font-display font-bold text-gray-900">Your Store Details</h3>
+          <h3 className="font-display font-bold text-gray-100">Your Store Details</h3>
           <p className="text-xs text-gray-400">Step 1 of 3</p>
         </div>
       </div>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1">Store Name</label>
           <input
             type="text"
             value={data.storeName}
@@ -91,7 +91,7 @@ export default function OnboardingModal({ onComplete }: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1">Your Name</label>
           <input
             type="text"
             value={data.ownerName}
@@ -102,7 +102,7 @@ export default function OnboardingModal({ onComplete }: Props) {
         </div>
       </div>
       <div className="flex gap-3 mt-6">
-        <button onClick={() => setStep(0)} className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">Back</button>
+        <button onClick={() => setStep(0)} className="flex-1 py-3 px-4 border border-[#2a2a2d] rounded-xl text-gray-400 hover:bg-white/[0.06]">Back</button>
         <button onClick={() => setStep(2)} className="flex-1 btn-primary flex items-center justify-center gap-2">
           Next <ArrowRight className="w-4 h-4" />
         </button>
@@ -112,17 +112,17 @@ export default function OnboardingModal({ onComplete }: Props) {
     // Step 2: City & Category
     <motion.div key="city" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-bazaar-100 flex items-center justify-center">
-          <MapPin className="w-5 h-5 text-bazaar-600" />
+        <div className="w-10 h-10 rounded-xl bg-bazaar-500/10 flex items-center justify-center">
+          <MapPin className="w-5 h-5 text-bazaar-400" />
         </div>
         <div>
-          <h3 className="font-display font-bold text-gray-900">Location & Category</h3>
+          <h3 className="font-display font-bold text-gray-100">Location & Category</h3>
           <p className="text-xs text-gray-400">Step 2 of 3</p>
         </div>
       </div>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Your City</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Your City</label>
           <div className="grid grid-cols-5 gap-2">
             {CITIES.map(city => (
               <button
@@ -130,8 +130,8 @@ export default function OnboardingModal({ onComplete }: Props) {
                 onClick={() => setData({ ...data, city })}
                 className={`px-3 py-2 rounded-xl text-sm font-medium border transition-all ${
                   data.city === city
-                    ? 'border-bazaar-400 bg-bazaar-50 text-bazaar-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                    ? 'border-bazaar-400 bg-bazaar-500/10 text-bazaar-400'
+                    : 'border-[#2a2a2d] text-gray-400 hover:border-[#333]'
                 }`}
               >
                 {city}
@@ -140,7 +140,7 @@ export default function OnboardingModal({ onComplete }: Props) {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Primary Category</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Primary Category</label>
           <div className="grid grid-cols-3 gap-2">
             {CATEGORIES.map(cat => (
               <button
@@ -148,8 +148,8 @@ export default function OnboardingModal({ onComplete }: Props) {
                 onClick={() => setData({ ...data, category: cat, products: [] })}
                 className={`px-3 py-2 rounded-xl text-sm font-medium border transition-all ${
                   data.category === cat
-                    ? 'border-saffron-400 bg-saffron-50 text-saffron-700'
-                    : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                    ? 'border-saffron-400 bg-saffron-500/10 text-saffron-400'
+                    : 'border-[#2a2a2d] text-gray-400 hover:border-[#333]'
                 }`}
               >
                 {cat}
@@ -159,7 +159,7 @@ export default function OnboardingModal({ onComplete }: Props) {
         </div>
       </div>
       <div className="flex gap-3 mt-6">
-        <button onClick={() => setStep(1)} className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">Back</button>
+        <button onClick={() => setStep(1)} className="flex-1 py-3 px-4 border border-[#2a2a2d] rounded-xl text-gray-400 hover:bg-white/[0.06]">Back</button>
         <button onClick={() => setStep(3)} className="flex-1 btn-primary flex items-center justify-center gap-2">
           Next <ArrowRight className="w-4 h-4" />
         </button>
@@ -169,11 +169,11 @@ export default function OnboardingModal({ onComplete }: Props) {
     // Step 3: Products
     <motion.div key="products" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-royal-100 flex items-center justify-center">
-          <ShoppingBag className="w-5 h-5 text-royal-600" />
+        <div className="w-10 h-10 rounded-xl bg-royal-500/10 flex items-center justify-center">
+          <ShoppingBag className="w-5 h-5 text-royal-400" />
         </div>
         <div>
-          <h3 className="font-display font-bold text-gray-900">What do you sell?</h3>
+          <h3 className="font-display font-bold text-gray-100">What do you sell?</h3>
           <p className="text-xs text-gray-400">Step 3 of 3 — Select your products</p>
         </div>
       </div>
@@ -184,8 +184,8 @@ export default function OnboardingModal({ onComplete }: Props) {
             onClick={() => toggleProduct(product)}
             className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium border transition-all ${
               data.products.includes(product)
-                ? 'border-royal-400 bg-royal-50 text-royal-700'
-                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                ? 'border-royal-400 bg-royal-500/10 text-royal-400'
+                : 'border-[#2a2a2d] text-gray-400 hover:border-[#333]'
             }`}
           >
             {data.products.includes(product) && <Check className="w-3 h-3" />}
@@ -194,7 +194,7 @@ export default function OnboardingModal({ onComplete }: Props) {
         ))}
       </div>
       <div className="flex gap-3 mt-6">
-        <button onClick={() => setStep(2)} className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">Back</button>
+        <button onClick={() => setStep(2)} className="flex-1 py-3 px-4 border border-[#2a2a2d] rounded-xl text-gray-400 hover:bg-white/[0.06]">Back</button>
         <button onClick={handleComplete} className="flex-1 btn-primary flex items-center justify-center gap-2">
           <Sparkles className="w-4 h-4" /> Setup My Store
         </button>
@@ -207,14 +207,14 @@ export default function OnboardingModal({ onComplete }: Props) {
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white rounded-2xl p-8 max-w-lg w-full shadow-2xl"
+        className="bg-[#1a1a1d] border border-[#2a2a2d] rounded-2xl p-8 max-w-lg w-full shadow-2xl shadow-black/40"
       >
         {/* Progress */}
         {step > 0 && (
           <div className="flex gap-2 mb-6">
             {[1, 2, 3].map(s => (
               <div key={s} className={`flex-1 h-1.5 rounded-full transition-all ${
-                step >= s ? 'bg-saffron-500' : 'bg-gray-200'
+                step >= s ? 'bg-saffron-500' : 'bg-[#2a2a2d]'
               }`} />
             ))}
           </div>

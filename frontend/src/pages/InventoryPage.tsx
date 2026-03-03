@@ -110,11 +110,11 @@ export default function InventoryPage() {
 
   function getStatus(item: InventoryItem) {
     const daysLeft = getDaysLeft(item)
-    if (item.quantity <= 0) return { label: 'Out of Stock', color: 'bg-red-100 text-red-700', severity: 'critical' }
-    if (item.quantity <= item.reorderLevel) return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-700', severity: 'warning' }
-    if (daysLeft <= 3) return { label: `${daysLeft}d left`, color: 'bg-red-100 text-red-700', severity: 'warning' }
-    if (daysLeft <= 7) return { label: `${daysLeft}d left`, color: 'bg-yellow-100 text-yellow-700', severity: 'info' }
-    return { label: 'In Stock', color: 'bg-green-100 text-green-700', severity: 'ok' }
+    if (item.quantity <= 0) return { label: 'Out of Stock', color: 'bg-red-500/15 text-red-400', severity: 'critical' }
+    if (item.quantity <= item.reorderLevel) return { label: 'Low Stock', color: 'bg-yellow-500/15 text-yellow-400', severity: 'warning' }
+    if (daysLeft <= 3) return { label: `${daysLeft}d left`, color: 'bg-red-500/15 text-red-400', severity: 'warning' }
+    if (daysLeft <= 7) return { label: `${daysLeft}d left`, color: 'bg-yellow-500/15 text-yellow-400', severity: 'info' }
+    return { label: 'In Stock', color: 'bg-green-500/15 text-green-400', severity: 'ok' }
   }
 
   const alerts = inventory
@@ -171,21 +171,21 @@ export default function InventoryPage() {
 
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <p className="text-sm text-red-700">{error}</p>
-          <button onClick={() => setError(null)} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <p className="text-sm text-red-400">{error}</p>
+          <button onClick={() => setError(null)} className="text-red-400 hover:text-red-300"><X className="w-4 h-4" /></button>
         </div>
       )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Total Products', value: inventory.length, icon: Package, color: 'text-bazaar-500', bg: 'bg-bazaar-50' },
-          { label: 'Inventory Value', value: `Rs.${totalValue.toLocaleString()}`, icon: ShoppingCart, color: 'text-saffron-500', bg: 'bg-saffron-50' },
-          { label: 'Total Cost', value: `Rs.${totalCost.toLocaleString()}`, icon: TrendingDown, color: 'text-gray-500', bg: 'bg-gray-50' },
-          { label: 'Low Stock Alerts', value: lowStockCount, icon: AlertTriangle, color: lowStockCount > 0 ? 'text-red-500' : 'text-green-500', bg: lowStockCount > 0 ? 'bg-red-50' : 'bg-green-50' },
+          { label: 'Total Products', value: inventory.length, icon: Package, color: 'text-bazaar-500', bg: 'bg-bazaar-500/10' },
+          { label: 'Inventory Value', value: `Rs.${totalValue.toLocaleString()}`, icon: ShoppingCart, color: 'text-saffron-500', bg: 'bg-saffron-500/10' },
+          { label: 'Total Cost', value: `Rs.${totalCost.toLocaleString()}`, icon: TrendingDown, color: 'text-gray-500', bg: 'bg-white/[0.03]' },
+          { label: 'Low Stock Alerts', value: lowStockCount, icon: AlertTriangle, color: lowStockCount > 0 ? 'text-red-500' : 'text-green-500', bg: lowStockCount > 0 ? 'bg-red-500/10' : 'bg-green-500/10' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+          <div key={stat.label} className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-500">{stat.label}</p>
@@ -201,17 +201,17 @@ export default function InventoryPage() {
 
       {/* Alerts */}
       {alerts.length > 0 && (
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-red-200 bg-red-50/50 mb-6">
-          <h3 className="font-semibold text-red-700 mb-3 flex items-center gap-2">
+        <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-red-500/20 mb-6">
+          <h3 className="font-semibold text-red-400 mb-3 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5" /> Reorder Alerts
           </h3>
           <div className="space-y-2">
             {alerts.map(item => {
               const daysLeft = getDaysLeft(item)
               return (
-                <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-xl">
+                <div key={item.id} className="flex items-center justify-between p-3 bg-white/[0.03] rounded-xl">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                    <p className="text-sm font-medium text-gray-100">{item.name}</p>
                     <p className="text-xs text-gray-500">
                       {item.quantity} units left{daysLeft < 999 ? ` — runs out in ~${daysLeft} days` : ''} at {item.dailySellRate}/day
                     </p>
@@ -233,8 +233,8 @@ export default function InventoryPage() {
       <AnimatePresence>
         {showAddForm && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-6">
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-saffron-200 bg-saffron-50/30">
-              <h3 className="font-semibold text-gray-900 mb-3">Add New Product</h3>
+            <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-saffron-500/20">
+              <h3 className="font-semibold text-gray-100 mb-3">Add New Product</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <input value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} placeholder="Product name" className="input-field" required />
                 <select value={newItem.category} onChange={e => setNewItem({ ...newItem, category: e.target.value })} className="input-field">
@@ -255,10 +255,10 @@ export default function InventoryPage() {
       </AnimatePresence>
 
       {/* Inventory Table */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-x-auto">
+      <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100">
+            <tr className="border-b border-[#2a2a2d]">
               <th className="text-left py-3 px-4 text-gray-500 font-medium">Product</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Category</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Cost</th>
@@ -282,10 +282,10 @@ export default function InventoryPage() {
               const status = getStatus(item)
               const daysLeft = getDaysLeft(item)
               return (
-                <tr key={item.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="py-3 px-4 font-medium text-gray-900">{item.name}</td>
+                <tr key={item.id} className="border-b border-[#2a2a2d] hover:bg-white/[0.06]">
+                  <td className="py-3 px-4 font-medium text-gray-100">{item.name}</td>
                   <td className="text-center py-3 px-4">
-                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md">{item.category}</span>
+                    <span className="text-xs px-2 py-1 bg-white/[0.03] text-gray-400 rounded-md">{item.category}</span>
                   </td>
                   <td className="text-center py-3 px-4 font-mono text-gray-500">Rs.{item.costPrice}</td>
                   <td className="text-center py-3 px-4 font-mono font-medium">Rs.{item.sellingPrice}</td>
@@ -296,13 +296,13 @@ export default function InventoryPage() {
                           type="number"
                           value={editQuantity}
                           onChange={e => setEditQuantity(e.target.value)}
-                          className="w-16 px-2 py-1 border border-saffron-300 rounded text-center text-sm"
+                          className="w-16 px-2 py-1 border border-[#333] bg-[#141416] text-gray-100 rounded text-center text-sm"
                           autoFocus
                         />
-                        <button onClick={() => updateQuantity(item.id)} disabled={saving} className="p-1 text-green-600 hover:bg-green-50 rounded disabled:opacity-50">
+                        <button onClick={() => updateQuantity(item.id)} disabled={saving} className="p-1 text-green-400 hover:bg-green-500/10 rounded disabled:opacity-50">
                           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                         </button>
-                        <button onClick={() => setEditingId(null)} className="p-1 text-gray-400 hover:bg-gray-50 rounded"><X className="w-4 h-4" /></button>
+                        <button onClick={() => setEditingId(null)} className="p-1 text-gray-400 hover:bg-white/[0.06] rounded"><X className="w-4 h-4" /></button>
                       </div>
                     ) : (
                       <span className="font-bold">{item.quantity}</span>
@@ -310,7 +310,7 @@ export default function InventoryPage() {
                   </td>
                   <td className="text-center py-3 px-4 text-gray-500">{item.dailySellRate}/day</td>
                   <td className="text-center py-3 px-4">
-                    <span className={`font-medium ${daysLeft <= 3 ? 'text-red-600' : daysLeft <= 7 ? 'text-yellow-600' : 'text-green-600'}`}>
+                    <span className={`font-medium ${daysLeft <= 3 ? 'text-red-400' : daysLeft <= 7 ? 'text-yellow-400' : 'text-green-400'}`}>
                       {daysLeft < 999 ? `${daysLeft}d` : '—'}
                     </span>
                   </td>
@@ -321,7 +321,7 @@ export default function InventoryPage() {
                     <div className="flex items-center gap-1 justify-center">
                       <button
                         onClick={() => { setEditingId(item.id); setEditQuantity(item.quantity.toString()) }}
-                        className="p-1.5 text-gray-400 hover:text-saffron-600 hover:bg-saffron-50 rounded-lg transition-all"
+                        className="p-1.5 text-gray-400 hover:text-saffron-400 hover:bg-saffron-500/10 rounded-lg transition-all"
                         title="Update quantity"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -329,7 +329,7 @@ export default function InventoryPage() {
                       <button
                         onClick={() => removeItem(item.id)}
                         disabled={saving}
-                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
+                        className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
                         title="Remove product"
                       >
                         <Trash2 className="w-4 h-4" />

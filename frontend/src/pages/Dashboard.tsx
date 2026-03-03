@@ -140,14 +140,14 @@ export default function Dashboard() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h1 className="font-display text-2xl lg:text-3xl font-bold text-gray-900">
+          <h1 className="font-display text-2xl lg:text-3xl font-bold text-gray-100">
             {greeting.text}, {onboardingData?.ownerName || data.business.owner} <span>{greeting.emoji}</span>
           </h1>
           <p className="text-gray-500 mt-1 flex items-center gap-2 text-sm">
             <MapPin className="w-4 h-4 text-saffron-500" />
             {onboardingData?.storeName || data.business.name} — {data.business.city}
-            <span className="text-gray-300">|</span>
-            <span className="text-gray-400">
+            <span className="text-gray-600">|</span>
+            <span className="text-gray-500">
               {currentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
             </span>
           </p>
@@ -166,7 +166,7 @@ export default function Dashboard() {
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                 selectedCity === c
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
-                  : 'bg-white border border-gray-200 text-gray-500 hover:border-orange-300'
+                  : 'bg-[#1a1a1d] border border-[#2a2a2d] text-gray-400 hover:border-orange-500/30'
               }`}
             >
               {c}
@@ -175,7 +175,7 @@ export default function Dashboard() {
           <select
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
-            className="px-2 py-1.5 rounded-full text-xs border border-gray-200 text-gray-500 bg-white"
+            className="px-2 py-1.5 rounded-full text-xs border border-[#2a2a2d] text-gray-400 bg-[#1a1a1d]"
           >
             {data.supportedCities.map((c: string) => (
               <option key={c} value={c}>{c}</option>
@@ -234,10 +234,10 @@ export default function Dashboard() {
       {/* ====== STATS CARDS ====== */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Trending Products', value: data.summary.trendingProductsCount, icon: TrendingUp, color: 'text-saffron-500', bg: 'bg-saffron-50', border: 'border-saffron-100' },
-          { label: 'Pricing Confidence', value: data.summary.avgPricingConfidence, suffix: '%', icon: IndianRupee, color: 'text-bazaar-500', bg: 'bg-bazaar-50', border: 'border-bazaar-100' },
-          { label: 'Sentiment Score', value: data.summary.overallSentimentScore, suffix: '/100', icon: Activity, color: 'text-royal-500', bg: 'bg-royal-50', border: 'border-royal-100' },
-          { label: 'Monthly Growth', valueText: data.summary.monthlySalesGrowth, icon: BarChart3, color: 'text-green-500', bg: 'bg-green-50', border: 'border-green-100' },
+          { label: 'Trending Products', value: data.summary.trendingProductsCount, icon: TrendingUp, color: 'text-saffron-500', bg: 'bg-saffron-500/10', border: 'border-[#2a2a2d]' },
+          { label: 'Pricing Confidence', value: data.summary.avgPricingConfidence, suffix: '%', icon: IndianRupee, color: 'text-bazaar-500', bg: 'bg-bazaar-500/10', border: 'border-[#2a2a2d]' },
+          { label: 'Sentiment Score', value: data.summary.overallSentimentScore, suffix: '/100', icon: Activity, color: 'text-royal-500', bg: 'bg-royal-500/10', border: 'border-[#2a2a2d]' },
+          { label: 'Monthly Growth', valueText: data.summary.monthlySalesGrowth, icon: BarChart3, color: 'text-green-500', bg: 'bg-green-500/10', border: 'border-[#2a2a2d]' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -245,12 +245,12 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
             whileHover={{ y: -2 }}
-            className={`bg-white rounded-2xl p-5 shadow-sm border ${stat.border} hover:shadow-md transition-all`}
+            className={`bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border ${stat.border} hover:shadow-md hover:shadow-black/20 transition-all`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
-                <p className="text-2xl font-display font-bold mt-1 text-gray-900">
+                <p className="text-xs text-gray-400 font-medium">{stat.label}</p>
+                <p className="text-2xl font-display font-bold mt-1 text-gray-100">
                   {stat.valueText || (
                     <>
                       <CountUp end={typeof stat.value === 'number' ? stat.value : parseInt(stat.value)} duration={1.5} />
@@ -270,8 +270,8 @@ export default function Dashboard() {
       {/* ====== CHARTS ROW ====== */}
       <div className="grid lg:grid-cols-2 gap-6 mb-6">
         <ScrollReveal delay={0.1}>
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-            <h3 className="font-display font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] hover:shadow-md hover:shadow-black/20 transition-all">
+            <h3 className="font-display font-semibold text-gray-100 mb-4 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-saffron-500" />
               Sentiment Trend
             </h3>
@@ -285,7 +285,7 @@ export default function Dashboard() {
                 </defs>
                 <XAxis dataKey="month" axisLine={false} tickLine={false} className="text-xs" />
                 <YAxis axisLine={false} tickLine={false} className="text-xs" domain={[0, 100]} />
-                <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #2a2a2d', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', background: '#1a1a1d', color: '#e5e7eb' }} />
                 <Line type="monotone" dataKey="score" stroke="url(#sentGrad)" strokeWidth={3} dot={{ fill: '#FF9933', r: 4, strokeWidth: 2, stroke: '#fff' }} />
               </LineChart>
             </ResponsiveContainer>
@@ -293,8 +293,8 @@ export default function Dashboard() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all">
-            <h3 className="font-display font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] hover:shadow-md hover:shadow-black/20 transition-all">
+            <h3 className="font-display font-semibold text-gray-100 mb-4 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-bazaar-500" />
               Demand Forecast
             </h3>
@@ -308,7 +308,7 @@ export default function Dashboard() {
                 </defs>
                 <XAxis dataKey="month" axisLine={false} tickLine={false} className="text-xs" />
                 <YAxis axisLine={false} tickLine={false} className="text-xs" />
-                <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #2a2a2d', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', background: '#1a1a1d', color: '#e5e7eb' }} />
                 <Area type="monotone" dataKey="upper" fill="#138d7510" stroke="none" />
                 <Area type="monotone" dataKey="demand" fill="url(#demandGrad)" stroke="#138d75" strokeWidth={3} dot={false} />
               </AreaChart>
@@ -320,8 +320,8 @@ export default function Dashboard() {
       {/* ====== CATEGORY + FESTIVALS ====== */}
       <div className="grid lg:grid-cols-2 gap-6 mb-6">
         <ScrollReveal delay={0.1}>
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h3 className="font-display font-semibold text-gray-900 mb-4">Category Distribution</h3>
+          <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
+            <h3 className="font-display font-semibold text-gray-100 mb-4">Category Distribution</h3>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
@@ -334,21 +334,21 @@ export default function Dashboard() {
                   innerRadius={40}
                   label={({ name, value }) => `${name} ${value}%`}
                   strokeWidth={2}
-                  stroke="#fff"
+                  stroke="#1a1a1d"
                 >
                   {data.charts.categoryDistribution.map((_: any, i: number) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #2a2a2d', boxShadow: '0 4px 20px rgba(0,0,0,0.4)', background: '#1a1a1d', color: '#e5e7eb' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h3 className="font-display font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
+            <h3 className="font-display font-semibold text-gray-100 mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-saffron-500" />
               Upcoming Festivals — {selectedCity}
             </h3>
@@ -359,16 +359,16 @@ export default function Dashboard() {
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="flex items-center justify-between p-3 bg-gray-50/80 rounded-xl hover:bg-gray-100/80 transition-colors"
+                  className="flex items-center justify-between p-3 bg-white/[0.03] rounded-xl hover:bg-white/[0.06] transition-colors"
                 >
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">{f.name}</p>
+                    <p className="font-medium text-gray-200 text-sm">{f.name}</p>
                     <p className="text-xs text-gray-500">{f.daysAway} days away</p>
                   </div>
                   <span className={`text-[10px] px-3 py-1 rounded-full font-semibold ${
-                    f.impact === 'very_high' ? 'bg-red-100 text-red-600' :
-                    f.impact === 'high' ? 'bg-saffron-100 text-saffron-600' :
-                    'bg-gray-100 text-gray-600'
+                    f.impact === 'very_high' ? 'bg-red-500/10 text-red-400' :
+                    f.impact === 'high' ? 'bg-saffron-500/10 text-saffron-400' :
+                    'bg-white/[0.06] text-gray-400'
                   }`}>
                     {f.impact.replace('_', ' ')} impact
                   </span>
@@ -424,8 +424,8 @@ export default function Dashboard() {
 
         {/* Smart Alerts */}
         <ScrollReveal delay={0.15} className="lg:col-span-2">
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h3 className="font-display font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
+            <h3 className="font-display font-semibold text-gray-100 mb-3 flex items-center gap-2">
               <Bell className="w-5 h-5 text-saffron-500" />
               Smart Alerts
             </h3>
@@ -440,27 +440,27 @@ export default function Dashboard() {
                       transition={{ delay: i * 0.06 }}
                       whileHover={{ x: 4 }}
                       className={`flex items-start gap-3 p-3 rounded-xl border transition-all hover:shadow-sm ${
-                        alert.severity === 'high' ? 'bg-red-50/80 border-red-200' :
-                        alert.severity === 'medium' ? 'bg-saffron-50/80 border-saffron-200' :
-                        'bg-gray-50/80 border-gray-200'
+                        alert.severity === 'high' ? 'bg-red-500/10 border-red-500/20' :
+                        alert.severity === 'medium' ? 'bg-saffron-500/10 border-saffron-500/20' :
+                        'bg-white/[0.03] border-[#2a2a2d]'
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        alert.severity === 'high' ? 'bg-red-100 text-red-600' :
-                        alert.severity === 'medium' ? 'bg-saffron-100 text-saffron-600' :
-                        'bg-gray-100 text-gray-600'
+                        alert.severity === 'high' ? 'bg-red-500/15 text-red-400' :
+                        alert.severity === 'medium' ? 'bg-saffron-500/15 text-saffron-400' :
+                        'bg-white/[0.06] text-gray-400'
                       }`}>
                         <AlertIcon className="w-4 h-4" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm font-semibold text-gray-900">{alert.title}</p>
+                          <p className="text-sm font-semibold text-gray-200">{alert.title}</p>
                           <span className="text-[10px] text-gray-400 flex-shrink-0 ml-2">{alert.timestamp}</span>
                         </div>
                         <p className="text-xs text-gray-500 font-hindi">{alert.titleHi}</p>
-                        <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{alert.message}</p>
+                        <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{alert.message}</p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-gray-300 flex-shrink-0 mt-1" />
+                      <ArrowRight className="w-4 h-4 text-gray-600 flex-shrink-0 mt-1" />
                     </motion.div>
                   </Link>
                 )
@@ -472,7 +472,7 @@ export default function Dashboard() {
 
       {/* ====== AI FEATURES GRID ====== */}
       <ScrollReveal>
-        <h3 className="font-display text-xl font-bold text-gray-900 mb-4">AI Features</h3>
+        <h3 className="font-display text-xl font-bold text-gray-100 mb-4">AI Features</h3>
       </ScrollReveal>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {featureCards.map((f, i) => (
@@ -483,17 +483,17 @@ export default function Dashboard() {
               transition={{ delay: i * 0.05 + 0.2 }}
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-all group"
+              className="bg-[#1a1a1d] rounded-2xl p-4 shadow-sm border border-[#2a2a2d] cursor-pointer hover:shadow-md hover:shadow-black/20 transition-all group"
             >
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${
-                f.color === 'saffron' ? 'bg-saffron-100 text-saffron-600' :
-                f.color === 'bazaar' ? 'bg-bazaar-100 text-bazaar-600' :
-                f.color === 'green' ? 'bg-green-100 text-green-600' :
-                'bg-royal-100 text-royal-600'
+                f.color === 'saffron' ? 'bg-saffron-500/10 text-saffron-400' :
+                f.color === 'bazaar' ? 'bg-bazaar-500/10 text-bazaar-400' :
+                f.color === 'green' ? 'bg-green-500/10 text-green-400' :
+                'bg-royal-500/10 text-royal-400'
               }`}>
                 <f.icon className="w-5 h-5" />
               </div>
-              <h4 className="font-semibold text-gray-900 text-sm">{f.label}</h4>
+              <h4 className="font-semibold text-gray-200 text-sm">{f.label}</h4>
               <p className="text-[10px] font-hindi text-gray-400">{f.labelHi}</p>
               <p className="text-xs text-gray-500 mt-1">{f.desc}</p>
               <div className="mt-3 flex items-center text-saffron-500 text-xs font-medium gap-1 group-hover:gap-2 transition-all">
@@ -506,8 +506,8 @@ export default function Dashboard() {
 
       {/* ====== RECENT ACTIVITY ====== */}
       <ScrollReveal delay={0.1}>
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
-          <h3 className="font-display font-semibold text-gray-900 mb-4">Recent Activity</h3>
+        <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] mb-6">
+          <h3 className="font-display font-semibold text-gray-100 mb-4">Recent Activity</h3>
           <div className="space-y-2">
             {data.recentActivity.map((a: any, i: number) => (
               <motion.div
@@ -515,13 +515,13 @@ export default function Dashboard() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-4 p-3 bg-gray-50/80 rounded-xl hover:bg-gray-100/80 transition-colors"
+                className="flex items-center gap-4 p-3 bg-white/[0.03] rounded-xl hover:bg-white/[0.06] transition-colors"
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  a.type === 'pricing' ? 'bg-saffron-100 text-saffron-600' :
-                  a.type === 'content' ? 'bg-bazaar-100 text-bazaar-600' :
-                  a.type === 'sentiment' ? 'bg-royal-100 text-royal-600' :
-                  'bg-green-100 text-green-600'
+                  a.type === 'pricing' ? 'bg-saffron-500/10 text-saffron-400' :
+                  a.type === 'content' ? 'bg-bazaar-500/10 text-bazaar-400' :
+                  a.type === 'sentiment' ? 'bg-royal-500/10 text-royal-400' :
+                  'bg-green-500/10 text-green-400'
                 }`}>
                   {a.type === 'pricing' ? <IndianRupee className="w-4 h-4" /> :
                    a.type === 'content' ? <Languages className="w-4 h-4" /> :
@@ -529,7 +529,7 @@ export default function Dashboard() {
                    <TrendingUp className="w-4 h-4" />}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-700">{a.description}</p>
+                  <p className="text-sm font-medium text-gray-300">{a.description}</p>
                 </div>
                 <span className="text-xs text-gray-400">{a.time}</span>
               </motion.div>
@@ -539,11 +539,11 @@ export default function Dashboard() {
       </ScrollReveal>
 
       {/* ====== FOOTER ====== */}
-      <div className="text-center py-6 border-t border-gray-100">
-        <p className="text-xs text-gray-400 mb-1">
+      <div className="text-center py-6 border-t border-[#2a2a2d]">
+        <p className="text-xs text-gray-500 mb-1">
           Built with ❤️ for Indian SMBs | Team ParityAi — AI4Bharat Hackathon 2026
         </p>
-        <p className="text-[10px] text-gray-300">
+        <p className="text-[10px] text-gray-600">
           Powered by AWS Bedrock · DynamoDB · Lambda · S3 · CloudFront · API Gateway
         </p>
       </div>

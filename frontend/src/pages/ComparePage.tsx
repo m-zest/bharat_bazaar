@@ -99,8 +99,8 @@ export default function ComparePage() {
             onClick={() => toggleProduct(product.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
               selected.includes(product.id)
-                ? 'border-saffron-400 bg-saffron-50 text-saffron-700'
-                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                ? 'border-saffron-500/20 bg-saffron-500/10 text-saffron-400'
+                : 'border-[#2a2a2d] text-gray-400 hover:border-[#333]'
             }`}
           >
             {selected.includes(product.id) && <Check className="w-4 h-4" />}
@@ -120,22 +120,22 @@ export default function ComparePage() {
       </div>
 
       {error && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl text-sm mb-6">
+        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-4 py-3 rounded-xl text-sm mb-6">
           AI features temporarily limited. Our servers are experiencing high demand. Please try again in a few minutes.
         </div>
       )}
 
       {loading && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-20">
+        <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] text-center py-20">
           <Loader2 className="w-12 h-12 mx-auto mb-4 text-saffron-400 animate-spin" />
-          <p className="text-lg font-medium text-gray-600">AI is analyzing your products...</p>
+          <p className="text-lg font-medium text-gray-400">AI is analyzing your products...</p>
           <p className="text-sm text-gray-400 mt-1">Comparing prices, margins, demand trends & sentiment</p>
         </div>
       )}
 
       {!loading && !result && selected.length >= 2 && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 text-center py-16 text-gray-400">
-          <GitCompare className="w-16 h-16 mx-auto mb-4 text-gray-200" />
+        <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] text-center py-16 text-gray-400">
+          <GitCompare className="w-16 h-16 mx-auto mb-4 text-gray-600" />
           <p className="text-lg font-medium">Click "Compare with AI" to get intelligent analysis</p>
           <p className="text-sm mt-1">Powered by Amazon Bedrock Claude AI</p>
         </div>
@@ -170,10 +170,10 @@ export default function ComparePage() {
             )}
 
             {/* Comparison Table */}
-            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 overflow-x-auto">
+            <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d] overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-[#2a2a2d]">
                     <th className="text-left py-3 px-4 text-gray-500 font-medium">Metric</th>
                     {compared.map((p: any, i: number) => (
                       <th key={i} className="text-center py-3 px-4" style={{ color: COMPARE_COLORS[i] }}>
@@ -187,26 +187,26 @@ export default function ComparePage() {
                   {[
                     { label: 'Cost Price', key: 'costPrice', fmt: (v: any) => `Rs.${v}` },
                     { label: 'Selling Price', key: 'currentPrice', fmt: (v: any) => `Rs.${v}`, bold: true },
-                    { label: 'Margin', key: 'margin', fmt: (v: any) => v, color: 'text-green-600' },
+                    { label: 'Margin', key: 'margin', fmt: (v: any) => v, color: 'text-green-400' },
                     { label: 'Competitor Avg', key: 'competitorAvg', fmt: (v: any) => `Rs.${v}` },
                     { label: 'Demand Trend', key: 'demandTrend', fmt: (v: any) => v, trend: true },
                     { label: 'Sentiment Score', key: 'sentiment', fmt: (v: any) => `${v}/100`, sentiment: true },
                     { label: 'Monthly Units', key: 'avgMonthlyUnits', fmt: (v: any) => String(v) },
-                    { label: 'Festival Impact', key: 'festivalImpact', fmt: (v: any) => v, color: 'text-saffron-600' },
+                    { label: 'Festival Impact', key: 'festivalImpact', fmt: (v: any) => v, color: 'text-saffron-400' },
                   ].map(row => (
-                    <tr key={row.label} className="border-b border-gray-50">
-                      <td className="py-3 px-4 text-gray-600 font-medium">{row.label}</td>
+                    <tr key={row.label} className="border-b border-[#2a2a2d]">
+                      <td className="py-3 px-4 text-gray-400 font-medium">{row.label}</td>
                       {compared.map((p: any, i: number) => {
                         const val = p[row.key]
                         return (
                           <td key={i} className={`text-center py-3 px-4 ${row.bold ? 'font-display font-bold text-lg' : ''} ${row.color || ''}`}>
                             {row.trend ? (
-                              <span className={`inline-flex items-center gap-1 font-medium ${String(val).startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                              <span className={`inline-flex items-center gap-1 font-medium ${String(val).startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
                                 {String(val).startsWith('+') ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                                 {val}
                               </span>
                             ) : row.sentiment ? (
-                              <span className={`font-bold ${Number(val) >= 60 ? 'text-green-600' : Number(val) >= 40 ? 'text-yellow-600' : 'text-red-600'}`}>{row.fmt(val)}</span>
+                              <span className={`font-bold ${Number(val) >= 60 ? 'text-green-400' : Number(val) >= 40 ? 'text-yellow-400' : 'text-red-400'}`}>{row.fmt(val)}</span>
                             ) : row.fmt(val)}
                           </td>
                         )
@@ -214,9 +214,9 @@ export default function ComparePage() {
                     </tr>
                   ))}
                   <tr>
-                    <td className="py-3 px-4 text-gray-600 font-medium">Monthly Revenue Est.</td>
+                    <td className="py-3 px-4 text-gray-400 font-medium">Monthly Revenue Est.</td>
                     {compared.map((p: any, i: number) => (
-                      <td key={i} className="text-center py-3 px-4 font-display font-bold text-gray-900">
+                      <td key={i} className="text-center py-3 px-4 font-display font-bold text-gray-100">
                         Rs.{((p.currentPrice || 0) * (p.avgMonthlyUnits || 0)).toLocaleString()}
                       </td>
                     ))}
@@ -232,8 +232,8 @@ export default function ComparePage() {
                 { title: 'Margin %', data: marginData, keys: ['margin'] },
                 { title: 'Sentiment Score', data: sentimentData, keys: ['sentiment'] },
               ].map(chart => (
-                <div key={chart.title} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                  <h3 className="font-semibold text-gray-900 mb-3">{chart.title}</h3>
+                <div key={chart.title} className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
+                  <h3 className="font-semibold text-gray-100 mb-3">{chart.title}</h3>
                   <ResponsiveContainer width="100%" height={200}>
                     <BarChart data={chart.data}>
                       <XAxis dataKey="name" axisLine={false} tickLine={false} className="text-xs" />
@@ -259,15 +259,15 @@ export default function ComparePage() {
 
             {/* AI Insights */}
             {result.insights && (
-              <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <div className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
+                <h3 className="font-semibold text-gray-100 mb-3 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-saffron-500" /> AI Insights
                 </h3>
                 <div className="space-y-2">
                   {result.insights.map((insight: string, i: number) => (
-                    <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
-                      <span className="w-6 h-6 rounded-full bg-saffron-100 text-saffron-600 flex items-center justify-center text-xs font-bold flex-shrink-0">{i + 1}</span>
-                      <p className="text-sm text-gray-700">{insight}</p>
+                    <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.03] rounded-xl">
+                      <span className="w-6 h-6 rounded-full bg-saffron-500/15 text-saffron-400 flex items-center justify-center text-xs font-bold flex-shrink-0">{i + 1}</span>
+                      <p className="text-sm text-gray-300">{insight}</p>
                     </div>
                   ))}
                 </div>
@@ -277,21 +277,21 @@ export default function ComparePage() {
             {/* Strengths & Risks */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {compared.map((p: any, i: number) => (
-                <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                <div key={i} className="bg-[#1a1a1d] rounded-2xl p-5 shadow-sm border border-[#2a2a2d]">
                   <h4 className="font-semibold text-sm mb-3" style={{ color: COMPARE_COLORS[i] }}>{p.name}</h4>
                   {p.strengths?.length > 0 && (
                     <div className="mb-3">
-                      <p className="text-xs font-medium text-green-600 mb-1">Strengths</p>
+                      <p className="text-xs font-medium text-green-400 mb-1">Strengths</p>
                       {p.strengths.map((s: string, j: number) => (
-                        <p key={j} className="text-xs text-gray-600 flex items-start gap-1.5 mb-0.5"><span className="text-green-500 mt-0.5">+</span> {s}</p>
+                        <p key={j} className="text-xs text-gray-400 flex items-start gap-1.5 mb-0.5"><span className="text-green-500 mt-0.5">+</span> {s}</p>
                       ))}
                     </div>
                   )}
                   {p.risks?.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-red-600 mb-1">Risks</p>
+                      <p className="text-xs font-medium text-red-400 mb-1">Risks</p>
                       {p.risks.map((r: string, j: number) => (
-                        <p key={j} className="text-xs text-gray-600 flex items-start gap-1.5 mb-0.5"><span className="text-red-500 mt-0.5">!</span> {r}</p>
+                        <p key={j} className="text-xs text-gray-400 flex items-start gap-1.5 mb-0.5"><span className="text-red-500 mt-0.5">!</span> {r}</p>
                       ))}
                     </div>
                   )}

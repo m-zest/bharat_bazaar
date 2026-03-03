@@ -126,31 +126,31 @@ export default function KhataPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Customer Khata</h1>
-          <p className="text-slate-500 text-sm">Digital credit ledger — track udhar for regular customers</p>
+          <h1 className="text-2xl font-bold text-gray-100">Customer Khata</h1>
+          <p className="text-gray-400 text-sm">Digital credit ledger — track udhar for regular customers</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'Total Outstanding', value: `₹${totalOutstanding.toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-orange-600', bg: 'bg-orange-50' },
-          { label: 'Total Customers', value: totalCustomers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-          { label: 'Overdue (>₹3K)', value: overdueCount, icon: AlertTriangle, color: 'text-red-600', bg: 'bg-red-50' },
-          { label: 'Settled This Month', value: 1, icon: Check, color: 'text-green-600', bg: 'bg-green-50' },
+          { label: 'Total Outstanding', value: `₹${totalOutstanding.toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+          { label: 'Total Customers', value: totalCustomers, icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+          { label: 'Overdue (>₹3K)', value: overdueCount, icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
+          { label: 'Settled This Month', value: 1, icon: Check, color: 'text-green-400', bg: 'bg-green-500/10' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-xl border border-slate-200 p-4"
+            className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] p-4"
           >
             <div className={`w-8 h-8 ${stat.bg} rounded-lg flex items-center justify-center mb-2`}>
               <stat.icon className={`w-4 h-4 ${stat.color}`} />
             </div>
-            <p className="text-xl font-bold text-slate-800">{stat.value}</p>
-            <p className="text-xs text-slate-500">{stat.label}</p>
+            <p className="text-xl font-bold text-gray-100">{stat.value}</p>
+            <p className="text-xs text-gray-400">{stat.label}</p>
           </motion.div>
         ))}
       </div>
@@ -158,15 +158,15 @@ export default function KhataPage() {
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Customer List */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-            <div className="p-3 border-b border-slate-200">
+          <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] overflow-hidden">
+            <div className="p-3 border-b border-[#2a2a2d]">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 <input
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   placeholder="Search customers..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#141416] border border-[#333] rounded-xl text-sm text-gray-100 placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>
@@ -178,23 +178,23 @@ export default function KhataPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.03 }}
                   onClick={() => setSelectedCustomer(customer)}
-                  className={`w-full p-3 text-left border-b border-slate-100 hover:bg-slate-50 transition-colors ${
-                    selectedCustomer?.id === customer.id ? 'bg-orange-50 border-l-4 border-l-orange-500' : ''
+                  className={`w-full p-3 text-left border-b border-[#2a2a2d] hover:bg-white/[0.06] transition-colors ${
+                    selectedCustomer?.id === customer.id ? 'bg-orange-500/10 border-l-4 border-l-orange-500' : ''
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-slate-800">{customer.name}</p>
-                      <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                      <p className="text-sm font-semibold text-gray-100">{customer.name}</p>
+                      <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
                         <Phone className="w-3 h-3" />
                         {customer.phone}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-sm font-bold ${customer.balance > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                      <p className={`text-sm font-bold ${customer.balance > 0 ? 'text-red-400' : 'text-green-400'}`}>
                         {customer.balance > 0 ? `₹${customer.balance.toLocaleString('en-IN')}` : 'Settled'}
                       </p>
-                      <p className="text-[10px] text-slate-400">{customer.lastTransaction}</p>
+                      <p className="text-[10px] text-gray-500">{customer.lastTransaction}</p>
                     </div>
                   </div>
                 </motion.button>
@@ -209,23 +209,23 @@ export default function KhataPage() {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+              className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] overflow-hidden"
             >
               {/* Customer Header */}
-              <div className="p-5 border-b border-slate-200 bg-slate-50">
+              <div className="p-5 border-b border-[#2a2a2d] bg-white/[0.03]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-sm">
                       {selectedCustomer.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800">{selectedCustomer.name}</p>
-                      <p className="text-xs text-slate-500">{selectedCustomer.phone}</p>
+                      <p className="font-bold text-gray-100">{selectedCustomer.name}</p>
+                      <p className="text-xs text-gray-400">{selectedCustomer.phone}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-slate-400">Balance Due</p>
-                    <p className={`text-xl font-bold ${selectedCustomer.balance > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                    <p className="text-xs text-gray-500">Balance Due</p>
+                    <p className={`text-xl font-bold ${selectedCustomer.balance > 0 ? 'text-red-400' : 'text-green-400'}`}>
                       ₹{selectedCustomer.balance.toLocaleString('en-IN')}
                     </p>
                   </div>
@@ -234,14 +234,14 @@ export default function KhataPage() {
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => { setEntryType('credit'); setShowAddModal(true) }}
-                    className="flex items-center gap-1 px-3 py-2 bg-red-50 text-red-600 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors"
+                    className="flex items-center gap-1 px-3 py-2 bg-red-500/10 text-red-400 rounded-lg text-xs font-medium hover:bg-red-500/15 transition-colors"
                   >
                     <ArrowUpRight className="w-3 h-3" />
                     Add Credit (Udhar)
                   </button>
                   <button
                     onClick={() => { setEntryType('payment'); setShowAddModal(true) }}
-                    className="flex items-center gap-1 px-3 py-2 bg-green-50 text-green-600 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors"
+                    className="flex items-center gap-1 px-3 py-2 bg-green-500/10 text-green-400 rounded-lg text-xs font-medium hover:bg-green-500/15 transition-colors"
                   >
                     <ArrowDownRight className="w-3 h-3" />
                     Record Payment
@@ -259,12 +259,12 @@ export default function KhataPage() {
                     transition={{ delay: i * 0.05 }}
                     className={`flex items-center gap-3 p-3 rounded-xl border ${
                       entry.type === 'credit'
-                        ? 'bg-red-50/50 border-red-100'
-                        : 'bg-green-50/50 border-green-100'
+                        ? 'bg-red-500/5 border-red-500/20'
+                        : 'bg-green-500/5 border-green-500/20'
                     }`}
                   >
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                      entry.type === 'credit' ? 'bg-red-100' : 'bg-green-100'
+                      entry.type === 'credit' ? 'bg-red-500/15' : 'bg-green-500/15'
                     }`}>
                       {entry.type === 'credit'
                         ? <ArrowUpRight className="w-4 h-4 text-red-500" />
@@ -272,13 +272,13 @@ export default function KhataPage() {
                       }
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-800">{entry.description}</p>
-                      <p className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                      <p className="text-sm font-medium text-gray-100">{entry.description}</p>
+                      <p className="text-[10px] text-gray-500 flex items-center gap-1 mt-0.5">
                         <Calendar className="w-3 h-3" />
                         {new Date(entry.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
-                    <p className={`font-bold text-sm ${entry.type === 'credit' ? 'text-red-600' : 'text-green-600'}`}>
+                    <p className={`font-bold text-sm ${entry.type === 'credit' ? 'text-red-400' : 'text-green-400'}`}>
                       {entry.type === 'credit' ? '+' : '-'}₹{entry.amount.toLocaleString('en-IN')}
                     </p>
                   </motion.div>
@@ -286,10 +286,10 @@ export default function KhataPage() {
               </div>
             </motion.div>
           ) : (
-            <div className="bg-white rounded-xl border border-slate-200 flex items-center justify-center h-[400px]">
+            <div className="bg-[#1a1a1d] rounded-xl border border-[#2a2a2d] flex items-center justify-center h-[400px]">
               <div className="text-center">
-                <BookOpen className="w-12 h-12 text-slate-200 mx-auto mb-3" />
-                <p className="text-slate-500 text-sm">Select a customer to view their khata</p>
+                <BookOpen className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                <p className="text-gray-400 text-sm">Select a customer to view their khata</p>
               </div>
             </div>
           )}
@@ -311,40 +311,40 @@ export default function KhataPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={e => e.stopPropagation()}
-              className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+              className="bg-[#1a1a1d] rounded-2xl p-6 max-w-sm w-full shadow-2xl"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-slate-800">
+                <h3 className="font-bold text-gray-100">
                   {entryType === 'credit' ? 'Add Credit (Udhar)' : 'Record Payment'}
                 </h3>
-                <button onClick={() => setShowAddModal(false)} className="p-1 text-slate-400 hover:text-slate-600">
+                <button onClick={() => setShowAddModal(false)} className="p-1 text-gray-500 hover:text-gray-300">
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <p className="text-sm text-slate-500 mb-4">
-                Customer: <span className="font-semibold text-slate-800">{selectedCustomer.name}</span>
+              <p className="text-sm text-gray-400 mb-4">
+                Customer: <span className="font-semibold text-gray-100">{selectedCustomer.name}</span>
               </p>
 
               <div className="space-y-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Amount (₹)</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">Amount (₹)</label>
                   <input
                     type="number"
                     value={entryAmount}
                     onChange={e => setEntryAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-[#141416] border border-[#333] rounded-xl text-sm text-gray-100 placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-orange-500"
                     autoFocus
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Description</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">Description</label>
                   <input
                     value={entryDesc}
                     onChange={e => setEntryDesc(e.target.value)}
                     placeholder={entryType === 'credit' ? 'e.g., Monthly grocery' : 'e.g., Cash payment'}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 bg-[#141416] border border-[#333] rounded-xl text-sm text-gray-100 placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
               </div>
