@@ -6,11 +6,12 @@ import {
   Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, ChevronDown,
   ShoppingCart, Truck, MapPin, Eye, Receipt,
   Shield, Database, Cpu, Lock,
-  Server, Layers, CheckCircle2, ArrowDown,
+  Server, Layers, CheckCircle2, ArrowDown, Sun, Moon,
 } from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
 import PhoneMockup from '../components/PhoneMockup'
+import { useTheme } from '../utils/ThemeContext'
 import WhatsAppDemo from '../components/WhatsAppDemo'
 import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
 import DatabaseWithRestApi from '../components/ui/database-with-rest-api'
@@ -21,6 +22,7 @@ import { Hero195 } from '../components/ui/hero-195'
 export default function Landing() {
   const navigate = useNavigate()
   const { lang, setLang, t } = useLanguage()
+  const { theme, toggleTheme } = useTheme()
   const [activeTab, setActiveTab] = useState('pricing')
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
@@ -116,22 +118,22 @@ export default function Landing() {
 
   // ── Order Flow Steps ──
   const ORDER_FLOW = [
-    { step: 1, title: 'Browse Products', desc: '130+ wholesale products across 10 cities', icon: Package, color: 'bg-teal-500' },
-    { step: 2, title: 'Add to Cart', desc: 'Select quantities, compare wholesale vs MRP', icon: ShoppingCart, color: 'bg-orange-500' },
-    { step: 3, title: 'Checkout', desc: 'Delivery address + COD/UPI/Credit payment', icon: Lock, color: 'bg-blue-500' },
-    { step: 4, title: 'Order Confirmed', desc: 'Instant confirmation with order ID', icon: CheckCircle2, color: 'bg-green-500' },
-    { step: 5, title: 'Track Delivery', desc: '6-step real-time tracking with agent info', icon: Truck, color: 'bg-purple-500' },
-    { step: 6, title: 'Manage & Reorder', desc: 'Order history, invoices, one-click reorder', icon: Receipt, color: 'bg-rose-500' },
+    { step: 1, title: 'AI Price Check', desc: 'Get AI-powered pricing with margins & festival trends', icon: IndianRupee, color: 'bg-orange-500' },
+    { step: 2, title: 'Browse & Source', desc: 'Explore wholesale products from 10+ Indian cities', icon: Package, color: 'bg-teal-500' },
+    { step: 3, title: 'Smart Cart', desc: 'Compare wholesale vs MRP, auto quantity suggestions', icon: ShoppingCart, color: 'bg-blue-500' },
+    { step: 4, title: 'Secure Checkout', desc: 'Address, COD/UPI payment, GST invoice auto-generated', icon: Lock, color: 'bg-purple-500' },
+    { step: 5, title: 'Live Tracking', desc: 'Real-time 6-step delivery tracking with agent details', icon: Truck, color: 'bg-green-500' },
+    { step: 6, title: 'Khata & Reorder', desc: 'Customer ledger, order history, one-click repeat orders', icon: Receipt, color: 'bg-rose-500' },
   ]
 
   // ── AWS Architecture ──
   const AWS_SERVICES = [
-    { name: 'Amazon Bedrock', desc: 'Claude 3 Haiku for pricing, content, sentiment, chat, vision', icon: Cpu, category: 'AI/ML' },
-    { name: 'Amazon DynamoDB', desc: 'Single-table design for inventory, orders, store settings', icon: Database, category: 'Database' },
-    { name: 'AWS App Runner', desc: 'Container hosting with auto-scaling, zero cold starts', icon: Server, category: 'Compute' },
-    { name: 'Amazon ECR', desc: 'Docker image registry for CI/CD', icon: Layers, category: 'DevOps' },
-    { name: 'AWS IAM', desc: 'Fine-grained access control for all services', icon: Shield, category: 'Security' },
-    { name: 'Amazon CloudWatch', desc: 'Monitoring, logging and alerting', icon: Eye, category: 'Observability' },
+    { name: 'Amazon Bedrock', desc: 'Claude 3 Haiku + Nova Lite — pricing, content, sentiment, chat, vision (7 handlers)', icon: Cpu, category: 'AI/ML' },
+    { name: 'Amazon DynamoDB', desc: 'Single-table design (PK/SK) — inventory, orders, store settings via @aws-sdk/lib-dynamodb', icon: Database, category: 'Database' },
+    { name: 'AWS App Runner', desc: 'Docker container hosting — auto-scaling, health checks, zero cold starts', icon: Server, category: 'Compute' },
+    { name: 'Amazon ECR', desc: 'Private Docker image registry — multi-stage builds, CI/CD pipeline', icon: Layers, category: 'DevOps' },
+    { name: 'AWS IAM', desc: 'Fine-grained access control — Bedrock invoke, DynamoDB CRUD, ECR push/pull', icon: Shield, category: 'Security' },
+    { name: 'Amazon CloudWatch', desc: 'Container logs, API latency metrics, AI model error rate monitoring', icon: Eye, category: 'Observability' },
   ]
 
   const FOOTER_LINKS: Record<string, string[]> = {
@@ -155,7 +157,7 @@ export default function Landing() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link to="/" className="block">
-            <NavbarLogo mode="dark" />
+            <NavbarLogo mode={theme === 'dark' ? 'dark' : 'light'} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -167,6 +169,14 @@ export default function Landing() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-orange-400 border border-[#333] bg-white/5 hover:border-orange-500/50 transition-all"
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
             {/* Language Selector */}
             <div ref={langRef} className="relative">
               <motion.button
@@ -292,7 +302,7 @@ export default function Landing() {
                   { value: '18+', label: 'AI Features' },
                   { value: '10', label: t('hero.stat2Label') },
                   { value: '6', label: 'Languages' },
-                  { value: '14', label: 'API Endpoints' },
+                  { value: '100%', label: 'Serverless' },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <p className="text-2xl font-extrabold text-gray-100">{stat.value}</p>
@@ -330,10 +340,10 @@ export default function Landing() {
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">End-to-End Commerce</p>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 tracking-tight">
-              Complete Order Flow
+              End-to-End Commerce Flow
             </h2>
             <p className="text-gray-400 mt-4 text-lg max-w-2xl mx-auto">
-              From product discovery to delivery tracking — a fully integrated B2B commerce experience for Indian retailers.
+              From AI-powered pricing to delivery tracking & customer ledger — a complete B2B commerce experience for Indian retailers.
             </p>
           </ScrollReveal>
 
@@ -485,7 +495,7 @@ export default function Landing() {
               Production-Grade Architecture
             </h2>
             <p className="text-white/50 mt-4 text-lg max-w-2xl mx-auto">
-              Fully deployed on AWS with serverless-first design, multi-model AI fallback, and single-table DynamoDB.
+              Containerized on AWS App Runner with Amazon Bedrock AI, single-table DynamoDB, and 4-tier model fallback chain.
             </p>
           </ScrollReveal>
 
@@ -496,7 +506,7 @@ export default function Landing() {
               <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
                 <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">Frontend Layer</p>
                 <div className="space-y-2">
-                  {['React 18 + TypeScript', 'Tailwind CSS + Framer Motion', 'Recharts Data Viz', 'Vite Build (< 500ms HMR)'].map(tech => (
+                  {['React 18 + TypeScript + Vite', 'Tailwind CSS + Framer Motion', 'Recharts Data Visualization', 'Radix UI Primitives'].map(tech => (
                     <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
                       <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
                       {tech}
@@ -509,7 +519,7 @@ export default function Landing() {
               <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
                 <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">API Layer</p>
                 <div className="space-y-2">
-                  {['Express.js + Lambda handlers', '14 REST API endpoints', '4-tier AI model fallback', '5-min timeout, 50MB body'].map(tech => (
+                  {['Express.js on AWS App Runner', 'API Gateway + Lambda ready', '4-tier AI model fallback', 'Auto-scaling, zero cold starts'].map(tech => (
                     <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
                       <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
                       {tech}
@@ -522,7 +532,7 @@ export default function Landing() {
               <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
                 <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">AI/ML Layer</p>
                 <div className="space-y-2">
-                  {['Bedrock Claude 3 Haiku (primary)', 'Gemini 1.5 Flash (fallback)', 'Amazon Nova Lite (backup)', 'Demo fallback (always works)'].map(tech => (
+                  {['Bedrock Claude 3 Haiku (primary)', 'Amazon Nova Lite (cross-region)', 'Gemini 1.5 Flash (fallback)', 'Smart demo mode (always works)'].map(tech => (
                     <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
                       <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
                       {tech}
@@ -592,9 +602,9 @@ export default function Landing() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { value: '18', label: 'Pages & Features', sub: 'Complete platform' },
-              { value: '14', label: 'API Endpoints', sub: 'REST + Lambda' },
-              { value: '7', label: 'AI Features', sub: 'Bedrock + Gemini' },
-              { value: '4-tier', label: 'Fallback Chain', sub: 'Always works' },
+              { value: '6', label: 'AWS Services', sub: 'Bedrock, DynamoDB, ECR...' },
+              { value: '4-tier', label: 'AI Fallback', sub: 'Always works' },
+              { value: '100%', label: 'Serverless', sub: 'Auto-scaling infra' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -775,11 +785,10 @@ export default function Landing() {
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
                   className="bg-[#1a1a1a] text-white px-8 py-4 rounded-full text-sm font-semibold shadow-xl shadow-black/20 whitespace-nowrap flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-                  Login as admin/admin to explore
+                  Explore Live Demo
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
               </div>
-              <p className="text-white/60 text-xs mt-4">Demo credentials: admin / admin or manager / manager</p>
             </ScrollReveal>
           </div>
         </div>

@@ -25,6 +25,7 @@ import { ToastProvider } from './components/Toast'
 import { LanguageProvider } from './utils/LanguageContext'
 import { AuthProvider, useAuth } from './utils/AuthContext'
 import { CartProvider } from './utils/CartContext'
+import { ThemeProvider } from './utils/ThemeContext'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth()
@@ -73,14 +74,16 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <LanguageProvider>
-          <ToastProvider>
-            <AppRoutes />
-          </ToastProvider>
-        </LanguageProvider>
-      </CartProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <ToastProvider>
+              <AppRoutes />
+            </ToastProvider>
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
