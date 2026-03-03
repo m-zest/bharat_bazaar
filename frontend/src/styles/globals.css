@@ -232,3 +232,38 @@
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23f9fafb' d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,40 1440,40 L1440,60 L0,60 Z'/%3E%3C/svg%3E");
   background-size: cover;
 }
+
+/* ── Database REST API Component Animations ── */
+@keyframes database-animation-path-1 {
+  0% { offset-distance: 0%; }
+  15%, 100% { offset-distance: 100%; }
+}
+@keyframes database-animation-path-2 {
+  0%, 10% { offset-distance: 0%; }
+  25%, 100% { offset-distance: 100%; }
+}
+@keyframes database-animation-path-3 {
+  0%, 22% { offset-distance: 0%; }
+  40%, 100% { offset-distance: 100%; }
+}
+@keyframes database-animation-path-4 {
+  0%, 34% { offset-distance: 0%; }
+  55%, 100% { offset-distance: 100%; }
+}
+
+.database.db-light-1 {
+  offset-path: path("M 31 10 v 15 q 0 5 5 5 h 59 q 5 0 5 5 v 10");
+  animation: database-animation-path-1 2s ease-in-out infinite;
+}
+.database.db-light-2 {
+  offset-path: path("M 77 10 v 10 q 0 5 5 5 h 13 q 5 0 5 5 v 10");
+  animation: database-animation-path-2 2s ease-in-out infinite;
+}
+.database.db-light-3 {
+  offset-path: path("M 124 10 v 10 q 0 5 -5 5 h -14 q -5 0 -5 5 v 10");
+  animation: database-animation-path-3 2s ease-in-out infinite;
+}
+.database.db-light-4 {
+  offset-path: path("M 170 10 v 15 q 0 5 -5 5 h -60 q -5 0 -5 5 v 10");
+  animation: database-animation-path-4 2s ease-in-out infinite;
+}

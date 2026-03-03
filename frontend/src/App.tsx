@@ -18,6 +18,8 @@ import TrackingPage from './pages/TrackingPage'
 import ProfilePage from './pages/ProfilePage'
 import NotificationsPage from './pages/NotificationsPage'
 import ReportsPage from './pages/ReportsPage'
+import InvoicePage from './pages/InvoicePage'
+import KhataPage from './pages/KhataPage'
 import Layout from './components/Layout'
 import { ToastProvider } from './components/Toast'
 import { LanguageProvider } from './utils/LanguageContext'
@@ -62,6 +64,8 @@ function AppRoutes() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/invoices" element={<InvoicePage />} />
+        <Route path="/khata" element={<KhataPage />} />
       </Route>
     </Routes>
   )

@@ -1,12 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles, Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail, ChevronDown } from 'lucide-react'
+import {
+  IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles,
+  Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, Mail, ChevronDown,
+  Camera, ClipboardList, ShoppingCart, Truck, MapPin, Bell, Eye, GitCompare,
+  Shield, Users, TrendingUp, Receipt, BookOpen, Database, Cloud, Cpu, Lock,
+  Server, Layers, CheckCircle2, ArrowDown,
+} from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
 import PhoneMockup from '../components/PhoneMockup'
 import WhatsAppDemo from '../components/WhatsAppDemo'
 import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
+import DatabaseWithRestApi from '../components/ui/database-with-rest-api'
 
 /* ──────────────── COMPONENT ──────────────── */
 
@@ -40,8 +47,8 @@ export default function Landing() {
   const NAV_LINKS = [
     { label: t('nav.features'), href: '#features' },
     { label: t('nav.howItWorks'), href: '#showcase' },
-    { label: t('nav.benefits'), href: '#benefits' },
-    { label: t('nav.testimonials'), href: '#testimonials' },
+    { label: 'Platform', href: '#platform' },
+    { label: 'Architecture', href: '#architecture' },
   ]
 
   const FEATURE_CARDS = [
@@ -106,6 +113,48 @@ export default function Landing() {
     },
   ]
 
+  // ── All Platform Features ──
+  const PLATFORM_FEATURES = [
+    { icon: BarChart3, label: 'AI Dashboard', desc: 'Real-time business command center with charts', route: '/dashboard', color: 'bg-blue-500' },
+    { icon: Camera, label: 'Bill Scanner', desc: 'OCR-powered invoice scanning with Claude Vision', route: '/scanner', color: 'bg-purple-500' },
+    { icon: Package, label: 'Smart Sourcing', desc: '130+ wholesale products from 40+ verified suppliers', route: '/sourcing', color: 'bg-teal-500' },
+    { icon: IndianRupee, label: 'AI Pricing', desc: '3 strategies per product with confidence scores', route: '/pricing', color: 'bg-amber-500' },
+    { icon: MessageCircle, label: 'Munim-ji AI', desc: 'Hinglish business advisor with full context', route: '/chat', color: 'bg-green-500' },
+    { icon: ClipboardList, label: 'Inventory', desc: 'DynamoDB-backed real-time stock management', route: '/inventory', color: 'bg-indigo-500' },
+    { icon: ShoppingCart, label: 'Cart & Checkout', desc: 'Full e-commerce order flow with payment', route: '/cart', color: 'bg-orange-500' },
+    { icon: Truck, label: 'Delivery Tracking', desc: '6-step live shipment timeline with agent info', route: '/tracking', color: 'bg-cyan-500' },
+    { icon: Receipt, label: 'Order History', desc: 'Complete order management with status filters', route: '/orders', color: 'bg-rose-500' },
+    { icon: Eye, label: 'Competitor Monitor', desc: 'Track Amazon, Flipkart, JioMart prices', route: '/competitors', color: 'bg-red-500' },
+    { icon: GitCompare, label: 'Product Compare', desc: 'Side-by-side AI analysis of margins & demand', route: '/compare', color: 'bg-violet-500' },
+    { icon: Languages, label: 'Content Generator', desc: '6 Indian languages with cultural adaptation', route: '/content', color: 'bg-emerald-500' },
+    { icon: MessageSquareText, label: 'Sentiment Analysis', desc: 'Hinglish review analysis with sarcasm detection', route: '/sentiment', color: 'bg-pink-500' },
+    { icon: BookOpen, label: 'Customer Khata', desc: 'Digital credit ledger for regular customers', route: '/khata', color: 'bg-yellow-500' },
+    { icon: Receipt, label: 'GST Invoices', desc: 'Auto-generate GST-compliant invoices', route: '/invoices', color: 'bg-lime-500' },
+    { icon: Bell, label: 'Smart Notifications', desc: 'AI-powered alerts for stock, pricing & orders', route: '/notifications', color: 'bg-sky-500' },
+    { icon: BarChart3, label: 'Business Reports', desc: 'Revenue charts, category analysis, top products', route: '/reports', color: 'bg-fuchsia-500' },
+    { icon: Users, label: 'Store Profile', desc: 'GST-verified store settings & integrations', route: '/profile', color: 'bg-slate-500' },
+  ]
+
+  // ── Order Flow Steps ──
+  const ORDER_FLOW = [
+    { step: 1, title: 'Browse Products', desc: '130+ wholesale products across 10 cities', icon: Package, color: 'bg-teal-500' },
+    { step: 2, title: 'Add to Cart', desc: 'Select quantities, compare wholesale vs MRP', icon: ShoppingCart, color: 'bg-orange-500' },
+    { step: 3, title: 'Checkout', desc: 'Delivery address + COD/UPI/Credit payment', icon: Lock, color: 'bg-blue-500' },
+    { step: 4, title: 'Order Confirmed', desc: 'Instant confirmation with order ID', icon: CheckCircle2, color: 'bg-green-500' },
+    { step: 5, title: 'Track Delivery', desc: '6-step real-time tracking with agent info', icon: Truck, color: 'bg-purple-500' },
+    { step: 6, title: 'Manage & Reorder', desc: 'Order history, invoices, one-click reorder', icon: Receipt, color: 'bg-rose-500' },
+  ]
+
+  // ── AWS Architecture ──
+  const AWS_SERVICES = [
+    { name: 'Amazon Bedrock', desc: 'Claude 3 Haiku for pricing, content, sentiment, chat, vision', icon: Cpu, category: 'AI/ML' },
+    { name: 'Amazon DynamoDB', desc: 'Single-table design for inventory, orders, store settings', icon: Database, category: 'Database' },
+    { name: 'AWS App Runner', desc: 'Container hosting with auto-scaling, zero cold starts', icon: Server, category: 'Compute' },
+    { name: 'Amazon ECR', desc: 'Docker image registry for CI/CD', icon: Layers, category: 'DevOps' },
+    { name: 'AWS IAM', desc: 'Fine-grained access control for all services', icon: Shield, category: 'Security' },
+    { name: 'Amazon CloudWatch', desc: 'Monitoring, logging and alerting', icon: Eye, category: 'Observability' },
+  ]
+
   const FOOTER_LINKS: Record<string, string[]> = {
     [t('footer.features')]: ['Smart Pricing', 'AI Content', 'Sentiment Analysis', 'Smart Sourcing', 'AI Advisor'],
     [t('footer.resources')]: ['Documentation', 'API Reference', 'Case Studies', 'Blog'],
@@ -117,9 +166,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white overflow-hidden">
 
-      {/* ═══════════════════════════════════════════
-          NAVBAR — Minimal, pill CTA, language selector
-          ═══════════════════════════════════════════ */}
+      {/* ═══ NAVBAR ═══ */}
       <motion.header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
@@ -200,11 +247,8 @@ export default function Landing() {
         </div>
       </motion.header>
 
-      {/* ═══════════════════════════════════════════
-          HERO — Giant text, silk gradient, floating cards
-          ═══════════════════════════════════════════ */}
+      {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
-        {/* Saffron silk gradient background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#FFEDD5] to-[#FEF3C7]" />
           <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-30">
@@ -222,7 +266,6 @@ export default function Landing() {
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left — Text */}
             <div>
               <ScrollReveal>
                 <motion.div
@@ -246,7 +289,6 @@ export default function Landing() {
                 </motion.span>
               </motion.h1>
 
-              {/* Tagline */}
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.65 }}
                 className="text-sm font-medium tracking-[3px] uppercase text-[#0D9488] mt-1" style={{ fontFamily: "'Sora', sans-serif" }}>
                 {t('hero.tagline')}
@@ -263,7 +305,7 @@ export default function Landing() {
                   {t('hero.exploreDemo')}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/chat')}
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
                   className="flex items-center gap-2 text-[#1a1a1a] px-6 py-3.5 rounded-full text-sm font-semibold border-2 border-[#e5e5e5] hover:border-[#F97316] transition-colors">
                   <MessageCircle className="w-4 h-4" />
                   {t('hero.askAI')}
@@ -272,9 +314,10 @@ export default function Landing() {
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1 }} className="mt-12 flex items-center gap-8">
                 {[
-                  { value: '12M+', label: t('hero.stat1Label') },
+                  { value: '18+', label: 'AI Features' },
                   { value: '10', label: t('hero.stat2Label') },
-                  { value: '\u20B940L', label: t('hero.stat3Label') },
+                  { value: '6', label: 'Languages' },
+                  { value: '14', label: 'API Endpoints' },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <p className="text-2xl font-extrabold text-[#1a1a1a]">{stat.value}</p>
@@ -284,7 +327,6 @@ export default function Landing() {
               </motion.div>
             </div>
 
-            {/* Right — Phone Mockup with live chat */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -298,7 +340,103 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          FEATURED CATEGORIES — 4 cards with arrow
+          PLATFORM OVERVIEW — All 18 features grid
+          ═══════════════════════════════════════════ */}
+      <section id="platform" className="py-24 px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Complete Platform</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
+              18 Features. One Platform.
+            </h2>
+            <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
+              Everything an Indian SMB needs — from AI pricing to delivery tracking, all powered by AWS Bedrock & DynamoDB.
+            </p>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {PLATFORM_FEATURES.map((feature, i) => (
+              <motion.div
+                key={feature.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.03 }}
+                whileHover={{ y: -4, scale: 1.03 }}
+                onClick={() => navigate('/login')}
+                className="bg-white rounded-2xl p-4 border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer group text-center"
+              >
+                <div className={`w-10 h-10 ${feature.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+                  <feature.icon className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="text-xs font-bold text-[#1a1a1a] mb-1">{feature.label}</h4>
+                <p className="text-[10px] text-[#999] leading-tight">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Login CTA */}
+          <ScrollReveal className="text-center mt-10">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/login')}
+              className="inline-flex items-center gap-2.5 bg-[#1a1a1a] text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-[#333] transition-colors shadow-xl shadow-black/10"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+              Try All Features — Login with admin/admin
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          ORDER FLOW — Visual step-by-step
+          ═══════════════════════════════════════════ */}
+      <section className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
+        <div className="max-w-7xl mx-auto">
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">End-to-End Commerce</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
+              Complete Order Flow
+            </h2>
+            <p className="text-[#666] mt-4 text-lg max-w-2xl mx-auto">
+              From product discovery to delivery tracking — a fully integrated B2B commerce experience for Indian retailers.
+            </p>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {ORDER_FLOW.map((step, i) => (
+              <motion.div
+                key={step.step}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative"
+              >
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all text-center h-full">
+                  <div className={`w-12 h-12 ${step.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+                    <step.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-1">Step {step.step}</div>
+                  <h4 className="text-sm font-bold text-[#1a1a1a] mb-1">{step.title}</h4>
+                  <p className="text-[10px] text-[#999]">{step.desc}</p>
+                </div>
+                {i < ORDER_FLOW.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-2 z-10">
+                    <ArrowRight className="w-4 h-4 text-[#F97316]" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          FEATURED CATEGORIES — 4 cards
           ═══════════════════════════════════════════ */}
       <section id="features" className="py-24 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -323,7 +461,7 @@ export default function Landing() {
             {FEATURE_CARDS.map((card) => (
               <StaggerItem key={card.title}>
                 <motion.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}
-                  onClick={() => navigate(card.route)}
+                  onClick={() => navigate('/login')}
                   className={`${card.bg} rounded-3xl p-6 lg:p-8 cursor-pointer group relative overflow-hidden h-[260px] lg:h-[300px] flex flex-col justify-between transition-shadow hover:shadow-xl`}>
                   <div className="self-end">
                     <div className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-sm group-hover:bg-white group-hover:shadow-md transition-all">
@@ -376,7 +514,7 @@ export default function Landing() {
                 <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                   whileHover={{ y: -4, scale: 1.02 }}
                   className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer"
-                  onClick={() => navigate(`/${activeTab === 'pricing' ? 'pricing' : activeTab === 'content' ? 'content' : 'sourcing'}`)}>
+                  onClick={() => navigate('/login')}>
                   <span className="text-2xl mb-3 block">{card.icon}</span>
                   <h4 className="font-bold text-[#1a1a1a] text-sm mb-1">{card.title}</h4>
                   <p className={`text-xl font-extrabold ${card.color} mb-2`}>{card.price}</p>
@@ -406,8 +544,181 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          PROMOTIONAL SPLIT — Image + gradient card
+          AWS ARCHITECTURE — Technical showcase
           ═══════════════════════════════════════════ */}
+      <section id="architecture" className="py-24 px-6 lg:px-8 bg-[#1a1a1a] text-white">
+        <div className="max-w-7xl mx-auto">
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Built on AWS</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+              Production-Grade Architecture
+            </h2>
+            <p className="text-white/50 mt-4 text-lg max-w-2xl mx-auto">
+              Fully deployed on AWS with serverless-first design, multi-model AI fallback, and single-table DynamoDB.
+            </p>
+          </ScrollReveal>
+
+          {/* Architecture Diagram */}
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10">
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Frontend */}
+              <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
+                <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">Frontend Layer</p>
+                <div className="space-y-2">
+                  {['React 18 + TypeScript', 'Tailwind CSS + Framer Motion', 'Recharts Data Viz', 'Vite Build (< 500ms HMR)'].map(tech => (
+                    <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
+                      <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Backend */}
+              <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
+                <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">API Layer</p>
+                <div className="space-y-2">
+                  {['Express.js + Lambda handlers', '14 REST API endpoints', '4-tier AI model fallback', '5-min timeout, 50MB body'].map(tech => (
+                    <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
+                      <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* AI */}
+              <div className="bg-white/5 rounded-2xl p-5 border border-white/10">
+                <p className="text-[10px] font-bold text-[#F97316] uppercase tracking-wider mb-3">AI/ML Layer</p>
+                <div className="space-y-2">
+                  {['Bedrock Claude 3 Haiku (primary)', 'Gemini 1.5 Flash (fallback)', 'Amazon Nova Lite (backup)', 'Demo fallback (always works)'].map(tech => (
+                    <div key={tech} className="flex items-center gap-2 text-sm text-white/70">
+                      <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Flow Arrow */}
+            <div className="flex items-center justify-center my-6">
+              <div className="flex items-center gap-3 text-white/30">
+                <div className="w-20 h-px bg-gradient-to-r from-transparent to-white/20" />
+                <ArrowDown className="w-5 h-5 text-[#F97316]" />
+                <div className="w-20 h-px bg-gradient-to-l from-transparent to-white/20" />
+              </div>
+            </div>
+
+            {/* REST API Data Flow Visualization */}
+            <div className="flex justify-center my-4">
+              <DatabaseWithRestApi
+                circleText="API"
+                badgeTexts={{
+                  first: 'GET',
+                  second: 'POST',
+                  third: 'PUT',
+                  fourth: 'DELETE',
+                }}
+                buttonTexts={{
+                  first: 'Bedrock',
+                  second: 'DynamoDB',
+                }}
+                title="Data exchange using a customized REST API"
+                lightColor="#F97316"
+              />
+            </div>
+
+            {/* Flow Arrow */}
+            <div className="flex items-center justify-center my-6">
+              <div className="flex items-center gap-3 text-white/30">
+                <div className="w-20 h-px bg-gradient-to-r from-transparent to-white/20" />
+                <ArrowDown className="w-5 h-5 text-[#F97316]" />
+                <div className="w-20 h-px bg-gradient-to-l from-transparent to-white/20" />
+              </div>
+            </div>
+
+            {/* AWS Services Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {AWS_SERVICES.map((service, i) => (
+                <motion.div
+                  key={service.name}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white/5 border border-white/10 rounded-xl p-3 text-center hover:border-[#F97316]/30 transition-colors"
+                >
+                  <service.icon className="w-5 h-5 text-[#F97316] mx-auto mb-2" />
+                  <p className="text-xs font-bold text-white/90">{service.name}</p>
+                  <p className="text-[9px] text-white/40 mt-0.5">{service.category}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tech Numbers */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { value: '18', label: 'Pages & Features', sub: 'Complete platform' },
+              { value: '14', label: 'API Endpoints', sub: 'REST + Lambda' },
+              { value: '7', label: 'AI Features', sub: 'Bedrock + Gemini' },
+              { value: '4-tier', label: 'Fallback Chain', sub: 'Always works' },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="text-center p-5 bg-white/5 rounded-2xl border border-white/10"
+              >
+                <p className="text-3xl font-extrabold text-[#F97316]">{stat.value}</p>
+                <p className="text-sm font-semibold text-white/80 mt-1">{stat.label}</p>
+                <p className="text-[10px] text-white/40">{stat.sub}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          IMPACT NUMBERS — Big stats with context
+          ═══════════════════════════════════════════ */}
+      <section className="py-24 px-6 lg:px-8 bg-gradient-to-br from-[#FFF7ED] via-white to-[#F0FDFA]">
+        <div className="max-w-7xl mx-auto">
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Built for Bharat</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a1a] tracking-tight">
+              Designed for 12M+ Indian SMBs
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { value: '10', label: 'Indian Cities', desc: 'Mumbai, Delhi, Bangalore, Lucknow, Chennai, Kolkata, Ahmedabad, Pune, Jaipur, Indore', icon: MapPin },
+              { value: '6', label: 'Languages', desc: 'English, Hindi, Tamil, Bengali, Gujarati, Marathi — culturally adapted', icon: Globe },
+              { value: '130+', label: 'Wholesale Products', desc: 'Groceries, Fashion, Electronics, Beauty, Home & Kitchen categories', icon: Package },
+              { value: '40+', label: 'Verified Suppliers', desc: 'Rated wholesalers with MOQ, delivery days, and specialties', icon: Shield },
+            ].map((stat, i) => (
+              <ScrollReveal key={stat.label} delay={i * 0.1}>
+                <motion.div whileHover={{ y: -4 }}
+                  className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all h-full"
+                >
+                  <div className="w-10 h-10 bg-[#FFF7ED] rounded-xl flex items-center justify-center mb-3">
+                    <stat.icon className="w-5 h-5 text-[#F97316]" />
+                  </div>
+                  <p className="text-3xl font-extrabold text-[#1a1a1a]">{stat.value}</p>
+                  <p className="text-sm font-bold text-[#1a1a1a] mt-1">{stat.label}</p>
+                  <p className="text-xs text-[#999] mt-1 leading-relaxed">{stat.desc}</p>
+                </motion.div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ PROMOTIONAL SPLIT ═══ */}
       <section className="py-24 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-6">
@@ -445,9 +756,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          BENEFITS — 3 cards, icon badges
-          ═══════════════════════════════════════════ */}
+      {/* ═══ BENEFITS ═══ */}
       <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#FAFAF9]">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
@@ -477,9 +786,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          TESTIMONIALS — Large + small card
-          ═══════════════════════════════════════════ */}
+      {/* ═══ TESTIMONIALS ═══ */}
       <section id="testimonials" className="py-24 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal className="text-center mb-14">
@@ -516,16 +823,11 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          WHATSAPP DEMO — Try Munim-ji on WhatsApp
-          ═══════════════════════════════════════════ */}
+      {/* ═══ WHATSAPP DEMO ═══ */}
       <WhatsAppDemo />
 
-      {/* ═══════════════════════════════════════════
-          FOOTER CTA + FOOTER
-          ═══════════════════════════════════════════ */}
+      {/* ═══ FOOTER CTA + FOOTER ═══ */}
       <section className="relative overflow-hidden">
-        {/* CTA with saffron silk bg */}
         <div className="relative py-24 px-6 lg:px-8">
           <div className="absolute inset-0 bg-gradient-to-br from-[#F97316] via-[#FB923C] to-[#F59E0B]" />
           <div className="absolute inset-0 opacity-20">
@@ -539,20 +841,18 @@ export default function Landing() {
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-                <div className="flex-1 w-full relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#999]" />
-                  <input type="email" placeholder={t('cta.emailPlaceholder')} className="w-full pl-11 pr-4 py-3.5 rounded-full text-sm border-0 outline-none shadow-lg" />
-                </div>
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
-                  className="bg-[#1a1a1a] text-white px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/20 whitespace-nowrap">
-                  {t('cta.getStarted')}
+                  className="bg-[#1a1a1a] text-white px-8 py-4 rounded-full text-sm font-semibold shadow-xl shadow-black/20 whitespace-nowrap flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+                  Login as admin/admin to explore
+                  <ArrowRight className="w-4 h-4" />
                 </motion.button>
               </div>
+              <p className="text-white/60 text-xs mt-4">Demo credentials: admin / admin or manager / manager</p>
             </ScrollReveal>
           </div>
         </div>
 
-        {/* Giant BharatBazaar watermark text + Tarazu icon */}
         <div className="bg-[#1a1a1a] pt-8 pb-2 overflow-hidden">
           <div className="text-center relative">
             <h2 className="text-[8rem] md:text-[12rem] lg:text-[16rem] font-extrabold text-white/[0.04] leading-none tracking-tighter select-none" style={{ fontFamily: "'Outfit', sans-serif" }}>
@@ -564,7 +864,6 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="bg-[#1a1a1a] text-white border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
@@ -575,8 +874,8 @@ export default function Landing() {
                 <p className="text-sm text-white/40 leading-relaxed max-w-xs">
                   {t('footer.desc')}
                 </p>
-                <div className="flex items-center gap-3 mt-6">
-                  {['AWS', 'Bedrock', 'React', 'Vercel'].map(tech => (
+                <div className="flex items-center gap-3 mt-6 flex-wrap">
+                  {['AWS Bedrock', 'DynamoDB', 'App Runner', 'ECR', 'React', 'TypeScript'].map(tech => (
                     <span key={tech} className="text-[10px] px-3 py-1 border border-white/10 rounded-full text-white/30 font-medium">{tech}</span>
                   ))}
                 </div>
