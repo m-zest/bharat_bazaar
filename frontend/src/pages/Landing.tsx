@@ -827,15 +827,24 @@ export default function Landing() {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
+              {
+                icon: Store,
+                color: 'from-blue-500 to-indigo-500',
+                bg: 'bg-blue-500/10',
+                title: 'Setup Your Store',
+                subtitle: 'Catalog personalized',
+                desc: 'Tell us what you sell during onboarding → inventory seeded with real products, prices, and sell rates',
+                data: 'Product catalog, category, pricing baseline',
+              },
               {
                 icon: Camera,
                 color: 'from-orange-500 to-amber-500',
                 bg: 'bg-orange-500/10',
                 title: 'Scan Purchase Bills',
-                subtitle: 'Inventory auto-populated',
-                desc: 'Photograph any wholesaler bill → AI extracts products, quantities, prices → stock updated automatically',
+                subtitle: 'Stock auto-updated',
+                desc: 'Photograph any wholesaler bill → AI extracts products, quantities, prices → inventory grows automatically',
                 data: 'Cost prices, supplier info, stock levels',
               },
               {
@@ -843,16 +852,16 @@ export default function Landing() {
                 color: 'from-teal-500 to-emerald-500',
                 bg: 'bg-teal-500/10',
                 title: 'Generate Sales Invoices',
-                subtitle: 'Sales data captured',
-                desc: 'Every bill you generate = a sale recorded → tracks what sells, when, how much, to whom',
-                data: 'Revenue, demand patterns, customer preferences',
+                subtitle: 'Sales tracked live',
+                desc: 'Every bill = a sale recorded → today\'s revenue, items sold, top sellers — all updated in real-time',
+                data: 'Revenue, demand patterns, top sellers, sold/day',
               },
               {
                 icon: MessageCircle,
                 color: 'from-green-500 to-green-600',
                 bg: 'bg-green-500/10',
                 title: 'Chat on WhatsApp',
-                subtitle: 'Orders & queries processed',
+                subtitle: 'Orders processed',
                 desc: '"Order 50 Surf Excel" or "Price for Tata Salt" → AI processes every message into structured data',
                 data: 'Orders, price checks, stock queries',
               },
@@ -879,10 +888,10 @@ export default function Landing() {
             <div className="bg-[#1a1a1d]/60 backdrop-blur-sm rounded-2xl p-8 border border-[#2a2a2d]">
               <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
                 {[
-                  { label: 'Daily Actions', sub: 'Scan bills, create invoices, WhatsApp', icon: Store, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-                  { label: 'Auto-Captured', sub: 'Stock, sales, prices, demand', icon: Database, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-                  { label: 'AI Analyzes', sub: 'Bedrock + DynamoDB', icon: Cpu, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-                  { label: 'Smart Insights', sub: 'Pricing, trends, forecasts', icon: TrendingUp, color: 'text-teal-400', bg: 'bg-teal-500/10' },
+                  { label: 'Store Setup', sub: 'Onboarding seeds your catalog', icon: Store, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                  { label: 'Stock In', sub: 'Scan bills, wholesale orders', icon: Camera, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+                  { label: 'Sales Out', sub: 'Invoices track what sells', icon: Receipt, color: 'text-teal-400', bg: 'bg-teal-500/10' },
+                  { label: 'AI Intelligence', sub: 'Revenue, trends, forecasts', icon: TrendingUp, color: 'text-purple-400', bg: 'bg-purple-500/10' },
                 ].map((step, i) => (
                   <div key={step.label} className="flex items-center gap-3 md:gap-4">
                     <div className="text-center">

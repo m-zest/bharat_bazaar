@@ -1,8 +1,8 @@
 <p align="center">
   <h1 align="center">BharatBazaar AI</h1>
-  <p align="center"><strong>Market Intelligence for Bharat</strong></p>
+  <p align="center"><strong>Market Intelligence for Bharat's 15M Kirana Stores</strong></p>
   <p align="center">
-    AI-powered market intelligence platform for 12M+ Indian small retailers — in their own language.
+    AI-powered market intelligence platform for Indian small retailers — in their own language, accessible via WhatsApp.
   </p>
 </p>
 
@@ -27,9 +27,10 @@
 
 ## Table of Contents
 
-- [Demo Guide for Judges](#demo-guide-for-judges)
+- [Demo Guide for Judges](#-demo-guide-for-judges)
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
+- [Complete Data Flow](#-complete-data-flow--how-the-app-knows-everything)
 - [Key Highlights](#key-highlights)
 - [Architecture](#architecture)
 - [AWS Services Integration](#aws-services-integration)
@@ -48,46 +49,94 @@
 
 ---
 
-## Demo Guide for Judges
+## 🎯 Demo Guide for Judges
 
-> **Quick start:** The app works fully in demo mode — no AWS credentials needed. All AI features fall back to smart, realistic cached responses.
+> **Quick start:** The app works fully in demo mode — no AWS credentials needed. All AI features fall back to smart, realistic cached responses. Pre-loaded with demo sales, inventory, and customer data.
 
-### Demo Login Credentials
+### Demo Login
 
 | Username | Password | Role |
 |----------|----------|------|
 | `admin` | `admin` | Store Owner (Rajesh Sharma, Lucknow) |
 | `manager` | `manager` | Store Manager (Priya Gupta, Lucknow) |
 
-### Quick Registration (Auto-Fill)
+### Quick Registration
 
-Visit `/register` and click **"Quick Demo Fill"** to auto-populate with one of three demo profiles:
-- **Ramesh Sharma** — Retailer, Lucknow
-- **Amit Gupta** — Supplier, Delhi (shows verification workflow)
-- **Priya Menon** — Customer, Mumbai
+Visit `/register` → click **"Quick Demo Fill"** → auto-populates with one of three profiles (Retailer/Supplier/Customer). Auto-login after registration.
 
-After registration, you're logged in automatically — no need to sign in again.
+### 🔥 Recommended Demo Flow (5 minutes)
 
-### Features to Try
+Follow this path to see the **complete data pipeline** in action:
 
-1. **Dashboard** — Command center with revenue charts, weather, festival alerts, AI insights (6-row compact layout)
-2. **Smart Pricing** — Enter any product + cost price → get 3 AI pricing strategies
-3. **Munim-ji AI Chat** — Business advisor in 8 Indian languages with voice I/O
-4. **Content Studio** — Generate product listings for Instagram, Amazon, Flipkart, WhatsApp, JioMart, Website
-5. **Sentiment Analyzer** — Paste Hinglish reviews → get actionable insights
-6. **Wholesale Sourcing** — Click any wholesaler card for details, verified supplier filter
-7. **Inventory Tracker** — Pre-loaded with 12 demo kirana products (DynamoDB-backed)
-8. **GST Invoices** — Generate PDF invoices, share via WhatsApp/Email
-9. **Bill Scanner** — Camera-based product scanning
-10. **Language Switcher** — Top-right dropdown: Hindi, Tamil, Bengali, Gujarati, Marathi, English
+#### Step 1: Onboarding → Store Catalog
+1. Clear localStorage (`localStorage.clear()` in console) → refresh
+2. Login → complete onboarding: select "Groceries" → pick products (Basmati Rice, Toor Dal, etc.)
+3. **Result:** Dashboard shows "My Store Catalog" with your selected products
+
+#### Step 2: Dashboard → See Everything
+- **Sales Overview:** Today's Revenue (₹12,850), Items Sold (121), Weekly Revenue, Top Sellers
+- **Live Data Flow:** Real-time activity feed showing bills scanned, invoices generated, WhatsApp orders
+- **Guided Demo:** "Try the Data Flow" panel with 4-step walkthrough
+- **AI Insights, Weather, Festivals, Charts** — all city-aware
+
+#### Step 3: Bill Scanner → Inventory
+1. Go to `/scanner` → upload any image
+2. AI extracts items → click "Add All to Inventory"
+3. See **"Data Flow Complete!"** banner: Bill Scanned → Inventory Updated → Prices Set → Analytics Fed
+4. Go to `/inventory` → see new items with **"Bill Scan"** source badge
+
+#### Step 4: Invoice → Sales Tracking
+1. Go to `/invoices` → click "Download PDF"
+2. See **"Sale Recorded!"** banner showing data pipeline
+3. Go back to Dashboard → revenue updated, sale appears in Live Data Flow
+4. Go to Inventory → **"Sold Today"** column shows updated numbers
+
+#### Step 5: Explore AI Features
+- **Smart Pricing** (`/pricing`) — Enter any product + cost → get 3 AI pricing strategies
+- **Munim-ji AI** (`/chat`) — Business advisor in 8 languages with voice I/O
+- **Content Studio** (`/content`) — Generate listings for Instagram, Amazon, Flipkart, WhatsApp, JioMart
+- **Sentiment Analyzer** (`/sentiment`) — Paste Hinglish reviews → get actionable insights
+- **Competitor Analysis** (`/competitors`) — Market intelligence on local rivals
+
+### All 23 Features
+
+| # | Feature | Route | Highlights |
+|---|---------|-------|-----------|
+| 1 | Dashboard | `/dashboard` | Sales stats, live data flow, AI insights, weather, festivals, guided demo |
+| 2 | Smart Pricing | `/pricing` | 3 AI strategies (competitive/balanced/premium), region-aware |
+| 3 | Munim-ji AI Chat | `/chat` | 8 languages, voice I/O, business advisor |
+| 4 | Content Studio | `/content` | 6 platforms (Instagram, Amazon, Flipkart, WhatsApp, JioMart, Website) |
+| 5 | Sentiment Analyzer | `/sentiment` | Hinglish support, code-mixed review analysis |
+| 6 | Wholesale Sourcing | `/sourcing` | 10-city marketplace, verified suppliers |
+| 7 | Inventory Tracker | `/inventory` | DynamoDB-backed, source badges, sold today/week columns |
+| 8 | Bill Scanner | `/scanner` | AI Vision OCR, auto-populates inventory |
+| 9 | GST Invoices | `/invoices` | PDF generation, WhatsApp/Email share, sale recording |
+| 10 | Product Comparison | `/compare` | Side-by-side AI analysis |
+| 11 | Competitor Analysis | `/competitors` | Local market intelligence |
+| 12 | Khata Book | `/khata` | Digital credit ledger |
+| 13 | Shopping Cart | `/cart` | Wholesale vs MRP pricing |
+| 14 | Checkout | `/checkout` | COD/UPI, address entry |
+| 15 | Order History | `/orders` | Past orders with reorder |
+| 16 | Delivery Tracking | `/tracking` | 6-step real-time tracking |
+| 17 | Business Reports | `/reports` | Trend analytics |
+| 18 | Profile & Settings | `/profile` | Store settings, languages |
+| 19 | Notifications | `/notifications` | Smart alerts |
+| 20 | Registration | `/register` | Role-based (Retailer/Supplier/Customer) |
+| 21 | Sales Tracking | Dashboard | Real-time revenue, items sold, top sellers |
+| 22 | Store Catalog | Dashboard | Onboarding-driven product personalization |
+| 23 | WhatsApp Integration | Landing | Twilio sandbox for store messaging |
 
 ### Tech Highlights for Code Review
 
-- **4-tier AI fallback chain**: `backend/src/utils/bedrock-client.ts` — Bedrock Haiku → Nova Lite → Gemini → Smart Demo
-- **DynamoDB single-table design**: `backend/src/utils/dynamodb-client.ts` — composite PK/SK keys
-- **11 backend handlers**: `backend/src/handlers/` — all Lambda-ready with `@types/aws-lambda`
-- **WhatsApp integration**: Twilio sandbox for store owner messaging
-- **i18n**: 6 languages with culturally adapted content generation
+| What to look at | File | Why it's interesting |
+|-----------------|------|---------------------|
+| 4-tier AI fallback | `backend/src/utils/bedrock-client.ts` | Bedrock → Nova Lite → Gemini → Smart Demo |
+| DynamoDB single-table | `backend/src/utils/dynamodb-client.ts` | Composite PK/SK keys, auto-creates table |
+| Sales tracking | `frontend/src/utils/SalesContext.tsx` | Records every invoice, computes top sellers |
+| Product catalog | `frontend/src/utils/productCatalog.ts` | 30+ products, onboarding → inventory seeding |
+| Data flow pipeline | `frontend/src/pages/Dashboard.tsx` | Live activity feed, sales overview |
+| Bill scanner → inventory | `frontend/src/pages/ScannerPage.tsx` | AI Vision → auto-add with source tagging |
+| 11 backend handlers | `backend/src/handlers/` | All Lambda-ready with `@types/aws-lambda` |
 
 ---
 
@@ -99,18 +148,71 @@ India has **12 million+ kirana stores** powering a **$1.3 trillion retail market
 |-----------|---------|
 | **No market intelligence** | Amazon has data science teams; kirana stores have gut feeling |
 | **Pricing guesswork** | Underpricing bleeds revenue; overpricing drives customers away |
+| **No inventory visibility** | "What's in stock? What's selling? What to reorder?" — all manual |
+| **No sales tracking** | Revenue, top sellers, demand trends — zero data capture |
 | **Language barriers** | 90% of business tools are English-only; 70% of Indian SMBs prefer regional languages |
-| **Cost barriers** | Enterprise analytics tools cost Rs.50,000+/month; SMBs earn Rs.20,000--50,000/month |
+| **Cost barriers** | Enterprise analytics tools cost ₹50,000+/month; SMBs earn ₹20,000–50,000/month |
 
-Small retailers lose an estimated **Rs.50,000+ per year** to suboptimal pricing alone. There is no affordable, language-accessible intelligence layer designed for Bharat's retail ecosystem.
+Small retailers lose an estimated **₹50,000+ per year** to suboptimal pricing alone.
 
 ## The Solution
 
-**BharatBazaar AI** gives every kirana store the same market intelligence as Amazon's data team — **in their own language, at a price they can afford, accessible via WhatsApp**.
+**BharatBazaar AI** gives every kirana store the same market intelligence as Amazon's data team — **in their own language, at zero extra effort, accessible via WhatsApp**.
 
-The platform provides 21+ features: AI-powered pricing, content generation for 6 platforms (Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website), Hinglish sentiment analysis, a voice-enabled business advisor (Munim-ji), competitor analysis, DynamoDB-backed inventory management, wholesale sourcing with verified suppliers, GST invoice generation with WhatsApp/Email sharing, role-based registration (Retailer/Supplier/Customer), and a WhatsApp-first access layer — all built on AWS infrastructure with a 4-tier AI fallback chain that ensures **the system never returns an error**.
+The platform answers three fundamental questions every store owner needs answered:
 
-Think of it as: **"Amazon's data team for every kirana store — accessible via WhatsApp."**
+| Question | How BharatBazaar Answers It |
+|----------|----------------------------|
+| **"What's in my store?"** | Onboarding seeds catalog → Bill Scanner adds stock → Inventory tracks everything |
+| **"What's selling?"** | Every invoice records the sale → Dashboard shows revenue, top sellers, trends |
+| **"What should I stock & price?"** | AI analyzes demand + competitors → Smart Pricing recommends optimal strategies |
+
+> **Key insight:** The store owner's daily actions (scanning bills, generating invoices, chatting on WhatsApp) **ARE** the data input. No spreadsheets. No data entry. Every interaction becomes business intelligence.
+
+---
+
+## 🔄 Complete Data Flow — How the App Knows Everything
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         DATA COMING IN                          │
+├─────────────────┬───────────────────┬───────────────────────────┤
+│  📋 Onboarding  │  📸 Bill Scanner  │  📦 Wholesale Orders     │
+│  "What do you   │  Photo → AI       │  Sourcing page →         │
+│   sell?"        │  extracts items,  │  incoming stock           │
+│  Seeds catalog  │  prices, qty →    │  auto-tracked            │
+│  with real      │  inventory        │                          │
+│  products       │  auto-populated   │                          │
+├─────────────────┴───────────────────┴───────────────────────────┤
+│                      INVENTORY (DynamoDB)                       │
+│  Every item has: name, cost, selling price, quantity,           │
+│  daily sell rate, reorder level, SOURCE BADGE                   │
+│  (Bill Scan | Wholesale | WhatsApp | Manual)                    │
+├─────────────────────────────────────────────────────────────────┤
+│                         DATA GOING OUT                          │
+├─────────────────┬───────────────────┬───────────────────────────┤
+│  🧾 Invoices    │  📱 WhatsApp      │  📊 Dashboard             │
+│  Every PDF =    │  "Bill for        │  Today's Revenue          │
+│  sale recorded  │   Ramesh - 5kg    │  Items Sold Today         │
+│  Revenue, items │   rice" → order   │  Top Selling Items        │
+│  tracked live   │  processed        │  Sold Today/Week per item │
+├─────────────────┴───────────────────┴───────────────────────────┤
+│                      AI INTELLIGENCE LAYER                      │
+│  Bedrock AI analyzes all data → pricing strategies,             │
+│  demand forecasts, competitor analysis, reorder alerts           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### How Each Data Source Works
+
+| Data Source | Trigger | What's Captured | Where It Goes |
+|-------------|---------|-----------------|---------------|
+| **Onboarding** | First login | Product catalog, category, city | Inventory seeded, dashboard personalized |
+| **Bill Scanner** | Photo upload | Items, quantities, cost prices | Inventory (source: `bill_scan`) |
+| **Invoice Generation** | PDF download | Sale amount, items sold, customer | SalesContext → Dashboard analytics |
+| **Wholesale Orders** | Sourcing page | Incoming stock, supplier info | Inventory (source: `wholesale`) |
+| **WhatsApp** | Chat message | Orders, price checks, queries | Structured data → AI processing |
+| **Manual Entry** | Inventory form | Any product details | Inventory (source: `manual`) |
 
 ---
 
@@ -118,16 +220,16 @@ Think of it as: **"Amazon's data team for every kirana store — accessible via 
 
 | Screen | Description |
 |--------|-------------|
-| **Landing Page** | Animated hero with particle effects, gradient orbs, WhatsApp-first strategy showcase, marketplace ecosystem, AWS architecture deep-dive |
-| **Dashboard** | Compact 6-row command center — AI insights, revenue charts, weather, festivals, sentiment, demand forecast, 12 AI feature grid |
+| **Landing Page** | Animated hero with particle effects, 4-card data flow section, WhatsApp demo, AWS architecture, marketplace ecosystem |
+| **Dashboard** | Sales overview (revenue/items/top sellers), live data flow feed, store catalog, guided demo, AI insights, weather, festivals, 12-feature grid |
 | **Smart Pricing** | Enter product + cost → 3 AI strategies (competitive/balanced/premium) with region-aware profit analysis |
 | **Munim-ji AI Chat** | Business advisor in 8 languages, voice I/O, contextual business advice |
 | **Content Studio** | Generate product listings for 6 platforms: Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website/SEO |
-| **Sentiment Analyzer** | Hinglish/Hindi/English review analysis — understands code-mixed text like "Packaging tuti hui thi, not happy" |
-| **Inventory Tracker** | DynamoDB-backed CRUD with 12 demo kirana products, reorder alerts, daily sell rates |
-| **GST Invoices** | PDF generation with jsPDF, share via WhatsApp or Email |
-| **Wholesale Sourcing** | Clickable supplier cards with detail modals, verified supplier filter, WhatsApp/Call actions |
-| **Registration** | Role-based (Retailer/Supplier/Customer), supplier verification workflow, demo auto-fill for judges |
+| **Sentiment Analyzer** | Hinglish/Hindi/English review analysis — understands code-mixed text |
+| **Inventory Tracker** | DynamoDB-backed CRUD, source badges (Bill Scan/Wholesale/WhatsApp/Manual), sold today/week columns, reorder alerts |
+| **Bill Scanner** | AI Vision OCR → extract items → add to inventory with source tracking + data flow success banner |
+| **GST Invoices** | PDF generation with jsPDF, WhatsApp/Email share, sale recording with data pipeline banner |
+| **Wholesale Sourcing** | 10-city marketplace with supplier modals, verified filter, WhatsApp/Call actions |
 
 ---
 
@@ -139,7 +241,7 @@ Think of it as: **"Amazon's data team for every kirana store — accessible via 
     +-----------------------------------------------------------------------+
     |                              FRONTEND                                  |
     |   React 18 + TypeScript + Vite + Tailwind CSS + Framer Motion         |
-    |   21 Pages | Radix UI | Recharts | React Router v6                    |
+    |   23 Pages | SalesContext | CartContext | ProductCatalog               |
     |   Light/Dark Theme | Voice I/O | 6 Languages                          |
     +----------------------------------+------------------------------------+
                                        |
@@ -185,104 +287,78 @@ Think of it as: **"Amazon's data team for every kirana store — accessible via 
 
 ## AWS Services Integration
 
-All AWS service integrations are implemented in production code with specific SDK versions. No mock services.
+All AWS service integrations are implemented in production code with specific SDK versions.
 
-| AWS Service | SDK / Integration | Version | Purpose | Code Evidence |
-|-------------|-------------------|---------|---------|---------------|
-| **Amazon Bedrock** | `@aws-sdk/client-bedrock-runtime` | ^3.500.0 | Foundation model inference via `InvokeModelCommand`. Claude 3 Haiku (primary) and Amazon Nova Lite (fallback). Cross-region failover from `ap-south-1` to `us-east-1`. | `backend/src/utils/bedrock-client.ts` — used in 7 handlers: pricing, content, sentiment, chat, compare, competitors, vision |
-| **Amazon DynamoDB** | `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` | ^3.500.0 | Single-table NoSQL design with composite keys (PK/SK). `DynamoDBDocumentClient` for marshalling. Auto-creates table on first run. `PAY_PER_REQUEST` billing mode. | `backend/src/utils/dynamodb-client.ts` — full CRUD: `PutCommand`, `GetCommand`, `QueryCommand`, `DeleteCommand`, `UpdateCommand`, `ScanCommand` |
-| **AWS App Runner** | Multi-stage Dockerfile | N/A | Container hosting with auto-scaling, managed TLS, and built-in health checks. Exposes port 8080. | `Dockerfile` — 3-stage build (frontend-build, backend-build, production) with `HEALTHCHECK` directive |
-| **Amazon ECR** | Private Registry | N/A | Docker image storage for the containerized backend. Images pushed via CI/CD pipeline. | `Dockerfile` + deployment configuration |
-| **AWS IAM** | Fine-grained policies | N/A | Least-privilege access: `bedrock:InvokeModel` for AI inference, `dynamodb:*` for data operations, `ecr:*` for container registry. | IAM policy configuration |
-| **Amazon CloudWatch** | App Runner integration | N/A | Container logs, request metrics, and health monitoring via native App Runner integration. | Automatic with App Runner deployment |
-
-### SDK Version Pinning
-
-```json
-{
-  "@aws-sdk/client-bedrock-runtime": "^3.500.0",
-  "@aws-sdk/client-dynamodb": "^3.500.0",
-  "@aws-sdk/lib-dynamodb": "^3.500.0"
-}
-```
-
-All three AWS SDK packages are pinned to the same minor version (`3.500.x`) to ensure compatibility across the modular AWS SDK v3 architecture.
+| AWS Service | SDK / Integration | Purpose | Code |
+|-------------|-------------------|---------|------|
+| **Amazon Bedrock** | `@aws-sdk/client-bedrock-runtime` ^3.500.0 | Claude 3 Haiku + Nova Lite inference. Cross-region failover (ap-south-1 → us-east-1). | `bedrock-client.ts` |
+| **Amazon DynamoDB** | `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` ^3.500.0 | Single-table NoSQL with composite keys. Auto-creates table. PAY_PER_REQUEST billing. | `dynamodb-client.ts` |
+| **AWS App Runner** | Multi-stage Dockerfile | Container hosting with auto-scaling, managed TLS, health checks on port 8080. | `Dockerfile` |
+| **Amazon ECR** | Private Registry | Docker image storage for containerized backend. | Deployment config |
+| **AWS IAM** | Fine-grained policies | `bedrock:InvokeModel`, `dynamodb:*`, `ecr:*` — least-privilege access. | IAM config |
+| **Amazon CloudWatch** | App Runner integration | Container logs, request metrics, health monitoring. | Automatic |
 
 ---
 
 ## 4-Tier AI Fallback Chain
 
-The system implements a resilient multi-tier AI invocation strategy that guarantees intelligent responses under all conditions. Implemented in `backend/src/utils/bedrock-client.ts`.
+The system implements a resilient multi-tier AI strategy that **guarantees the system never returns an error**. Implemented in `backend/src/utils/bedrock-client.ts`.
 
 ```
 Request
   |
   v
 [Tier 1] Amazon Bedrock — Claude 3 Haiku (ap-south-1)
-  |  Retry with exponential backoff on throttle
-  |  Skip on AccessDeniedException or daily quota exceeded
+  |  Exponential backoff on throttle (2s, 4s)
+  |  Skip on AccessDeniedException or quota exceeded
   v
 [Tier 2] Amazon Bedrock — Amazon Nova Lite (us-east-1, cross-region)
   |  Adapts request format for Nova's inference API
-  |  Same retry + skip logic
   v
 [Tier 3] Google Gemini 1.5 Flash (external failover)
   |  Activated when GEMINI_API_KEY is configured
-  |  Independent API with separate rate limits
   v
-[Tier 4] Smart Demo Mode
-  |  Pre-computed, realistic cached responses
-  |  Region-aware, product-aware demo data
-  |  Always available — the system never returns an error
+[Tier 4] Smart Demo Mode — Always available
+  |  Pre-computed, realistic, region-aware cached responses
   v
 Response (guaranteed)
 ```
-
-**Key implementation details:**
-- Exponential backoff: `2^(attempt+1) * 1000ms` between retries (2s, 4s)
-- Maximum 2 retries per model before moving to next tier
-- Distinguishes between throttle errors (retryable) and access errors (skip immediately)
-- Daily quota detection triggers immediate failover without wasting retry budget
-- Nova Lite uses a different request schema (`inferenceConfig` + `messages` format) — automatically adapted
-- JSON response cleaning handles markdown code block wrappers from different models
 
 ---
 
 ## Features
 
-BharatBazaar AI includes 21 fully implemented features across the platform.
-
-| # | Feature | Description | AI-Powered | Backend Handler |
-|---|---------|-------------|:----------:|-----------------|
-| 1 | **Dashboard** | Command center with revenue charts, weather data, festival alerts, and key metrics | -- | `dashboard.ts` |
-| 2 | **Smart Pricing Engine** | 3 AI pricing strategies (competitive, balanced, premium) with region-aware profit analysis | Yes | `pricing.ts` |
-| 3 | **Multilingual Content Generator** | Culturally adapted product descriptions in 6 Indian languages | Yes | `descriptions.ts` |
-| 4 | **Sentiment Analyzer** | Hinglish/Hindi/English review analysis with actionable insights | Yes | `sentiment.ts` |
-| 5 | **AI Chat (Munim-ji)** | Business advisor chatbot in 8 languages with voice input/output | Yes | `chat.ts` |
-| 6 | **Product Sourcing** | Wholesale marketplace with suppliers across 10 cities | -- | `sourcing.ts` |
-| 7 | **Product Comparison** | Side-by-side AI-powered product analysis | Yes | `compare.ts` |
-| 8 | **Competitor Analysis** | Market intelligence on local competitors | Yes | `competitors.ts` |
-| 9 | **Inventory Management** | Full CRUD with DynamoDB persistence, reorder alerts | -- | `inventory.ts` |
-| 10 | **Barcode Scanner** | Camera-based product scanning and identification | Yes | `vision.ts` |
-| 11 | **Shopping Cart** | Wholesale vs MRP price comparison | -- | Frontend |
-| 12 | **Checkout** | Address entry, COD/UPI payment, GST invoice generation | -- | Frontend |
-| 13 | **Order History** | Past orders with reorder functionality | -- | `orders.ts` |
-| 14 | **Delivery Tracking** | 6-step real-time order tracking | -- | Frontend |
-| 15 | **GST Invoices** | Auto-generated tax-compliant invoices | -- | Frontend |
-| 16 | **Customer Khata** | Digital customer credit ledger | -- | Frontend |
-| 17 | **Business Reports** | Analytics dashboard with trend visualization | -- | Frontend |
-| 18 | **User Profile & Notifications** | Profile management, store settings, alerts | -- | Frontend |
-| 19 | **Registration System** | Role-based signup (Retailer/Supplier/Customer), supplier verification, auto-login | -- | Frontend |
-| 20 | **Content Studio (6 Platforms)** | Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website/SEO previews | Yes | `descriptions.ts` |
-| 21 | **PDF Invoice Sharing** | jsPDF generation + WhatsApp/Email share with preview | -- | Frontend |
+| # | Feature | AI | Backend Handler | Key Innovation |
+|---|---------|:--:|-----------------|----------------|
+| 1 | **Dashboard** | — | `dashboard.ts` | Sales stats, live data flow, store catalog, guided demo |
+| 2 | **Smart Pricing** | ✓ | `pricing.ts` | 3 strategies, region-aware, 10-city purchasing power data |
+| 3 | **Content Generator** | ✓ | `descriptions.ts` | 6 Indian languages, 6 platforms, culturally adapted |
+| 4 | **Sentiment Analyzer** | ✓ | `sentiment.ts` | Hinglish code-mixed text understanding |
+| 5 | **AI Chat (Munim-ji)** | ✓ | `chat.ts` | 8 languages, voice I/O, business advisor |
+| 6 | **Wholesale Sourcing** | — | `sourcing.ts` | 10-city marketplace, verified suppliers |
+| 7 | **Product Comparison** | ✓ | `compare.ts` | Side-by-side AI analysis |
+| 8 | **Competitor Analysis** | ✓ | `competitors.ts` | Local market intelligence |
+| 9 | **Inventory Management** | — | `inventory.ts` | DynamoDB CRUD, source badges, sold tracking |
+| 10 | **Bill Scanner** | ✓ | `vision.ts` | Camera OCR → inventory with source tagging |
+| 11 | **Sales Tracking** | — | Frontend | SalesContext, revenue/top sellers/per-item sold |
+| 12 | **Store Catalog** | — | Frontend | Onboarding → personalized product catalog |
+| 13 | **GST Invoices** | — | Frontend | PDF + WhatsApp/Email share + sale recording |
+| 14 | **Khata Book** | — | Frontend | Digital customer credit ledger |
+| 15 | **Shopping Cart** | — | Frontend | Wholesale vs MRP comparison |
+| 16 | **Checkout** | — | Frontend | COD/UPI, address, GST invoice |
+| 17 | **Order History** | — | `orders.ts` | Past orders with reorder |
+| 18 | **Delivery Tracking** | — | Frontend | 6-step real-time tracking |
+| 19 | **Business Reports** | — | Frontend | Trend analytics dashboard |
+| 20 | **Registration** | — | Frontend | Role-based with supplier verification |
+| 21 | **Profile & Notifications** | — | Frontend | Store settings, smart alerts |
+| 22 | **WhatsApp Integration** | — | Twilio | WhatsApp-first access layer |
+| 23 | **PDF Invoice Sharing** | — | Frontend | jsPDF + WhatsApp/Email share |
 
 ---
 
 ## WhatsApp-First Strategy
 
 > *"15 million kirana stores won't download an app. But they'll reply to a WhatsApp message."*
-
-India has **500M+ WhatsApp users**. Most kirana store owners already use WhatsApp for daily business communication. BharatBazaar AI provides a WhatsApp-first access layer via Twilio's WhatsApp Business API:
 
 | Feature via WhatsApp | Command |
 |---------------------|---------|
@@ -294,12 +370,6 @@ India has **500M+ WhatsApp users**. Most kirana store owners already use WhatsAp
 | Generate invoice | "Bill for Ramesh - 5kg rice" |
 | Check credit (Khata) | "Khata balance for Sharma ji" |
 | Switch language | "Hindi mein batao" |
-
-**Why this matters:**
-- Zero downloads required — works on any phone with WhatsApp
-- Works on 2G networks — text-based interactions
-- No learning curve — store owners already know WhatsApp
-- Voice messages supported — for owners who prefer speaking
 
 ---
 
@@ -314,36 +384,30 @@ Production:   https://<app-runner-url>/api
 
 ### Endpoints
 
-| Method | Endpoint | Description | Request Body | Handler |
-|--------|----------|-------------|--------------|---------|
-| `GET` | `/api/health` | Health check for App Runner | -- | `local-server.ts` |
-| `GET` | `/api/dashboard` | Aggregated dashboard data: metrics, charts, festivals, weather | -- | `dashboard.ts` |
-| `POST` | `/api/pricing/recommend` | AI pricing strategies for a product | `{ product, costPrice, category, region }` | `pricing.ts` |
-| `POST` | `/api/content/generate` | Multilingual product descriptions | `{ product, category, features, language }` | `descriptions.ts` |
-| `POST` | `/api/sentiment/analyze` | Sentiment analysis on reviews | `{ reviews[], language }` | `sentiment.ts` |
-| `POST` | `/api/chat` | AI business advisor conversation | `{ message, language, history[] }` | `chat.ts` |
-| `GET` | `/api/sourcing/products` | Browse wholesale products | Query: `?city=&category=` | `sourcing.ts` |
-| `POST` | `/api/sourcing/order` | Place a wholesale order | `{ productId, quantity, storeId }` | `sourcing.ts` |
-| `POST` | `/api/compare` | AI product comparison | `{ product1, product2, category }` | `compare.ts` |
-| `POST` | `/api/competitors` | Competitor market analysis | `{ product, region, category }` | `competitors.ts` |
-| `GET` | `/api/inventory` | List store inventory | Query: `?storeId=` | `inventory.ts` |
-| `POST` | `/api/inventory` | Add/update inventory item | `{ storeId, item }` | `inventory.ts` |
-| `DELETE` | `/api/inventory` | Remove inventory item | `{ storeId, itemId }` | `inventory.ts` |
-| `GET` | `/api/orders` | Order history | Query: `?storeId=` | `orders.ts` |
-| `POST` | `/api/vision/analyze` | Image/barcode product analysis | `{ image (base64), type }` | `vision.ts` |
+| Method | Endpoint | Description | Handler |
+|--------|----------|-------------|---------|
+| `GET` | `/api/health` | Health check for App Runner | `local-server.ts` |
+| `GET` | `/api/dashboard` | Aggregated dashboard data | `dashboard.ts` |
+| `POST` | `/api/pricing/recommend` | AI pricing strategies | `pricing.ts` |
+| `POST` | `/api/content/generate` | Multilingual descriptions | `descriptions.ts` |
+| `POST` | `/api/sentiment/analyze` | Sentiment analysis | `sentiment.ts` |
+| `POST` | `/api/chat` | AI business advisor | `chat.ts` |
+| `GET` | `/api/sourcing/products` | Browse wholesale products | `sourcing.ts` |
+| `POST` | `/api/sourcing/order` | Place wholesale order | `sourcing.ts` |
+| `POST` | `/api/compare` | AI product comparison | `compare.ts` |
+| `POST` | `/api/competitors` | Competitor analysis | `competitors.ts` |
+| `GET` | `/api/inventory` | List store inventory | `inventory.ts` |
+| `POST` | `/api/inventory` | Add/update inventory item | `inventory.ts` |
+| `DELETE` | `/api/inventory` | Remove inventory item | `inventory.ts` |
+| `GET` | `/api/orders` | Order history | `orders.ts` |
+| `POST` | `/api/vision/analyze` | Bill scanning (AI Vision) | `vision.ts` |
 
 ### Example Request
 
 ```bash
-# Get AI pricing recommendations for a product in Mumbai
 curl -X POST http://localhost:4000/api/pricing/recommend \
   -H "Content-Type: application/json" \
-  -d '{
-    "product": "Tata Salt 1kg",
-    "costPrice": 18,
-    "category": "grocery",
-    "region": "mumbai"
-  }'
+  -d '{"product": "Tata Salt 1kg", "costPrice": 18, "category": "grocery", "region": "mumbai"}'
 ```
 
 ### Example Response
@@ -352,29 +416,10 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 {
   "success": true,
   "strategies": [
-    {
-      "name": "Competitive",
-      "price": 22,
-      "margin": "22%",
-      "rationale": "Matches local kirana pricing in Mumbai's high-density areas"
-    },
-    {
-      "name": "Balanced",
-      "price": 25,
-      "margin": "39%",
-      "rationale": "Optimal price-volume balance for Mumbai's purchasing power index"
-    },
-    {
-      "name": "Premium",
-      "price": 28,
-      "margin": "56%",
-      "rationale": "Justified for convenience stores in premium Mumbai neighborhoods"
-    }
-  ],
-  "regionData": {
-    "city": "Mumbai",
-    "purchasingPowerIndex": 92
-  }
+    { "name": "Competitive", "price": 22, "margin": "22%", "rationale": "Matches local kirana pricing" },
+    { "name": "Balanced", "price": 25, "margin": "39%", "rationale": "Optimal price-volume balance" },
+    { "name": "Premium", "price": 28, "margin": "56%", "rationale": "Convenience store premium pricing" }
+  ]
 }
 ```
 
@@ -391,15 +436,11 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 | Vite | 5.1.0 | Build tool and dev server |
 | Tailwind CSS | 3.4.1 | Utility-first styling |
 | Framer Motion | 11.0.0 | Animations and transitions |
-| Recharts | 2.12.0 | Data visualization / charts |
+| Recharts | 2.12.0 | Data visualization |
 | React Router | 6.22.0 | Client-side routing |
-| Radix UI | Latest | Accessible UI primitives (Dialog, Tabs, Tooltip, Label, Slot) |
+| Radix UI | Latest | Accessible UI primitives |
+| jsPDF | 4.2.0 | Client-side PDF generation |
 | Lucide React | 0.312.0 | Icon system |
-| Heroicons | 2.2.0 | Additional iconography |
-| jsPDF | 4.2.0 | Client-side PDF / invoice generation |
-| React Hot Toast | 2.6.0 | Notification system |
-| class-variance-authority | 0.7.1 | Variant-based component styling |
-| tailwind-merge | 3.5.0 | Tailwind class conflict resolution |
 
 ### Backend
 
@@ -407,23 +448,11 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 |-----------|---------|---------|
 | Node.js | 18 (Alpine) | Runtime |
 | Express | 4.18.2 | HTTP framework |
-| TypeScript | 5.3.3 | Type safety |
-| `@aws-sdk/client-bedrock-runtime` | 3.500.0 | Amazon Bedrock AI inference |
-| `@aws-sdk/client-dynamodb` | 3.500.0 | DynamoDB low-level client |
+| `@aws-sdk/client-bedrock-runtime` | 3.500.0 | Bedrock AI inference |
+| `@aws-sdk/client-dynamodb` | 3.500.0 | DynamoDB client |
 | `@aws-sdk/lib-dynamodb` | 3.500.0 | DynamoDB DocumentClient |
-| `@types/aws-lambda` | 8.10.131 | Lambda type definitions (Lambda-ready handlers) |
-| uuid | 9.0.0 | Unique ID generation |
-| Jest | 29.7.0 | Testing framework |
-| ts-jest | 29.1.1 | TypeScript test runner |
-
-### Infrastructure
-
-| Technology | Purpose |
-|-----------|---------|
-| Docker | Multi-stage build (3 stages: frontend-build, backend-build, production) |
-| AWS App Runner | Container hosting with auto-scaling and TLS |
-| Amazon ECR | Private Docker image registry |
-| Amazon CloudWatch | Logging and monitoring |
+| `@types/aws-lambda` | 8.10.131 | Lambda-ready handler types |
+| Jest + ts-jest | 29.7.0 | Testing |
 
 ---
 
@@ -432,75 +461,48 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 ```
 bharat_bazaar/
 ├── backend/
-│   ├── package.json                    # Dependencies: AWS SDK v3, Express, uuid
-│   ├── tsconfig.json                   # TypeScript configuration
 │   └── src/
-│       ├── local-server.ts             # Express dev server (port 4000)
-│       ├── handlers/                   # API route handlers (Lambda-ready)
-│       │   ├── pricing.ts              # Smart Pricing Engine — 3 strategies, region-aware
-│       │   ├── descriptions.ts         # Multilingual Content Generator — 6 languages
-│       │   ├── sentiment.ts            # Sentiment Analyzer — Hinglish support
-│       │   ├── chat.ts                 # AI Business Advisor (Munim-ji) — voice I/O
-│       │   ├── compare.ts              # Product Comparison — side-by-side analysis
-│       │   ├── competitors.ts          # Competitor Analysis — market intelligence
-│       │   ├── inventory.ts            # Inventory CRUD — DynamoDB-backed
-│       │   ├── orders.ts               # Order Management — lifecycle tracking
-│       │   ├── sourcing.ts             # Wholesale Sourcing — 10-city marketplace
-│       │   ├── vision.ts               # Barcode/Image Analysis — camera input
-│       │   └── dashboard.ts            # Dashboard Aggregator — metrics + charts
-│       ├── prompts/                    # Bedrock prompt engineering templates
-│       │   ├── pricing-prompt.ts       # Region-aware pricing prompts
-│       │   ├── description-prompt.ts   # Multilingual description prompts
-│       │   └── sentiment-prompt.ts     # Hinglish sentiment prompts
-│       ├── data/                       # Regional intelligence data
-│       │   ├── regional-data.ts        # 10 cities: festivals, purchasing power, demographics
-│       │   └── sample-data.ts          # Demo products, Hinglish reviews, cached responses
-│       └── utils/
-│           ├── bedrock-client.ts       # AWS Bedrock SDK — 4-tier fallback chain
-│           ├── dynamodb-client.ts      # DynamoDB DocumentClient — single-table design
-│           └── gemini-client.ts        # Gemini 1.5 Flash — external fallback
+│       ├── local-server.ts              # Express dev server (port 4000)
+│       ├── handlers/                    # 11 API handlers (all Lambda-ready)
+│       │   ├── pricing.ts               # Smart Pricing — 3 strategies, region-aware
+│       │   ├── descriptions.ts          # Content Generator — 6 languages, 6 platforms
+│       │   ├── sentiment.ts             # Sentiment Analyzer — Hinglish support
+│       │   ├── chat.ts                  # Munim-ji AI — voice I/O, 8 languages
+│       │   ├── compare.ts              # Product Comparison
+│       │   ├── competitors.ts          # Competitor Analysis
+│       │   ├── inventory.ts            # Inventory CRUD (DynamoDB)
+│       │   ├── orders.ts              # Order Management
+│       │   ├── sourcing.ts            # Wholesale Sourcing (10 cities)
+│       │   ├── vision.ts             # Bill Scanner (AI Vision)
+│       │   └── dashboard.ts          # Dashboard Aggregator
+│       ├── utils/
+│       │   ├── bedrock-client.ts      # 4-tier AI fallback chain
+│       │   ├── dynamodb-client.ts     # Single-table design
+│       │   └── gemini-client.ts       # Tier 3 fallback
+│       ├── prompts/                   # Bedrock prompt templates
+│       └── data/                      # Regional intelligence + demo data
+│
 ├── frontend/
-│   ├── package.json                    # Dependencies: React 18, Tailwind, Framer Motion
-│   ├── tsconfig.json                   # TypeScript configuration
-│   ├── vite.config.ts                  # Vite build configuration
-│   ├── tailwind.config.js              # Tailwind theme customization
-│   ├── postcss.config.js              # PostCSS pipeline
 │   └── src/
-│       ├── App.tsx                     # Root component with routing
-│       ├── main.tsx                    # Entry point
-│       ├── pages/                      # 23 page components
-│       │   ├── Landing.tsx             # Hero landing page with particle effects
-│       │   ├── LoginPage.tsx           # Login with demo account quick-fill
-│       │   ├── RegisterPage.tsx        # Role-based registration with auto-login
-│       │   ├── Dashboard.tsx           # Compact 6-row command center
-│       │   ├── PricingPage.tsx         # Smart Pricing Engine
-│       │   ├── ContentPage.tsx         # Content Studio (6 platform previews)
-│       │   ├── SentimentPage.tsx       # Sentiment Analyzer
-│       │   ├── ChatPage.tsx            # AI Business Advisor (Munim-ji)
-│       │   ├── SourcingPage.tsx        # Wholesale Marketplace with supplier modals
-│       │   ├── ComparisonPage.tsx      # Product Comparison
-│       │   ├── CompetitorPage.tsx      # Competitor Analysis
-│       │   ├── InventoryPage.tsx       # Inventory (12 demo products, DynamoDB)
-│       │   ├── BarcodeScannerPage.tsx  # Barcode Scanner
-│       │   ├── CartPage.tsx            # Shopping Cart
-│       │   ├── CheckoutPage.tsx        # Checkout Flow
-│       │   ├── OrderHistoryPage.tsx    # Order History
-│       │   ├── DeliveryTrackingPage.tsx# Delivery Tracking
-│       │   ├── InvoicePage.tsx         # GST Invoices (PDF + WhatsApp/Email share)
-│       │   ├── KhataPage.tsx           # Customer Ledger
-│       │   ├── ReportsPage.tsx         # Business Reports
-│       │   ├── ProfilePage.tsx         # User Profile
-│       │   └── NotificationsPage.tsx   # Notifications
-│       ├── components/                 # Shared UI components
-│       │   ├── BackgroundEffects.tsx   # Canvas particles, gradient orbs, grids
-│       │   ├── WhatsAppDemo.tsx        # WhatsApp-first strategy showcase
-│       │   └── ui/                     # Radix UI primitives
-│       ├── utils/                      # Auth, Cart, Language, Theme contexts
-│       └── styles/                     # Global styles + animations
-├── Dockerfile                          # Multi-stage production build (3 stages)
-├── design.md                           # Technical design document
-├── requirements.md                     # Product requirements
-└── README.md                           # This file
+│       ├── App.tsx                    # Root: Auth → Cart → Sales → Language → Routes
+│       ├── pages/                     # 23 page components
+│       │   ├── Landing.tsx            # Hero + data flow + marketplace + AWS architecture
+│       │   ├── Dashboard.tsx          # Sales stats, live data flow, guided demo, catalog
+│       │   ├── InventoryPage.tsx      # Source badges, sold today/week, onboarding seeding
+│       │   ├── ScannerPage.tsx        # AI Vision → inventory with data flow banner
+│       │   ├── InvoicePage.tsx        # PDF + sale recording + data pipeline banner
+│       │   └── ...                    # 18 more pages
+│       ├── utils/
+│       │   ├── SalesContext.tsx        # Sales tracking: revenue, top sellers, per-item counts
+│       │   ├── productCatalog.ts      # 30+ products, onboarding → inventory mapping
+│       │   ├── CartContext.tsx         # Shopping cart state
+│       │   ├── AuthContext.tsx         # Authentication
+│       │   ├── LanguageContext.tsx     # i18n (6 languages)
+│       │   └── ThemeContext.tsx        # Dark/light theme
+│       └── components/                # Shared UI components
+│
+├── Dockerfile                         # Multi-stage production build (3 stages)
+└── README.md                          # This file
 ```
 
 ---
@@ -510,56 +512,46 @@ bharat_bazaar/
 ### Prerequisites
 
 - **Node.js** 18+ (recommended: 20 LTS)
-- **AWS Account** with Bedrock model access enabled (Claude 3 Haiku)
-- **AWS CLI** configured with credentials (`aws configure`)
+- **AWS Account** with Bedrock access (optional — works in demo mode without it)
 - **Docker** (optional, for containerized deployment)
 
-### 1. Clone the Repository
+### 1. Clone & Install
 
 ```bash
 git clone <repo-url>
 cd bharat_bazaar
 ```
 
-### 2. Start the Backend
+### 2. Start Backend
 
 ```bash
 cd backend
-cp .env.example .env          # Configure your AWS credentials (see Environment Variables)
+cp .env.example .env          # Configure AWS credentials (or skip for demo mode)
 npm install
-npm run dev                    # Starts Express server on http://localhost:4000
+npm run dev                    # http://localhost:4000
 ```
 
-### 3. Start the Frontend
+### 3. Start Frontend
 
 ```bash
-# In a new terminal
 cd frontend
 npm install
-npm run dev                    # Starts Vite dev server on http://localhost:3000
+npm run dev                    # http://localhost:3000
 ```
 
-### 4. Open the Application
+### 4. Open the App
 
-Navigate to `http://localhost:3000` in your browser. The landing page loads instantly with pre-loaded kirana store data — no login wall.
+Navigate to `http://localhost:3000`. Landing page loads instantly. Login with `admin`/`admin` to see the full dashboard with pre-loaded demo data.
 
 ### Running Tests
 
 ```bash
-cd backend
-npm test                       # Runs Jest with coverage
+cd backend && npm test
 ```
 
 ### Building for Production
 
 ```bash
-# Backend
-cd backend && npm run build    # Compiles TypeScript to dist/
-
-# Frontend
-cd frontend && npm run build   # Produces optimized bundle in dist/
-
-# Docker (full stack)
 docker build -t bharat-bazaar .
 docker run -p 8080:8080 --env-file backend/.env bharat-bazaar
 ```
@@ -568,126 +560,80 @@ docker run -p 8080:8080 --env-file backend/.env bharat-bazaar
 
 ## Environment Variables
 
-Create a `.env` file in the `backend/` directory based on `.env.example`:
+Create `.env` in `backend/`:
 
 ```env
-# AWS Configuration (Required)
 AWS_REGION=ap-south-1
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
-
-# Amazon Bedrock (Required)
 BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
-
-# Amazon DynamoDB (Required)
 DYNAMODB_TABLE_NAME=BharatBazaarData
-
-# Google Gemini — Optional external fallback (Tier 3)
-GEMINI_API_KEY=your-gemini-key
+GEMINI_API_KEY=your-gemini-key                    # Optional: enables Tier 3 fallback
 ```
 
-| Variable | Required | Default | Description |
-|----------|:--------:|---------|-------------|
-| `AWS_REGION` | Yes | `ap-south-1` | Primary AWS region (Mumbai) |
-| `AWS_ACCESS_KEY_ID` | Yes | -- | IAM user access key |
-| `AWS_SECRET_ACCESS_KEY` | Yes | -- | IAM user secret key |
-| `BEDROCK_MODEL_ID` | Yes | `anthropic.claude-3-haiku-20240307-v1:0` | Primary Bedrock model ID |
-| `DYNAMODB_TABLE_NAME` | Yes | `BharatBazaarData` | DynamoDB table name (auto-created if missing) |
-| `GEMINI_API_KEY` | No | -- | Enables Tier 3 fallback via Gemini 1.5 Flash |
-
-**Note:** If no AWS credentials are provided, the system gracefully degrades to Tier 4 (smart demo mode) and remains fully functional with realistic cached data.
+> **Note:** If no AWS credentials are provided, the system gracefully degrades to Tier 4 (smart demo mode) and remains fully functional.
 
 ---
 
 ## Deployment
 
-### Docker Deployment (App Runner)
+### Docker (App Runner)
 
-The application uses a **3-stage multi-stage Docker build** optimized for production:
+3-stage multi-stage build optimized for production:
 
 ```
-Stage 1: frontend-build    — Compiles React + TypeScript + Vite
-Stage 2: backend-build     — Compiles Express + TypeScript
-Stage 3: production        — Node 18 Alpine with only production dependencies
+Stage 1: frontend-build    → React + TypeScript + Vite
+Stage 2: backend-build     → Express + TypeScript
+Stage 3: production        → Node 18 Alpine (minimal image)
 ```
 
 ```bash
-# Build the container
 docker build -t bharat-bazaar .
-
-# Run locally
-docker run -p 8080:8080 \
-  -e AWS_REGION=ap-south-1 \
-  -e AWS_ACCESS_KEY_ID=<key> \
-  -e AWS_SECRET_ACCESS_KEY=<secret> \
-  -e BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0 \
-  -e DYNAMODB_TABLE_NAME=BharatBazaarData \
-  bharat-bazaar
+docker run -p 8080:8080 -e AWS_REGION=ap-south-1 -e AWS_ACCESS_KEY_ID=<key> -e AWS_SECRET_ACCESS_KEY=<secret> bharat-bazaar
 ```
-
-### Production Infrastructure
-
-```
-ECR (Image Registry) --> App Runner (Container Hosting)
-                              |
-                    +---------+---------+
-                    |         |         |
-                 Bedrock   DynamoDB  CloudWatch
-```
-
-1. **Push to ECR**: `docker tag` and `docker push` to your private ECR repository
-2. **App Runner**: Create service pointing to the ECR image. Configure health check path as `/api/health`, port `8080`
-3. **IAM Role**: Attach a role with `bedrock:InvokeModel`, `dynamodb:*`, and `ecr:GetAuthorizationToken` permissions
-4. **DynamoDB**: Table auto-creates on first request. No manual setup required.
 
 ### Health Check
 
 ```
-GET /api/health
-Response: { "status": "healthy", "timestamp": "..." }
+GET /api/health → { "status": "healthy", "timestamp": "..." }
 ```
-
-App Runner performs health checks every 30 seconds with a 5-second timeout and 3 retries (configured via `HEALTHCHECK` in Dockerfile).
 
 ---
 
 ## What Makes This Special
 
-### 1. India-First Design
-Not a generic SaaS with Indian colors. Deep regional intelligence across 10 cities with purchasing power indices, festival calendars, local market preferences, and demographic data. Mumbai (purchasing power index 92/100) gets fundamentally different pricing recommendations than Lucknow (58/100).
+### 1. Complete Data Pipeline
+Not just a dashboard — a **closed-loop system** where the store owner's daily actions (scanning bills, generating invoices, chatting on WhatsApp) automatically build the intelligence layer. Zero manual data entry.
 
-### 2. Hinglish Intelligence
-The sentiment analyzer understands code-mixed reviews that are the norm in Indian e-commerce:
-> "Packaging tuti hui thi, not happy. But product accha hai, delivery slow thi."
+### 2. India-First Design
+Deep regional intelligence across 10 cities with purchasing power indices, festival calendars, and local market preferences. Mumbai (PPP: 92/100) gets fundamentally different recommendations than Lucknow (58/100).
 
-This is parsed correctly as mixed negative (packaging, delivery) and positive (product quality) sentiment — something English-only NLP models fail at.
+### 3. Hinglish Intelligence
+The sentiment analyzer understands code-mixed reviews:
+> "Packaging tuti hui thi, not happy. But product accha hai."
 
-### 3. 4-Tier AI Fallback — Never Fails
-The system always returns intelligent responses. If Bedrock is throttled, it tries Nova Lite. If that fails, Gemini takes over. If all AI services are down, smart demo mode serves pre-computed, region-aware, product-aware responses. Zero downtime, zero error screens.
+Parsed correctly as mixed negative (packaging) and positive (product) sentiment.
 
-### 4. Voice I/O
-The AI Business Advisor (Munim-ji) supports voice input and output. Speak in Hindi, get responses read back. Designed for retailers who are more comfortable speaking than typing.
+### 4. 4-Tier AI — Never Fails
+Bedrock → Nova Lite → Gemini → Smart Demo. The system always returns intelligent responses. Zero downtime, zero error screens.
 
-### 5. Region-Aware Pricing
-Pricing recommendations account for city-level purchasing power, local competition density, festival timing, and seasonal demand. The same product gets meaningfully different strategies for different cities.
+### 5. Sales Intelligence
+Every invoice records the sale. Dashboard shows real-time revenue, items sold, top sellers. Inventory shows "Sold Today" and "Sold/Week" per product. Store owners finally know what's going out.
 
-### 6. DynamoDB Single-Table Design
-Efficient NoSQL architecture using composite keys (`PK: STORE#<id>`, `SK: INV#<id> | ORDER#<id> | SETTINGS`). A single table serves inventory, orders, and store settings with `PAY_PER_REQUEST` billing — costs pennies at small scale, scales seamlessly to thousands of stores.
+### 6. Personalized Store Catalog
+Onboarding captures what the store sells → inventory seeded with real products at real prices → all AI features personalized to this store's catalog.
 
-### 7. Production-Ready Container
-Multi-stage Docker build produces a minimal Node 18 Alpine image with health checks, proper signal handling, and production dependency optimization. Ready for App Runner deployment with zero configuration.
+### 7. Source Tracking
+Every inventory item shows where it came from: **Bill Scan** (violet), **Wholesale Order** (blue), **WhatsApp** (green), **Manual** (gray). Judges can see the multi-channel data flow visually.
 
-### 8. Lambda-Ready Handlers
-All backend handlers are typed with `@types/aws-lambda` and structured for seamless migration to AWS Lambda + API Gateway if serverless deployment is preferred.
+### 8. Voice I/O
+Munim-ji AI supports voice input/output. Speak in Hindi, get responses read back. For retailers who prefer speaking over typing.
 
-### 9. Zero-Effort Data Collection
-The store owner's daily actions ARE the data input — no spreadsheets, no manual entry:
-- **Scan purchase bills** → AI extracts products, quantities, prices → inventory auto-populated
-- **Generate sales invoices** → every bill = a sale recorded → demand patterns captured
-- **WhatsApp messages** → "Order 50 Surf Excel" → structured order data
-- **Wholesale orders** → incoming stock auto-updates inventory
+### 9. DynamoDB Single-Table Design
+Composite keys (`PK: STORE#<id>`, `SK: INV#<id>`). Single table serves inventory, orders, and settings. `PAY_PER_REQUEST` — costs pennies at small scale.
 
-Every interaction becomes business intelligence stored in DynamoDB and analyzed by Bedrock AI.
+### 10. Lambda-Ready Handlers
+All backend handlers typed with `@types/aws-lambda`. Seamless migration to Lambda + API Gateway if serverless deployment is preferred.
 
 ---
 
@@ -704,7 +650,7 @@ Every interaction becomes business intelligence stored in DynamoDB and analyzed 
 | Marathi | मराठी | `mr` |
 | English | English | `en` |
 
-The AI Chat (Munim-ji) additionally supports Kannada, Telugu, and Malayalam for conversational interactions.
+Munim-ji AI additionally supports Kannada, Telugu, and Malayalam.
 
 ### Supported Regions
 
@@ -721,7 +667,7 @@ The AI Chat (Munim-ji) additionally supports Kannada, Telugu, and Malayalam for 
 | Lucknow | Uttar Pradesh | Medium |
 | Indore | Madhya Pradesh | Medium |
 
-Each city has curated data for festivals, seasonal demand patterns, local product preferences, and wholesale supplier networks.
+Each city has curated data for festivals, seasonal demand, local preferences, and wholesale supplier networks.
 
 ---
 
@@ -736,7 +682,5 @@ Track: **Retail, Commerce & Market Intelligence**
 <p align="center">
   <strong>BharatBazaar AI</strong> — Market Intelligence for Bharat
   <br />
-  Empowering 15 million kirana stores with AI, in their own language.
-  <br /><br />
   <em>"Amazon has data science teams. Kirana stores have BharatBazaar AI."</em>
 </p>
