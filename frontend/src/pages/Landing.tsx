@@ -16,6 +16,7 @@ import WhatsAppDemo from '../components/WhatsAppDemo'
 import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
 import DatabaseWithRestApi from '../components/ui/database-with-rest-api'
 import { Hero195 } from '../components/ui/hero-195'
+import { FloatingParticles, GradientOrbs, DotGrid, NoiseOverlay, AnimatedGrid, RadialGlow } from '../components/BackgroundEffects'
 
 /* ──────────────── COMPONENT ──────────────── */
 
@@ -236,17 +237,10 @@ export default function Landing() {
       <section className="relative min-h-screen flex items-center pt-20 md:pt-24 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[#0c0c0d]" />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-40">
-            <div className="absolute top-[10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#F97316]/15 to-[#F59E0B]/5 blur-[120px]" />
-            <div className="absolute top-[30%] right-[10%] w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-[#FB923C]/10 to-transparent blur-[100px]" />
-          </div>
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] opacity-30">
-            <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#0D9488]/10 to-transparent blur-[120px]" />
-          </div>
-          <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
-          }} />
+          <GradientOrbs variant="warm" />
+          <FloatingParticles count={50} color="#F97316" />
+          <AnimatedGrid />
+          <NoiseOverlay opacity={0.025} />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
@@ -333,8 +327,10 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           ORDER FLOW — Visual step-by-step
           ═══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#111113]">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 lg:px-8 bg-[#111113] relative overflow-hidden">
+        <GradientOrbs variant="teal" />
+        <DotGrid opacity={0.02} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('orderFlow.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">
@@ -377,8 +373,11 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           FEATURED CATEGORIES — 4 cards
           ═══════════════════════════════════════════ */}
-      <section id="features" className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
-        <div className="max-w-7xl mx-auto">
+      <section id="features" className="py-24 px-6 lg:px-8 bg-[#0c0c0d] relative overflow-hidden">
+        <RadialGlow color="rgba(249,115,22,0.06)" position="top-right" size={700} />
+        <RadialGlow color="rgba(13,148,136,0.04)" position="bottom-left" size={500} />
+        <DotGrid opacity={0.015} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex items-end justify-between mb-12">
             <ScrollReveal>
               <div>
@@ -426,8 +425,10 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           PRODUCT SHOWCASE — Tabs + demo cards
           ═══════════════════════════════════════════ */}
-      <section id="showcase" className="py-24 px-6 lg:px-8 bg-[#111113]">
-        <div className="max-w-7xl mx-auto">
+      <section id="showcase" className="py-24 px-6 lg:px-8 bg-[#111113] relative overflow-hidden">
+        <GradientOrbs variant="purple" />
+        <NoiseOverlay opacity={0.02} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="mb-12">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('showcase.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight whitespace-pre-line">
@@ -485,8 +486,11 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           AWS ARCHITECTURE — Technical showcase
           ═══════════════════════════════════════════ */}
-      <section id="architecture" className="py-24 px-6 lg:px-8 bg-[#1a1a1a] text-white">
-        <div className="max-w-7xl mx-auto">
+      <section id="architecture" className="py-24 px-6 lg:px-8 bg-[#1a1a1a] text-white relative overflow-hidden">
+        <FloatingParticles count={25} color="#0D9488" />
+        <RadialGlow color="rgba(124,58,237,0.06)" position="top-left" size={500} />
+        <RadialGlow color="rgba(249,115,22,0.05)" position="bottom-right" size={600} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('arch.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight">
@@ -624,8 +628,10 @@ export default function Landing() {
       {/* ═══════════════════════════════════════════
           IMPACT NUMBERS — Big stats with context
           ═══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 lg:px-8 bg-[#0c0c0d] relative overflow-hidden">
+        <GradientOrbs variant="warm" />
+        <DotGrid opacity={0.02} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('impact.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">
@@ -658,8 +664,10 @@ export default function Landing() {
       </section>
 
       {/* ═══ PROMOTIONAL SPLIT ═══ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#111113]">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-6 lg:px-8 bg-[#111113] relative overflow-hidden">
+        <RadialGlow color="rgba(13,148,136,0.05)" position="top-left" size={500} />
+        <NoiseOverlay opacity={0.015} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-6">
             <ScrollReveal direction="left">
               <motion.div whileHover={{ scale: 1.01 }} className="rounded-3xl overflow-hidden h-[400px] lg:h-[480px] relative">
@@ -696,8 +704,10 @@ export default function Landing() {
       </section>
 
       {/* ═══ BENEFITS ═══ */}
-      <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#0c0c0d]">
-        <div className="max-w-7xl mx-auto">
+      <section id="benefits" className="py-24 px-6 lg:px-8 bg-[#0c0c0d] relative overflow-hidden">
+        <GradientOrbs variant="default" />
+        <DotGrid opacity={0.015} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('benefits.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">{t('benefits.title')}</h2>
@@ -726,8 +736,11 @@ export default function Landing() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section id="testimonials" className="py-24 px-6 lg:px-8 bg-[#111113]">
-        <div className="max-w-7xl mx-auto">
+      <section id="testimonials" className="py-24 px-6 lg:px-8 bg-[#111113] relative overflow-hidden">
+        <RadialGlow color="rgba(249,115,22,0.05)" position="top-right" size={500} />
+        <RadialGlow color="rgba(124,58,237,0.04)" position="bottom-left" size={400} />
+        <NoiseOverlay opacity={0.015} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal className="text-center mb-14">
             <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">{t('testimonials.subtitle')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">{t('testimonials.title')}</h2>

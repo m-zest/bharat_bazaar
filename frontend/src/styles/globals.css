@@ -300,6 +300,39 @@
   75% { background-position: 0% 100%; }
 }
 
+/* ── Animated Orb Drift ── */
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-20px, 30px) scale(0.95); }
+  75% { transform: translate(-30px, -10px) scale(1.02); }
+}
+.animate-orb-drift {
+  animation: orbDrift 20s ease-in-out infinite;
+}
+
+/* ── Horizontal Scan Line ── */
+@keyframes scanH {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.animate-scan-h {
+  animation: scanH 8s ease-in-out infinite;
+}
+
+/* ── Vertical Scan Line ── */
+@keyframes scanV {
+  0% { left: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+.animate-scan-v {
+  animation: scanV 12s ease-in-out infinite;
+}
+
 @keyframes borderRotate {
   from { --border-angle: 0deg; }
   to { --border-angle: 360deg; }
