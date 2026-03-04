@@ -138,9 +138,9 @@ export default function Landing() {
   ]
 
   const FOOTER_LINKS: Record<string, string[]> = {
-    [t('footer.features')]: ['Smart Pricing', 'AI Content', 'Sentiment Analysis', 'Smart Sourcing', 'AI Advisor'],
-    [t('footer.resources')]: ['Documentation', 'API Reference', 'Case Studies', 'Blog'],
-    [t('footer.company')]: ['About ParityAI', 'Careers', 'Contact', 'Press Kit'],
+    [t('footer.features')]: ['Smart Pricing', 'AI Content Studio', 'Sentiment Analysis', 'Wholesale Sourcing', 'Munim-ji AI Advisor', 'Bill Scanner'],
+    [t('footer.resources')]: ['GitHub Repository', 'Architecture Docs', 'API Endpoints', 'Demo Guide'],
+    [t('footer.company')]: ['Team ParityAI', 'AI4Bharat 2026', 'Built in India'],
   }
 
   const activeShowcase = SHOWCASE_TABS.find(t => t.id === activeTab)!
@@ -935,7 +935,7 @@ export default function Landing() {
                   {t('footer.desc')}
                 </p>
                 <div className="flex items-center gap-3 mt-6 flex-wrap">
-                  {['AWS Bedrock', 'DynamoDB', 'App Runner', 'ECR', 'React', 'TypeScript'].map(tech => (
+                  {['AWS Bedrock (Claude 3 Haiku)', 'Amazon DynamoDB', 'AWS App Runner', 'Amazon ECR', 'Google Gemini', 'React 18', 'TypeScript', 'Twilio WhatsApp'].map(tech => (
                     <span key={tech} className="text-[10px] px-3 py-1 border border-white/10 rounded-full text-white/30 font-medium">{tech}</span>
                   ))}
                 </div>
@@ -954,8 +954,8 @@ export default function Landing() {
           </div>
           <div className="border-t border-white/10">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <p className="text-xs text-white/30">&copy; 2026 ParityAI. All rights reserved.</p>
-              <p className="text-xs text-white/20">AI for Bharat Hackathon 2026 — Track: Retail, Commerce & Market Intelligence</p>
+              <p className="text-xs text-white/30">&copy; 2026 Team ParityAI — Open Source Prototype</p>
+              <p className="text-xs text-white/20">AI4Bharat Hackathon 2026 · Track: Retail, Commerce & Market Intelligence · Built with AWS Bedrock + DynamoDB</p>
             </div>
           </div>
         </footer>

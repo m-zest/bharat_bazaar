@@ -488,10 +488,10 @@ export default function Dashboard() {
       {/* ═══ FOOTER ═══ */}
       <div className="text-center py-4 border-t border-[#2a2a2d]">
         <p className="text-[10px] text-gray-500">
-          Built with love for Indian SMBs | Team ParityAi — AI4Bharat Hackathon 2026
+          Built with ❤️ for 15M+ Indian Kirana Stores | Team ParityAI — AI4Bharat Hackathon 2026
         </p>
         <p className="text-[9px] text-gray-600 mt-0.5">
-          AWS Bedrock · DynamoDB · App Runner · ECR · React · TypeScript
+          AWS Bedrock (Claude 3 Haiku + Nova Lite) · Amazon DynamoDB · App Runner · Google Gemini Fallback · Twilio WhatsApp · React 18 · TypeScript
         </p>
       </div>
     </div>
