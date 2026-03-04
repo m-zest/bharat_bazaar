@@ -13,6 +13,7 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   login: (username: string, password: string) => boolean
+  register: (userData: { name: string; role: string; store: string; city: string }) => void
   logout: () => void
 }
 
@@ -66,12 +67,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false
   }
 
+  const register = (userData: { name: string; role: string; store: string; city: string }) => {
+    const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    setUser({
+      username: userData.name.toLowerCase().replace(/\s+/g, '.'),
+      name: userData.name,
+      role: userData.role,
+      store: userData.store || 'My Store',
+      city: userData.city,
+      avatar: initials,
+    })
+  }
+
   const logout = () => {
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

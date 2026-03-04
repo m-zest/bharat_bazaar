@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Store, Package, User, Lock, Mail, Phone, MapPin, Building2, FileText, Eye, EyeOff, ArrowRight, CheckCircle2, ShieldCheck, AlertCircle, Zap } from 'lucide-react'
+import { useAuth } from '../utils/AuthContext'
 
 type Role = 'retailer' | 'supplier' | 'customer'
 
@@ -94,6 +95,7 @@ const cities = [
 
 export default function RegisterPage() {
   const navigate = useNavigate()
+  const { register } = useAuth()
 
   const [selectedRole, setSelectedRole] = useState<Role>('retailer')
   const [fullName, setFullName] = useState('')
@@ -142,8 +144,17 @@ export default function RegisterPage() {
     setLoading(false)
     setSuccess(true)
 
+    // Auto-login and go straight to dashboard
+    const roleLabel = selectedRole === 'retailer' ? 'Store Owner' : selectedRole === 'supplier' ? 'Wholesaler' : 'Customer'
+    register({
+      name: fullName,
+      role: roleLabel,
+      store: businessName || fullName + "'s Store",
+      city,
+    })
+
     setTimeout(() => {
-      navigate('/login')
+      navigate('/dashboard')
     }, 2000)
   }
 
@@ -207,7 +218,7 @@ export default function RegisterPage() {
                     Your account is pending verification. You'll be notified once approved.
                   </p>
                 )}
-                <p className="text-xs text-gray-500 mt-4">Redirecting to login...</p>
+                <p className="text-xs text-gray-500 mt-4">Redirecting to dashboard...</p>
               </motion.div>
             </motion.div>
           )}

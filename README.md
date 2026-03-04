@@ -27,13 +27,15 @@
 
 ## Table of Contents
 
+- [Demo Guide for Judges](#demo-guide-for-judges)
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
-- [Screenshots](#screenshots)
+- [Key Highlights](#key-highlights)
 - [Architecture](#architecture)
 - [AWS Services Integration](#aws-services-integration)
 - [4-Tier AI Fallback Chain](#4-tier-ai-fallback-chain)
 - [Features](#features)
+- [WhatsApp-First Strategy](#whatsapp-first-strategy)
 - [API Documentation](#api-documentation)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -42,8 +44,50 @@
 - [Deployment](#deployment)
 - [What Makes This Special](#what-makes-this-special)
 - [Supported Languages & Regions](#supported-languages--regions)
-- [Contributing](#contributing)
 - [License](#license)
+
+---
+
+## Demo Guide for Judges
+
+> **Quick start:** The app works fully in demo mode — no AWS credentials needed. All AI features fall back to smart, realistic cached responses.
+
+### Demo Login Credentials
+
+| Username | Password | Role |
+|----------|----------|------|
+| `admin` | `admin` | Store Owner (Rajesh Sharma, Lucknow) |
+| `manager` | `manager` | Store Manager (Priya Gupta, Lucknow) |
+
+### Quick Registration (Auto-Fill)
+
+Visit `/register` and click **"Quick Demo Fill"** to auto-populate with one of three demo profiles:
+- **Ramesh Sharma** — Retailer, Lucknow
+- **Amit Gupta** — Supplier, Delhi (shows verification workflow)
+- **Priya Menon** — Customer, Mumbai
+
+After registration, you're logged in automatically — no need to sign in again.
+
+### Features to Try
+
+1. **Dashboard** — Command center with revenue charts, weather, festival alerts, AI insights (6-row compact layout)
+2. **Smart Pricing** — Enter any product + cost price → get 3 AI pricing strategies
+3. **Munim-ji AI Chat** — Business advisor in 8 Indian languages with voice I/O
+4. **Content Studio** — Generate product listings for Instagram, Amazon, Flipkart, WhatsApp, JioMart, Website
+5. **Sentiment Analyzer** — Paste Hinglish reviews → get actionable insights
+6. **Wholesale Sourcing** — Click any wholesaler card for details, verified supplier filter
+7. **Inventory Tracker** — Pre-loaded with 12 demo kirana products (DynamoDB-backed)
+8. **GST Invoices** — Generate PDF invoices, share via WhatsApp/Email
+9. **Bill Scanner** — Camera-based product scanning
+10. **Language Switcher** — Top-right dropdown: Hindi, Tamil, Bengali, Gujarati, Marathi, English
+
+### Tech Highlights for Code Review
+
+- **4-tier AI fallback chain**: `backend/src/utils/bedrock-client.ts` — Bedrock Haiku → Nova Lite → Gemini → Smart Demo
+- **DynamoDB single-table design**: `backend/src/utils/dynamodb-client.ts` — composite PK/SK keys
+- **11 backend handlers**: `backend/src/handlers/` — all Lambda-ready with `@types/aws-lambda`
+- **WhatsApp integration**: Twilio sandbox for store owner messaging
+- **i18n**: 6 languages with culturally adapted content generation
 
 ---
 
@@ -62,41 +106,28 @@ Small retailers lose an estimated **Rs.50,000+ per year** to suboptimal pricing 
 
 ## The Solution
 
-**BharatBazaar AI** gives every kirana store the same market intelligence as Amazon's data team — **in their own language, at a price they can afford**.
+**BharatBazaar AI** gives every kirana store the same market intelligence as Amazon's data team — **in their own language, at a price they can afford, accessible via WhatsApp**.
 
-The platform provides AI-powered pricing recommendations, multilingual content generation, sentiment analysis of customer reviews (including Hinglish), a conversational business advisor, competitor analysis, inventory management backed by DynamoDB, wholesale product sourcing, and a complete order lifecycle — all built on AWS infrastructure with a 4-tier AI fallback chain that ensures the system never fails.
+The platform provides 21+ features: AI-powered pricing, content generation for 6 platforms (Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website), Hinglish sentiment analysis, a voice-enabled business advisor (Munim-ji), competitor analysis, DynamoDB-backed inventory management, wholesale sourcing with verified suppliers, GST invoice generation with WhatsApp/Email sharing, role-based registration (Retailer/Supplier/Customer), and a WhatsApp-first access layer — all built on AWS infrastructure with a 4-tier AI fallback chain that ensures **the system never returns an error**.
 
-Think of it as: **"Amazon's data team for every kirana store."**
+Think of it as: **"Amazon's data team for every kirana store — accessible via WhatsApp."**
 
 ---
 
-## Screenshots
+## Key Highlights
 
-> The following sections describe key screens of the application. Replace placeholder paths with actual screenshots.
-
-### Dashboard — Command Center
-`screenshots/dashboard.png`
-The central dashboard aggregates store metrics, revenue charts, weather data, and upcoming festival alerts into a single command center view. Supports light and dark themes.
-
-### Smart Pricing Engine
-`screenshots/pricing.png`
-Enter a product, cost price, and region to receive three AI-generated pricing strategies (competitive, balanced, premium) with profit impact analysis tailored to regional purchasing power.
-
-### AI Business Advisor (Munim-ji)
-`screenshots/chat.png`
-A conversational AI assistant that speaks 8 Indian languages, supports voice input/output, and provides business advice ranging from inventory optimization to festival preparation.
-
-### Multilingual Content Generator
-`screenshots/content.png`
-Generate culturally adapted product descriptions in Hindi, Tamil, Bengali, Gujarati, Marathi, or English — not machine-translated, but genuinely localized.
-
-### Sentiment Analyzer
-`screenshots/sentiment.png`
-Analyze customer reviews written in Hinglish, Hindi, or English. Understands code-mixed text like "Packaging tuti hui thi, not happy" and extracts actionable insights.
-
-### Inventory Management
-`screenshots/inventory.png`
-Full CRUD inventory management backed by Amazon DynamoDB with real-time quantity tracking, reorder alerts, and daily sell-rate monitoring.
+| Screen | Description |
+|--------|-------------|
+| **Landing Page** | Animated hero with particle effects, gradient orbs, WhatsApp-first strategy showcase, marketplace ecosystem, AWS architecture deep-dive |
+| **Dashboard** | Compact 6-row command center — AI insights, revenue charts, weather, festivals, sentiment, demand forecast, 12 AI feature grid |
+| **Smart Pricing** | Enter product + cost → 3 AI strategies (competitive/balanced/premium) with region-aware profit analysis |
+| **Munim-ji AI Chat** | Business advisor in 8 languages, voice I/O, contextual business advice |
+| **Content Studio** | Generate product listings for 6 platforms: Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website/SEO |
+| **Sentiment Analyzer** | Hinglish/Hindi/English review analysis — understands code-mixed text like "Packaging tuti hui thi, not happy" |
+| **Inventory Tracker** | DynamoDB-backed CRUD with 12 demo kirana products, reorder alerts, daily sell rates |
+| **GST Invoices** | PDF generation with jsPDF, share via WhatsApp or Email |
+| **Wholesale Sourcing** | Clickable supplier cards with detail modals, verified supplier filter, WhatsApp/Call actions |
+| **Registration** | Role-based (Retailer/Supplier/Customer), supplier verification workflow, demo auto-fill for judges |
 
 ---
 
@@ -219,7 +250,7 @@ Response (guaranteed)
 
 ## Features
 
-BharatBazaar AI includes 18 fully implemented features across the platform.
+BharatBazaar AI includes 21 fully implemented features across the platform.
 
 | # | Feature | Description | AI-Powered | Backend Handler |
 |---|---------|-------------|:----------:|-----------------|
@@ -241,6 +272,34 @@ BharatBazaar AI includes 18 fully implemented features across the platform.
 | 16 | **Customer Khata** | Digital customer credit ledger | -- | Frontend |
 | 17 | **Business Reports** | Analytics dashboard with trend visualization | -- | Frontend |
 | 18 | **User Profile & Notifications** | Profile management, store settings, alerts | -- | Frontend |
+| 19 | **Registration System** | Role-based signup (Retailer/Supplier/Customer), supplier verification, auto-login | -- | Frontend |
+| 20 | **Content Studio (6 Platforms)** | Instagram, Amazon, Flipkart, WhatsApp Catalog, JioMart, Website/SEO previews | Yes | `descriptions.ts` |
+| 21 | **PDF Invoice Sharing** | jsPDF generation + WhatsApp/Email share with preview | -- | Frontend |
+
+---
+
+## WhatsApp-First Strategy
+
+> *"15 million kirana stores won't download an app. But they'll reply to a WhatsApp message."*
+
+India has **500M+ WhatsApp users**. Most kirana store owners already use WhatsApp for daily business communication. BharatBazaar AI provides a WhatsApp-first access layer via Twilio's WhatsApp Business API:
+
+| Feature via WhatsApp | Command |
+|---------------------|---------|
+| Check stock levels | "What's my stock?" |
+| Get price suggestion | "Price for Tata Salt 1kg" |
+| Place wholesale order | "Order 50 units of Surf Excel" |
+| Scan a bill | Send photo of invoice |
+| Get daily report | "Today's sales report" |
+| Generate invoice | "Bill for Ramesh - 5kg rice" |
+| Check credit (Khata) | "Khata balance for Sharma ji" |
+| Switch language | "Hindi mein batao" |
+
+**Why this matters:**
+- Zero downloads required — works on any phone with WhatsApp
+- Works on 2G networks — text-based interactions
+- No learning curve — store owners already know WhatsApp
+- Voice messages supported — for owners who prefer speaking
 
 ---
 
@@ -409,31 +468,35 @@ bharat_bazaar/
 │   └── src/
 │       ├── App.tsx                     # Root component with routing
 │       ├── main.tsx                    # Entry point
-│       ├── pages/                      # 21 page components
-│       │   ├── Landing.tsx             # Hero landing page
-│       │   ├── Dashboard.tsx           # Command center
+│       ├── pages/                      # 23 page components
+│       │   ├── Landing.tsx             # Hero landing page with particle effects
+│       │   ├── LoginPage.tsx           # Login with demo account quick-fill
+│       │   ├── RegisterPage.tsx        # Role-based registration with auto-login
+│       │   ├── Dashboard.tsx           # Compact 6-row command center
 │       │   ├── PricingPage.tsx         # Smart Pricing Engine
-│       │   ├── ContentPage.tsx         # Content Generator
+│       │   ├── ContentPage.tsx         # Content Studio (6 platform previews)
 │       │   ├── SentimentPage.tsx       # Sentiment Analyzer
-│       │   ├── ChatPage.tsx            # AI Business Advisor
-│       │   ├── SourcingPage.tsx        # Wholesale Marketplace
+│       │   ├── ChatPage.tsx            # AI Business Advisor (Munim-ji)
+│       │   ├── SourcingPage.tsx        # Wholesale Marketplace with supplier modals
 │       │   ├── ComparisonPage.tsx      # Product Comparison
 │       │   ├── CompetitorPage.tsx      # Competitor Analysis
-│       │   ├── InventoryPage.tsx       # Inventory Management
+│       │   ├── InventoryPage.tsx       # Inventory (12 demo products, DynamoDB)
 │       │   ├── BarcodeScannerPage.tsx  # Barcode Scanner
 │       │   ├── CartPage.tsx            # Shopping Cart
 │       │   ├── CheckoutPage.tsx        # Checkout Flow
 │       │   ├── OrderHistoryPage.tsx    # Order History
 │       │   ├── DeliveryTrackingPage.tsx# Delivery Tracking
-│       │   ├── InvoicePage.tsx         # GST Invoices
+│       │   ├── InvoicePage.tsx         # GST Invoices (PDF + WhatsApp/Email share)
 │       │   ├── KhataPage.tsx           # Customer Ledger
 │       │   ├── ReportsPage.tsx         # Business Reports
 │       │   ├── ProfilePage.tsx         # User Profile
 │       │   └── NotificationsPage.tsx   # Notifications
 │       ├── components/                 # Shared UI components
+│       │   ├── BackgroundEffects.tsx   # Canvas particles, gradient orbs, grids
+│       │   ├── WhatsAppDemo.tsx        # WhatsApp-first strategy showcase
 │       │   └── ui/                     # Radix UI primitives
 │       ├── utils/                      # Auth, Cart, Language, Theme contexts
-│       └── styles/                     # Global styles + theme system
+│       └── styles/                     # Global styles + animations
 ├── Dockerfile                          # Multi-stage production build (3 stages)
 ├── design.md                           # Technical design document
 ├── requirements.md                     # Product requirements
@@ -653,37 +716,18 @@ Each city has curated data for festivals, seasonal demand patterns, local produc
 
 ---
 
-## Contributing
-
-We welcome contributions to BharatBazaar AI. Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/your-feature`
-3. **Commit** your changes with descriptive messages
-4. **Test** thoroughly: `cd backend && npm test`
-5. **Push** to your fork: `git push origin feature/your-feature`
-6. **Open** a Pull Request with a clear description
-
-### Code Standards
-
-- TypeScript strict mode across both frontend and backend
-- ESLint for code quality (`npm run lint`)
-- Jest for backend unit tests with coverage reporting
-- Tailwind CSS utility classes — avoid custom CSS where possible
-- All new API endpoints must include demo fallback data
-
----
-
 ## License
 
-Built for the **AI for Bharat Hackathon 2026** by **Team ParityAI**.
+Built for the **AI4Bharat Hackathon 2026** by **Team ParityAI**.
 
-All rights reserved. This project was developed as a hackathon submission for the Retail, Commerce & Market Intelligence track.
+Track: **Retail, Commerce & Market Intelligence**
 
 ---
 
 <p align="center">
   <strong>BharatBazaar AI</strong> — Market Intelligence for Bharat
   <br />
-  Empowering 12 million small retailers with AI, in their own language.
+  Empowering 15 million kirana stores with AI, in their own language.
+  <br /><br />
+  <em>"Amazon has data science teams. Kirana stores have BharatBazaar AI."</em>
 </p>
