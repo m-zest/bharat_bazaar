@@ -170,10 +170,21 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-gray-600 mt-6">
-          Powered by AWS Bedrock & Amazon DynamoDB
-        </p>
+        {/* Register Link */}
+        <div className="text-center mt-6">
+          <p className="text-sm text-gray-500">
+            Don&apos;t have an account?{' '}
+            <button
+              onClick={() => navigate('/register')}
+              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+            >
+              Register here
+            </button>
+          </p>
+          <p className="text-xs text-gray-600 mt-2">
+            Powered by AWS Bedrock & Amazon DynamoDB
+          </p>
+        </div>
       </motion.div>
     </div>
   )

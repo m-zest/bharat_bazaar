@@ -6,7 +6,7 @@ import {
   Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, ChevronDown,
   ShoppingCart, Truck, MapPin, Eye, Receipt,
   Shield, Database, Cpu, Lock,
-  Server, Layers, CheckCircle2, ArrowDown, Sun, Moon,
+  Server, Layers, CheckCircle2, ArrowDown, Sun, Moon, Store,
 } from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/AnimatedComponents'
@@ -220,6 +220,14 @@ export default function Landing() {
               </AnimatePresence>
             </div>
 
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/register')}
+              className="hidden sm:flex items-center gap-2 text-gray-300 px-4 py-2.5 rounded-full text-sm font-semibold border border-[#333] hover:border-orange-500/50 transition-colors"
+            >
+              Register
+            </motion.button>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -663,43 +671,144 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══ PROMOTIONAL SPLIT ═══ */}
+      {/* ═══ MARKETPLACE — BharatBazaar Ecosystem ═══ */}
       <section className="py-24 px-6 lg:px-8 bg-[#111113] relative overflow-hidden">
         <RadialGlow color="rgba(13,148,136,0.05)" position="top-left" size={500} />
+        <RadialGlow color="rgba(249,115,22,0.04)" position="bottom-right" size={600} />
         <NoiseOverlay opacity={0.015} />
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <ScrollReveal direction="left">
-              <motion.div whileHover={{ scale: 1.01 }} className="rounded-3xl overflow-hidden h-[400px] lg:h-[480px] relative">
-                <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80&fit=crop" alt="Indian kirana store" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="absolute bottom-6 left-6 text-white">
-                  <p className="text-sm font-medium text-white/70">{t('promo.builtFor')}</p>
-                  <p className="text-2xl font-extrabold">{t('promo.indianRetailer')}</p>
-                </div>
-              </motion.div>
-            </ScrollReveal>
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">The Marketplace</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">
+              One Platform. Three Roles.<br />
+              <span className="bg-gradient-to-r from-[#F97316] to-[#0D9488] bg-clip-text text-transparent">Infinite Possibilities.</span>
+            </h2>
+            <p className="text-gray-400 mt-4 text-base md:text-lg max-w-2xl mx-auto">
+              BharatBazaar AI isn&apos;t just a tool — it&apos;s a complete ecosystem connecting retailers, suppliers, and customers across India.
+            </p>
+          </ScrollReveal>
 
-            <ScrollReveal direction="right">
-              <div className="bg-gradient-to-br from-[#F97316] to-[#F59E0B] rounded-3xl p-8 lg:p-12 flex flex-col justify-center h-[400px] lg:h-[480px] relative overflow-hidden">
-                <div className="absolute top-[-50px] right-[-50px] w-[200px] h-[200px] rounded-full bg-white/10" />
-                <div className="absolute bottom-[-80px] left-[-40px] w-[250px] h-[250px] rounded-full bg-white/5" />
-                <div className="relative z-10">
-                  <p className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">{t('promo.openForAll')}</p>
-                  <h3 className="text-3xl lg:text-4xl font-extrabold text-white leading-tight whitespace-pre-line">{t('promo.freeForAll')}</h3>
-                  <p className="text-white/80 mt-4 text-lg leading-relaxed max-w-md">
-                    {t('promo.desc')}
-                  </p>
-                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
-                    className="mt-8 flex items-center gap-2.5 bg-white text-[#1a1a1a] px-7 py-3.5 rounded-full text-sm font-semibold shadow-xl shadow-black/10 hover:shadow-2xl transition-shadow">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
-                    {t('promo.startFree')}
-                    <ArrowRight className="w-4 h-4" />
-                  </motion.button>
+          {/* Three Role Cards — The Ecosystem */}
+          <div className="grid md:grid-cols-3 gap-5 mb-12">
+            {[
+              {
+                role: 'Retailer',
+                tagline: 'Buy Smart. Sell Smarter.',
+                desc: 'AI-powered pricing, inventory management, WhatsApp ordering, and customer khata — everything a kirana store needs.',
+                features: ['Smart Pricing AI', 'Inventory Alerts', 'WhatsApp Orders', 'GST Invoicing'],
+                color: 'from-orange-500 to-amber-500',
+                borderColor: 'border-orange-500/20',
+                bgColor: 'bg-orange-500/5',
+                iconBg: 'bg-orange-500',
+                count: '15M+',
+                countLabel: 'Kirana Stores',
+              },
+              {
+                role: 'Supplier',
+                tagline: 'Reach Every Store. Directly.',
+                desc: 'List your products, get verified, reach thousands of retailers near you. No middlemen. Direct B2B wholesale.',
+                features: ['Product Listings', 'Verified Badge', 'Direct Orders', 'Analytics Dashboard'],
+                color: 'from-teal-500 to-emerald-500',
+                borderColor: 'border-teal-500/20',
+                bgColor: 'bg-teal-500/5',
+                iconBg: 'bg-teal-500',
+                count: '40+',
+                countLabel: 'Verified Suppliers',
+              },
+              {
+                role: 'Customer',
+                tagline: 'Discover. Compare. Save.',
+                desc: 'Browse products from local stores, compare prices across your city, and discover the best deals near you.',
+                features: ['Price Comparison', 'Store Discovery', 'Deal Alerts', 'Multi-language'],
+                color: 'from-purple-500 to-violet-500',
+                borderColor: 'border-purple-500/20',
+                bgColor: 'bg-purple-500/5',
+                iconBg: 'bg-purple-500',
+                count: '10',
+                countLabel: 'Cities Covered',
+              },
+            ].map((item, i) => (
+              <ScrollReveal key={item.role} delay={i * 0.12}>
+                <motion.div
+                  whileHover={{ y: -6, scale: 1.01 }}
+                  className={`${item.bgColor} rounded-2xl p-6 border ${item.borderColor} h-full relative overflow-hidden group`}
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br opacity-10 blur-2xl" style={{ backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))` }} />
+                  <div className={`w-10 h-10 ${item.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                    <span className="text-white text-lg font-bold">{item.role.charAt(0)}</span>
+                  </div>
+                  <h3 className="text-xl font-extrabold text-gray-100 mb-1">{item.role}</h3>
+                  <p className={`text-sm font-semibold bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-3`}>{item.tagline}</p>
+                  <p className="text-sm text-gray-400 leading-relaxed mb-4">{item.desc}</p>
+                  <div className="space-y-1.5 mb-5">
+                    {item.features.map(f => (
+                      <div key={f} className="flex items-center gap-2 text-xs text-gray-300">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                        {f}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <div>
+                      <p className="text-2xl font-extrabold text-gray-100">{item.count}</p>
+                      <p className="text-[10px] text-gray-500">{item.countLabel}</p>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => navigate('/login')}
+                      className={`flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r ${item.color} text-white rounded-full text-xs font-semibold shadow-lg`}
+                    >
+                      Join as {item.role}
+                      <ArrowRight className="w-3 h-3" />
+                    </motion.button>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Animated Connection Flow */}
+          <ScrollReveal>
+            <div className="bg-[#1a1a1d]/60 backdrop-blur-sm rounded-2xl p-8 border border-[#2a2a2d]">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                    <Store className="w-8 h-8 text-orange-400" />
+                  </div>
+                  <p className="text-sm font-bold text-gray-200">Supplier</p>
+                  <p className="text-[10px] text-gray-500">Lists Products</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-r from-orange-500 to-teal-500" />
+                  <Zap className="w-5 h-5 text-[#F97316]" />
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-r from-teal-500 to-purple-500" />
+                </div>
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#F97316]/20 to-[#0D9488]/20 rounded-full flex items-center justify-center mx-auto mb-2 border border-orange-500/30">
+                    <Sparkles className="w-10 h-10 text-[#F97316]" />
+                  </div>
+                  <p className="text-sm font-bold text-gray-200">BharatBazaar AI</p>
+                  <p className="text-[10px] text-gray-500">Matches & Optimizes</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-r from-purple-500 to-teal-500" />
+                  <Zap className="w-5 h-5 text-[#0D9488]" />
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-r from-teal-500 to-orange-500" />
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-teal-500/10 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                    <Package className="w-8 h-8 text-teal-400" />
+                  </div>
+                  <p className="text-sm font-bold text-gray-200">Retailer</p>
+                  <p className="text-[10px] text-gray-500">Orders & Sells</p>
                 </div>
               </div>
-            </ScrollReveal>
-          </div>
+              <p className="text-center text-xs text-gray-500 mt-6">
+                AI-powered matching connects the right suppliers with the right retailers. Smart pricing ensures everyone profits.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
