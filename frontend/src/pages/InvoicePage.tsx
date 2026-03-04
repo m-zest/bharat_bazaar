@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import jsPDF from 'jspdf'
 import {
   Receipt, Plus, Trash2, Download, Printer, IndianRupee,
   Building2, MapPin, Phone, Hash, Calendar, CheckCircle2,
-  FileText, Eye
+  FileText, Eye, MessageCircle, Mail, Share2, X
 } from 'lucide-react'
 
 interface InvoiceItem {
@@ -26,6 +27,7 @@ export default function InvoicePage() {
   const [invoiceNum] = useState(`INV-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`)
   const [showPreview, setShowPreview] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [shareModal, setShareModal] = useState<'whatsapp' | 'email' | null>(null)
   const [customer, setCustomer] = useState({
     name: 'Verma General Store',
     address: '15, Civil Lines, Lucknow - 226001',
@@ -51,9 +53,232 @@ export default function InvoicePage() {
   const sgst = totalGst / 2
   const grandTotal = subtotal + totalGst
 
-  const handleSave = () => {
+  const invoiceDate = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+  const invoiceDateLong = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+
+  const fmt = (n: number) => n.toLocaleString('en-IN', { maximumFractionDigits: 2 })
+
+  // ── PDF Generation ──
+  const generatePDF = (): jsPDF => {
+    const doc = new jsPDF('p', 'mm', 'a4')
+    const pageWidth = doc.internal.pageSize.getWidth()
+    let y = 20
+
+    // Header
+    doc.setFontSize(20)
+    doc.setFont('helvetica', 'bold')
+    doc.text('TAX INVOICE', pageWidth / 2, y, { align: 'center' })
+    y += 6
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(120, 120, 120)
+    doc.text('Original for Recipient', pageWidth / 2, y, { align: 'center' })
+    doc.setTextColor(0, 0, 0)
+    y += 10
+
+    // Divider line
+    doc.setDrawColor(200, 200, 200)
+    doc.setLineWidth(0.5)
+    doc.line(15, y, pageWidth - 15, y)
+    y += 8
+
+    // Invoice number and date
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'bold')
+    doc.text(`Invoice No: ${invoiceNum}`, 15, y)
+    doc.text(`Date: ${invoiceDateLong}`, pageWidth - 15, y, { align: 'right' })
+    y += 10
+
+    // From / To
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(100, 100, 100)
+    doc.text('FROM', 15, y)
+    doc.text('TO', pageWidth / 2 + 5, y)
+    y += 5
+
+    doc.setTextColor(0, 0, 0)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Sharma Kirana Store', 15, y)
+    doc.text(customer.name, pageWidth / 2 + 5, y)
+    y += 5
+
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'normal')
+    doc.text('Shop No. 42, Aminabad Market', 15, y)
+    doc.text(customer.address, pageWidth / 2 + 5, y)
+    y += 4
+    doc.text('Lucknow - 226018', 15, y)
+    doc.text(`GSTIN: ${customer.gstin}`, pageWidth / 2 + 5, y)
+    y += 4
+    doc.text('GSTIN: 09AABCS1234A1ZX', 15, y)
+    doc.text(`Phone: +91 ${customer.phone}`, pageWidth / 2 + 5, y)
+    y += 4
+    doc.text('Phone: +91 98765 43210', 15, y)
+    y += 10
+
+    // Table header
+    const colX = [15, 22, 90, 110, 130, 152, 175]
+    const colLabels = ['#', 'Item', 'HSN', 'Qty', 'Rate (Rs)', 'GST %', 'Amount (Rs)']
+
+    doc.setFillColor(245, 245, 245)
+    doc.rect(15, y - 4, pageWidth - 30, 8, 'F')
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'bold')
+    colLabels.forEach((label, idx) => {
+      const align = idx >= 3 ? 'right' : 'left'
+      const xPos = idx >= 3 ? colX[idx] + 15 : colX[idx]
+      doc.text(label, xPos, y, { align })
+    })
+    y += 7
+
+    // Table rows
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8)
+    items.forEach((item, i) => {
+      const amount = item.qty * item.rate
+      doc.text(String(i + 1), colX[0], y)
+      doc.text(item.name.substring(0, 35), colX[1], y)
+      doc.text(item.hsn, colX[2], y)
+      doc.text(String(item.qty), colX[3] + 15, y, { align: 'right' })
+      doc.text(fmt(item.rate), colX[4] + 15, y, { align: 'right' })
+      doc.text(`${item.gstPercent}%`, colX[5] + 15, y, { align: 'right' })
+      doc.text(fmt(amount), colX[6] + 15, y, { align: 'right' })
+      y += 6
+
+      // Light row separator
+      doc.setDrawColor(230, 230, 230)
+      doc.setLineWidth(0.2)
+      doc.line(15, y - 3, pageWidth - 15, y - 3)
+    })
+
+    y += 5
+
+    // Totals
+    doc.setDrawColor(200, 200, 200)
+    doc.setLineWidth(0.5)
+    doc.line(130, y, pageWidth - 15, y)
+    y += 6
+
+    const totalsX = 140
+    const totalsValX = pageWidth - 15
+
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'normal')
+    doc.text('Subtotal:', totalsX, y)
+    doc.text(`Rs ${fmt(subtotal)}`, totalsValX, y, { align: 'right' })
+    y += 5
+
+    doc.text('CGST:', totalsX, y)
+    doc.text(`Rs ${fmt(cgst)}`, totalsValX, y, { align: 'right' })
+    y += 5
+
+    doc.text('SGST:', totalsX, y)
+    doc.text(`Rs ${fmt(sgst)}`, totalsValX, y, { align: 'right' })
+    y += 3
+
+    doc.setDrawColor(0, 0, 0)
+    doc.setLineWidth(0.5)
+    doc.line(130, y, pageWidth - 15, y)
+    y += 6
+
+    doc.setFontSize(11)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Grand Total:', totalsX, y)
+    doc.text(`Rs ${fmt(grandTotal)}`, totalsValX, y, { align: 'right' })
+    y += 3
+
+    doc.setDrawColor(0, 0, 0)
+    doc.setLineWidth(0.8)
+    doc.line(130, y, pageWidth - 15, y)
+
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 20
+    doc.setDrawColor(200, 200, 200)
+    doc.setLineWidth(0.3)
+    doc.setLineDashPattern([2, 2], 0)
+    doc.line(15, footerY - 5, pageWidth - 15, footerY - 5)
+    doc.setLineDashPattern([], 0)
+
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(140, 140, 140)
+    doc.text('This is a computer-generated invoice. No signature required.', pageWidth / 2, footerY, { align: 'center' })
+    doc.text('Generated by BharatBazaar AI | Powered by AWS', pageWidth / 2, footerY + 4, { align: 'center' })
+    doc.setTextColor(0, 0, 0)
+
+    return doc
+  }
+
+  const handleDownloadPDF = () => {
+    const doc = generatePDF()
+    doc.save(`${invoiceNum}.pdf`)
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
+  }
+
+  // ── Share Text Builders ──
+  const buildWhatsAppText = (): string => {
+    let text = `🧾 *TAX INVOICE*\n`
+    text += `📄 ${invoiceNum} | ${invoiceDate}\n`
+    text += `━━━━━━━━━━━━━━━\n`
+    text += `*From:* Sharma Kirana Store\n`
+    text += `*To:* ${customer.name}\n\n`
+    text += `📦 *Items:*\n`
+    items.forEach((item, i) => {
+      const amount = item.qty * item.rate
+      text += `${i + 1}. ${item.name}\n`
+      text += `   ${item.qty} x ₹${fmt(item.rate)} = ₹${fmt(amount)} (GST ${item.gstPercent}%)\n`
+    })
+    text += `\n━━━━━━━━━━━━━━━\n`
+    text += `💰 Subtotal: ₹${fmt(subtotal)}\n`
+    text += `📊 CGST: ₹${fmt(cgst)}\n`
+    text += `📊 SGST: ₹${fmt(sgst)}\n`
+    text += `━━━━━━━━━━━━━━━\n`
+    text += `✅ *Grand Total: ₹${fmt(grandTotal)}*\n\n`
+    text += `Generated by BharatBazaar AI`
+    return text
+  }
+
+  const buildEmailBody = (): string => {
+    let text = `TAX INVOICE\n`
+    text += `Invoice: ${invoiceNum} | Date: ${invoiceDate}\n`
+    text += `-------------------------------------------\n`
+    text += `From: Sharma Kirana Store\n`
+    text += `Shop No. 42, Aminabad Market, Lucknow - 226018\n`
+    text += `GSTIN: 09AABCS1234A1ZX\n\n`
+    text += `To: ${customer.name}\n`
+    text += `${customer.address}\n`
+    text += `GSTIN: ${customer.gstin}\n\n`
+    text += `Items:\n`
+    items.forEach((item, i) => {
+      const amount = item.qty * item.rate
+      text += `${i + 1}. ${item.name} (HSN: ${item.hsn})\n`
+      text += `   Qty: ${item.qty} x Rs ${fmt(item.rate)} = Rs ${fmt(amount)} [GST ${item.gstPercent}%]\n`
+    })
+    text += `\n-------------------------------------------\n`
+    text += `Subtotal:    Rs ${fmt(subtotal)}\n`
+    text += `CGST:        Rs ${fmt(cgst)}\n`
+    text += `SGST:        Rs ${fmt(sgst)}\n`
+    text += `-------------------------------------------\n`
+    text += `Grand Total: Rs ${fmt(grandTotal)}\n\n`
+    text += `This is a computer-generated invoice.\n`
+    text += `Generated by BharatBazaar AI | Powered by AWS`
+    return text
+  }
+
+  const handleShareWhatsApp = () => {
+    const text = encodeURIComponent(buildWhatsAppText())
+    window.open(`https://wa.me/?text=${text}`, '_blank')
+    setShareModal(null)
+  }
+
+  const handleShareEmail = () => {
+    const subject = encodeURIComponent(`Invoice ${invoiceNum} - Sharma Kirana Store`)
+    const body = encodeURIComponent(buildEmailBody())
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_self')
+    setShareModal(null)
   }
 
   return (
@@ -72,13 +297,6 @@ export default function InvoicePage() {
             <Eye className="w-3.5 h-3.5" />
             {showPreview ? 'Edit' : 'Preview'}
           </button>
-          <button
-            onClick={handleSave}
-            className="flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium transition-colors"
-          >
-            <Download className="w-3.5 h-3.5" />
-            Save & Download
-          </button>
         </div>
       </div>
 
@@ -92,6 +310,126 @@ export default function InvoicePage() {
           Invoice saved! PDF download started.
         </motion.div>
       )}
+
+      {/* ── Share / Download Button Group ── */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        <button
+          onClick={handleDownloadPDF}
+          className="flex items-center gap-1.5 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-medium transition-colors shadow-lg shadow-orange-500/20"
+        >
+          <Download className="w-4 h-4" />
+          Download PDF
+        </button>
+        <button
+          onClick={() => setShareModal('whatsapp')}
+          className="flex items-center gap-1.5 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-medium transition-colors shadow-lg shadow-green-600/20"
+        >
+          <MessageCircle className="w-4 h-4" />
+          Send via WhatsApp
+        </button>
+        <button
+          onClick={() => setShareModal('email')}
+          className="flex items-center gap-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition-colors shadow-lg shadow-blue-600/20"
+        >
+          <Mail className="w-4 h-4" />
+          Send via Email
+        </button>
+      </div>
+
+      {/* ── PDF Preview Info ── */}
+      <div className="mb-4 bg-[#1a1a1d] border border-[#2a2a2d] rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <FileText className="w-4 h-4 text-orange-500" />
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">PDF will include</span>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500">
+          <span>TAX INVOICE header</span>
+          <span>From/To business details</span>
+          <span>Invoice #{invoiceNum}</span>
+          <span>Itemized table with HSN codes</span>
+          <span>GST breakdown (CGST + SGST)</span>
+          <span>Grand total</span>
+          <span>BharatBazaar AI footer</span>
+        </div>
+      </div>
+
+      {/* ── Share Modal ── */}
+      <AnimatePresence>
+        {shareModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            onClick={() => setShareModal(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="bg-[#1a1a1d] border border-[#2a2a2d] rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#2a2a2d]">
+                <div className="flex items-center gap-2">
+                  {shareModal === 'whatsapp' ? (
+                    <MessageCircle className="w-5 h-5 text-green-400" />
+                  ) : (
+                    <Mail className="w-5 h-5 text-blue-400" />
+                  )}
+                  <h3 className="text-base font-bold text-gray-100">
+                    {shareModal === 'whatsapp' ? 'Share via WhatsApp' : 'Share via Email'}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShareModal(null)}
+                  className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-400 hover:text-gray-200 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Modal Body - Preview */}
+              <div className="px-5 py-4">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Preview</p>
+                <div className="bg-[#141416] border border-[#333] rounded-xl p-4 max-h-60 overflow-y-auto">
+                  <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+                    {shareModal === 'whatsapp' ? buildWhatsAppText() : buildEmailBody()}
+                  </pre>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-5 py-4 border-t border-[#2a2a2d] flex gap-2 justify-end">
+                <button
+                  onClick={() => setShareModal(null)}
+                  className="px-4 py-2 bg-[#141416] border border-[#333] rounded-xl text-sm text-gray-300 hover:bg-white/[0.06] transition-colors"
+                >
+                  Cancel
+                </button>
+                {shareModal === 'whatsapp' ? (
+                  <button
+                    onClick={handleShareWhatsApp}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-medium transition-colors"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    Open WhatsApp
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleShareEmail}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    Open Email Client
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {!showPreview ? (
         /* ── Edit Mode ── */
@@ -157,7 +495,7 @@ export default function InvoicePage() {
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="w-4 h-4 text-gray-500" />
               <span className="text-gray-400">Date:</span>
-              <span className="font-bold text-gray-100">{new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              <span className="font-bold text-gray-100">{invoiceDate}</span>
             </div>
           </div>
 
@@ -288,7 +626,7 @@ export default function InvoicePage() {
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-100">{invoiceNum}</p>
-              <p className="text-xs text-gray-400">{new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p className="text-xs text-gray-400">{invoiceDateLong}</p>
             </div>
           </div>
 
