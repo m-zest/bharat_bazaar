@@ -680,6 +680,15 @@ Multi-stage Docker build produces a minimal Node 18 Alpine image with health che
 ### 8. Lambda-Ready Handlers
 All backend handlers are typed with `@types/aws-lambda` and structured for seamless migration to AWS Lambda + API Gateway if serverless deployment is preferred.
 
+### 9. Zero-Effort Data Collection
+The store owner's daily actions ARE the data input — no spreadsheets, no manual entry:
+- **Scan purchase bills** → AI extracts products, quantities, prices → inventory auto-populated
+- **Generate sales invoices** → every bill = a sale recorded → demand patterns captured
+- **WhatsApp messages** → "Order 50 Surf Excel" → structured order data
+- **Wholesale orders** → incoming stock auto-updates inventory
+
+Every interaction becomes business intelligence stored in DynamoDB and analyzed by Bedrock AI.
+
 ---
 
 ## Supported Languages & Regions

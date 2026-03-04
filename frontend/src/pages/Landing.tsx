@@ -5,7 +5,7 @@ import {
   IndianRupee, Languages, MessageSquareText, ArrowRight, ArrowUpRight, Sparkles,
   Package, MessageCircle, Globe, BarChart3, Star, Zap, Check, ChevronDown,
   ShoppingCart, Truck, MapPin, Eye, Receipt,
-  Shield, Database, Cpu, Lock,
+  Shield, Database, Cpu, Lock, Camera, FileText, TrendingUp,
   Server, Layers, CheckCircle2, ArrowDown, Sun, Moon, Store,
 } from 'lucide-react'
 import { NavbarLogo, FullLogo, IconLogo, WordmarkLogo } from '../components/TarazuLogo'
@@ -806,6 +806,98 @@ export default function Landing() {
               </div>
               <p className="text-center text-xs text-gray-500 mt-6">
                 AI-powered matching connects the right suppliers with the right retailers. Smart pricing ensures everyone profits.
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ═══ HOW DATA FLOWS ═══ */}
+      <section className="py-24 px-6 lg:px-8 bg-[#0e0e10] relative overflow-hidden">
+        <AnimatedGrid />
+        <NoiseOverlay opacity={0.01} />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <ScrollReveal className="text-center mb-14">
+            <p className="text-sm font-semibold text-[#F97316] uppercase tracking-wider mb-2">Zero Extra Work</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-100 tracking-tight">
+              Your Daily Actions = Your Data
+            </h2>
+            <p className="text-gray-400 mt-4 text-lg max-w-2xl mx-auto">
+              No data entry. No spreadsheets. The store owner's daily routine automatically builds the intelligence layer.
+            </p>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: Camera,
+                color: 'from-orange-500 to-amber-500',
+                bg: 'bg-orange-500/10',
+                title: 'Scan Purchase Bills',
+                subtitle: 'Inventory auto-populated',
+                desc: 'Photograph any wholesaler bill → AI extracts products, quantities, prices → stock updated automatically',
+                data: 'Cost prices, supplier info, stock levels',
+              },
+              {
+                icon: Receipt,
+                color: 'from-teal-500 to-emerald-500',
+                bg: 'bg-teal-500/10',
+                title: 'Generate Sales Invoices',
+                subtitle: 'Sales data captured',
+                desc: 'Every bill you generate = a sale recorded → tracks what sells, when, how much, to whom',
+                data: 'Revenue, demand patterns, customer preferences',
+              },
+              {
+                icon: MessageCircle,
+                color: 'from-green-500 to-green-600',
+                bg: 'bg-green-500/10',
+                title: 'Chat on WhatsApp',
+                subtitle: 'Orders & queries processed',
+                desc: '"Order 50 Surf Excel" or "Price for Tata Salt" → AI processes every message into structured data',
+                data: 'Orders, price checks, stock queries',
+              },
+            ].map((item, i) => (
+              <ScrollReveal key={item.title} delay={i * 0.15}>
+                <motion.div whileHover={{ y: -4 }} className="bg-[#1a1a1d] rounded-2xl p-8 border border-[#2a2a2d] h-full">
+                  <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-5`}>
+                    <item.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h4 className="text-lg font-extrabold text-gray-100 mb-1">{item.title}</h4>
+                  <p className="text-xs font-semibold text-[#F97316] mb-3">{item.subtitle}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4">{item.desc}</p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 bg-[#141416] px-3 py-2 rounded-lg">
+                    <Database className="w-3 h-3 text-[#F97316] flex-shrink-0" />
+                    <span className="font-medium">Data captured:</span> {item.data}
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Data Flow Diagram */}
+          <ScrollReveal>
+            <div className="bg-[#1a1a1d]/60 backdrop-blur-sm rounded-2xl p-8 border border-[#2a2a2d]">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
+                {[
+                  { label: 'Daily Actions', sub: 'Scan bills, create invoices, WhatsApp', icon: Store, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+                  { label: 'Auto-Captured', sub: 'Stock, sales, prices, demand', icon: Database, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                  { label: 'AI Analyzes', sub: 'Bedrock + DynamoDB', icon: Cpu, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+                  { label: 'Smart Insights', sub: 'Pricing, trends, forecasts', icon: TrendingUp, color: 'text-teal-400', bg: 'bg-teal-500/10' },
+                ].map((step, i) => (
+                  <div key={step.label} className="flex items-center gap-3 md:gap-4">
+                    <div className="text-center">
+                      <div className={`w-14 h-14 ${step.bg} rounded-2xl flex items-center justify-center mx-auto mb-2`}>
+                        <step.icon className={`w-7 h-7 ${step.color}`} />
+                      </div>
+                      <p className="text-xs font-bold text-gray-200">{step.label}</p>
+                      <p className="text-[9px] text-gray-500 max-w-[120px]">{step.sub}</p>
+                    </div>
+                    {i < 3 && <ArrowRight className="w-5 h-5 text-gray-600 hidden md:block" />}
+                  </div>
+                ))}
+              </div>
+              <p className="text-center text-xs text-gray-500 mt-6">
+                <span className="text-[#F97316] font-semibold">No manual data entry.</span> Every interaction with BharatBazaar becomes business intelligence — stored in DynamoDB, analyzed by Bedrock AI.
               </p>
             </div>
           </ScrollReveal>
