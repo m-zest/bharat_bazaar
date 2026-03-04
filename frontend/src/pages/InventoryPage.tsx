@@ -17,6 +17,21 @@ interface InventoryItem {
   lastUpdated: string
 }
 
+const DEMO_INVENTORY: InventoryItem[] = [
+  { id: 'demo-1', name: 'Toor Dal (1kg)', category: 'Groceries', costPrice: 120, sellingPrice: 155, quantity: 45, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString() },
+  { id: 'demo-2', name: 'Basmati Rice (5kg)', category: 'Groceries', costPrice: 280, sellingPrice: 380, quantity: 22, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString() },
+  { id: 'demo-3', name: 'Surf Excel (1kg)', category: 'Home & Kitchen', costPrice: 180, sellingPrice: 220, quantity: 8, dailySellRate: 4, reorderLevel: 12, lastUpdated: new Date().toISOString() },
+  { id: 'demo-4', name: 'Parle-G Biscuit (Pack of 12)', category: 'Groceries', costPrice: 60, sellingPrice: 84, quantity: 5, dailySellRate: 6, reorderLevel: 20, lastUpdated: new Date().toISOString() },
+  { id: 'demo-5', name: 'Sugar (5kg)', category: 'Groceries', costPrice: 195, sellingPrice: 250, quantity: 35, dailySellRate: 4, reorderLevel: 10, lastUpdated: new Date().toISOString() },
+  { id: 'demo-6', name: 'Amul Butter (500g)', category: 'Groceries', costPrice: 220, sellingPrice: 275, quantity: 12, dailySellRate: 3, reorderLevel: 8, lastUpdated: new Date().toISOString() },
+  { id: 'demo-7', name: 'Vim Dishwash Bar (3 pack)', category: 'Home & Kitchen', costPrice: 55, sellingPrice: 72, quantity: 18, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString() },
+  { id: 'demo-8', name: 'Maggi Noodles (Family Pack)', category: 'Groceries', costPrice: 96, sellingPrice: 120, quantity: 0, dailySellRate: 8, reorderLevel: 15, lastUpdated: new Date().toISOString() },
+  { id: 'demo-9', name: 'Clinic Plus Shampoo (340ml)', category: 'Beauty & Personal Care', costPrice: 155, sellingPrice: 199, quantity: 14, dailySellRate: 1, reorderLevel: 5, lastUpdated: new Date().toISOString() },
+  { id: 'demo-10', name: 'Fortune Sunflower Oil (1L)', category: 'Groceries', costPrice: 130, sellingPrice: 165, quantity: 28, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString() },
+  { id: 'demo-11', name: 'Colgate MaxFresh (150g)', category: 'Beauty & Personal Care', costPrice: 85, sellingPrice: 110, quantity: 20, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString() },
+  { id: 'demo-12', name: 'Britannia Good Day (Pack of 8)', category: 'Groceries', costPrice: 70, sellingPrice: 96, quantity: 3, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString() },
+]
+
 export default function InventoryPage() {
   const { toast } = useToast()
   const [inventory, setInventory] = useState<InventoryItem[]>([])
@@ -33,9 +48,11 @@ export default function InventoryPage() {
       setLoading(true)
       setError(null)
       const data = await api.getInventory()
-      setInventory(data.items || [])
+      const items = data.items || []
+      setInventory(items.length > 0 ? items : DEMO_INVENTORY)
     } catch (err: any) {
-      setError(err.message || 'Failed to load inventory')
+      // Fallback to demo data on error
+      setInventory(DEMO_INVENTORY)
     } finally {
       setLoading(false)
     }

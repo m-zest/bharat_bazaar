@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Store, Package, User, Lock, Mail, Phone, MapPin, Building2, FileText, Eye, EyeOff, ArrowRight, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react'
+import { Store, Package, User, Lock, Mail, Phone, MapPin, Building2, FileText, Eye, EyeOff, ArrowRight, CheckCircle2, ShieldCheck, AlertCircle, Zap } from 'lucide-react'
 
 type Role = 'retailer' | 'supplier' | 'customer'
 
@@ -48,6 +48,36 @@ const roles: RoleOption[] = [
     borderColor: 'border-purple-500/40',
   },
 ]
+
+const DEMO_PROFILES: Record<Role, { fullName: string; phone: string; email: string; businessName: string; city: string; gstin: string; password: string }> = {
+  retailer: {
+    fullName: 'Ramesh Sharma',
+    phone: '9876543210',
+    email: 'ramesh@gmail.com',
+    businessName: 'Sharma Kirana Store',
+    city: 'Lucknow',
+    gstin: '',
+    password: 'demo123',
+  },
+  supplier: {
+    fullName: 'Amit Gupta',
+    phone: '9988776655',
+    email: 'gupta.wholesale@gmail.com',
+    businessName: 'Gupta Wholesale Traders',
+    city: 'Delhi',
+    gstin: '09AAACG1234F1ZM',
+    password: 'demo123',
+  },
+  customer: {
+    fullName: 'Priya Menon',
+    phone: '9123456789',
+    email: 'priya.menon@gmail.com',
+    businessName: '',
+    city: 'Mumbai',
+    gstin: '',
+    password: 'demo123',
+  },
+}
 
 const cities = [
   'Lucknow',
@@ -257,6 +287,49 @@ export default function RegisterPage() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Demo Quick Fill */}
+          <div className="mb-6 bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-orange-400" />
+                <p className="text-sm font-semibold text-gray-200">Quick Demo Fill</p>
+              </div>
+              <span className="text-[10px] text-orange-400/70 bg-orange-500/10 px-2 py-0.5 rounded-full">For Judges</span>
+            </div>
+            <p className="text-xs text-gray-500 mb-3">Auto-fill with sample data so you can quickly see the registration flow</p>
+            <div className="flex gap-2">
+              {roles.map((role) => (
+                <motion.button
+                  key={role.id}
+                  type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => {
+                    const demo = DEMO_PROFILES[role.id]
+                    setSelectedRole(role.id)
+                    setFullName(demo.fullName)
+                    setPhone(demo.phone)
+                    setEmail(demo.email)
+                    setBusinessName(demo.businessName)
+                    setCity(demo.city)
+                    setGstin(demo.gstin)
+                    setPassword(demo.password)
+                    setConfirmPassword(demo.password)
+                    setError('')
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                    selectedRole === role.id
+                      ? `bg-gradient-to-r ${role.id === 'retailer' ? 'from-orange-500 to-amber-500' : role.id === 'supplier' ? 'from-blue-500 to-blue-600' : 'from-purple-500 to-violet-500'} text-white shadow-md`
+                      : 'bg-white/5 text-gray-400 border border-[#333] hover:border-[#444]'
+                  }`}
+                >
+                  <role.icon className="w-3 h-3" />
+                  {role.title}
+                </motion.button>
+              ))}
+            </div>
+          </div>
 
           {/* Registration Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
