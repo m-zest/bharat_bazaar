@@ -10,6 +10,7 @@ import {
   PlayCircle, CheckCircle2, ChevronRight,
 } from 'lucide-react'
 import { api } from '../utils/api'
+import { useSales } from '../utils/SalesContext'
 import OnboardingModal, { isOnboarded, getOnboardingData } from '../components/OnboardingModal'
 import { CountUp } from '../components/AnimatedComponents'
 
@@ -34,6 +35,7 @@ function getGreeting(): { text: string; textHi: string; emoji: string } {
 }
 
 export default function Dashboard() {
+  const { todaySales, todayRevenue, todayItemsSold, topSellingItems, weeklyRevenue } = useSales()
   const [data, setData] = useState<any>(null)
   const [weather, setWeather] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -216,6 +218,62 @@ export default function Dashboard() {
         ))}
       </div>
 
+      {/* ═══ SALES OVERVIEW — What's Going Out ═══ */}
+      <div className="grid lg:grid-cols-4 gap-3 mb-4">
+        {/* Today's Sales Stats */}
+        {[
+          { label: "Today's Revenue", value: `₹${Math.round(todayRevenue).toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-green-400', bg: 'bg-green-500/10', sub: `${todaySales.length} invoices` },
+          { label: 'Items Sold Today', value: todayItemsSold.toString(), icon: Package, color: 'text-saffron-400', bg: 'bg-saffron-500/10', sub: 'units moved out' },
+          { label: 'Weekly Revenue', value: `₹${Math.round(weeklyRevenue).toLocaleString('en-IN')}`, icon: TrendingUp, color: 'text-royal-400', bg: 'bg-royal-500/10', sub: 'last 7 days' },
+        ].map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            className="bg-[#1a1a1d] rounded-xl p-3.5 border border-[#2a2a2d] hover:shadow-md transition-all"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-gray-500 font-medium">{stat.label}</p>
+                <p className="text-xl font-display font-bold text-gray-100 mt-0.5">{stat.value}</p>
+                <p className="text-[9px] text-gray-600">{stat.sub}</p>
+              </div>
+              <div className={`w-9 h-9 rounded-lg ${stat.bg} flex items-center justify-center`}>
+                <stat.icon className={`w-4 h-4 ${stat.color}`} />
+              </div>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* Top Selling Items */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-[#1a1a1d] rounded-xl p-3.5 border border-[#2a2a2d]"
+        >
+          <h4 className="text-[10px] text-gray-500 font-medium mb-2 flex items-center gap-1">
+            <BarChart3 className="w-3 h-3 text-saffron-500" />
+            Top Selling (This Week)
+          </h4>
+          <div className="space-y-1">
+            {topSellingItems.length > 0 ? topSellingItems.slice(0, 3).map((item, i) => (
+              <div key={item.name} className="flex items-center gap-2">
+                <span className="text-[9px] font-bold text-gray-600 w-3">{i + 1}</span>
+                <span className="text-[10px] text-gray-300 flex-1 truncate">{item.name}</span>
+                <span className="text-[10px] font-semibold text-saffron-400">{item.qty} sold</span>
+              </div>
+            )) : (
+              <p className="text-[10px] text-gray-600">Generate invoices to see sales data</p>
+            )}
+          </div>
+          <Link to="/invoices" className="flex items-center gap-1 text-[9px] text-orange-400 font-medium mt-2 hover:text-orange-300">
+            Create Invoice <ArrowRight className="w-2.5 h-2.5" />
+          </Link>
+        </motion.div>
+      </div>
+
       {/* ═══ DATA FLOW DEMO — For Judges ═══ */}
       <div className="grid lg:grid-cols-5 gap-3 mb-4">
         {/* Live Data Flow Activity — 3 cols */}
@@ -230,12 +288,23 @@ export default function Dashboard() {
           </h3>
           <div className="space-y-2">
             {[
+              // Show real recent sales from SalesContext
+              ...todaySales.slice(0, 2).map(sale => ({
+                time: new Date(sale.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+                icon: Receipt,
+                color: 'text-emerald-400',
+                bg: 'bg-emerald-500/10',
+                action: `Sale: ${sale.customerName}`,
+                detail: `→ ₹${Math.round(sale.grandTotal).toLocaleString('en-IN')} | ${sale.items.reduce((s, i) => s + i.qty, 0)} items sold`,
+                link: '/invoices',
+                tag: sale.invoiceNum,
+              })),
               { time: '2 min ago', icon: Camera, color: 'text-violet-400', bg: 'bg-violet-500/10', action: 'Bill Scanned', detail: '→ 8 items extracted → Added to Inventory', link: '/scanner', tag: 'AI Vision' },
-              { time: '15 min ago', icon: Receipt, color: 'text-emerald-400', bg: 'bg-emerald-500/10', action: 'Invoice Generated', detail: '→ ₹4,580 sale recorded → Dashboard analytics updated', link: '/invoices', tag: 'GST Invoice' },
+              ...(todaySales.length === 0 ? [{ time: '15 min ago', icon: Receipt, color: 'text-emerald-400', bg: 'bg-emerald-500/10', action: 'Invoice Generated', detail: '→ ₹4,580 sale recorded → Dashboard analytics updated', link: '/invoices', tag: 'GST Invoice' }] : []),
               { time: '1 hr ago', icon: MessageCircle, color: 'text-green-400', bg: 'bg-green-500/10', action: 'WhatsApp Order', detail: '→ "50 Surf Excel" → Stock reserved, order placed', link: '/chat', tag: 'WhatsApp AI' },
               { time: '3 hrs ago', icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/10', action: 'Wholesale Order', detail: '→ 200 units from Gupta Traders → Incoming stock tracked', link: '/sourcing', tag: 'Sourcing' },
               { time: '5 hrs ago', icon: IndianRupee, color: 'text-orange-400', bg: 'bg-orange-500/10', action: 'Price Updated', detail: '→ AI analyzed 12 competitors → Margins optimized to 22%', link: '/pricing', tag: 'Smart Pricing' },
-            ].map((event, i) => (
+            ].slice(0, 5).map((event, i) => (
               <Link key={i} to={event.link}>
                 <motion.div
                   initial={{ opacity: 0, x: -8 }}

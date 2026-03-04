@@ -26,6 +26,7 @@ import { ToastProvider } from './components/Toast'
 import { LanguageProvider } from './utils/LanguageContext'
 import { AuthProvider, useAuth } from './utils/AuthContext'
 import { CartProvider } from './utils/CartContext'
+import { SalesProvider } from './utils/SalesContext'
 import { ThemeProvider } from './utils/ThemeContext'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -79,11 +80,13 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <CartProvider>
-          <LanguageProvider>
-            <ToastProvider>
-              <AppRoutes />
-            </ToastProvider>
-          </LanguageProvider>
+          <SalesProvider>
+            <LanguageProvider>
+              <ToastProvider>
+                <AppRoutes />
+              </ToastProvider>
+            </LanguageProvider>
+          </SalesProvider>
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>

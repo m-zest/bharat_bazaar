@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Package, Plus, Trash2, AlertTriangle, TrendingDown, ShoppingCart, Edit2, Check, X, RefreshCw, Loader2, Camera, FileText, MessageCircle, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api } from '../utils/api'
+import { useSales } from '../utils/SalesContext'
 import { useToast } from '../components/Toast'
 
 interface InventoryItem {
@@ -42,6 +43,7 @@ const DEMO_INVENTORY: InventoryItem[] = [
 
 export default function InventoryPage() {
   const { toast } = useToast()
+  const { getItemSoldCount } = useSales()
   const [inventory, setInventory] = useState<InventoryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -292,6 +294,8 @@ export default function InventoryPage() {
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Quantity</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Daily Rate</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Days Left</th>
+              <th className="text-center py-3 px-4 text-gray-500 font-medium">Sold Today</th>
+              <th className="text-center py-3 px-4 text-gray-500 font-medium">Sold/Week</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Status</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Actions</th>
             </tr>
@@ -299,7 +303,7 @@ export default function InventoryPage() {
           <tbody>
             {inventory.length === 0 ? (
               <tr>
-                <td colSpan={10} className="text-center py-12 text-gray-400">
+                <td colSpan={12} className="text-center py-12 text-gray-400">
                   <Package className="w-10 h-10 mx-auto mb-2 opacity-50" />
                   <p>No inventory items yet. Add your first product above.</p>
                 </td>
@@ -351,6 +355,22 @@ export default function InventoryPage() {
                     <span className={`font-medium ${daysLeft <= 3 ? 'text-red-400' : daysLeft <= 7 ? 'text-yellow-400' : 'text-green-400'}`}>
                       {daysLeft < 999 ? `${daysLeft}d` : '—'}
                     </span>
+                  </td>
+                  <td className="text-center py-3 px-4">
+                    {(() => {
+                      const sold = getItemSoldCount(item.name, 'today')
+                      return sold > 0
+                        ? <span className="text-xs font-bold text-green-400">{sold}</span>
+                        : <span className="text-xs text-gray-600">—</span>
+                    })()}
+                  </td>
+                  <td className="text-center py-3 px-4">
+                    {(() => {
+                      const sold = getItemSoldCount(item.name, 'week')
+                      return sold > 0
+                        ? <span className="text-xs font-bold text-saffron-400">{sold}</span>
+                        : <span className="text-xs text-gray-600">—</span>
+                    })()}
                   </td>
                   <td className="text-center py-3 px-4">
                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${status.color}`}>{status.label}</span>

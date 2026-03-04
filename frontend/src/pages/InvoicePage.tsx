@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSales } from '../utils/SalesContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import jsPDF from 'jspdf'
 import {
@@ -24,6 +25,7 @@ const DEMO_ITEMS: InvoiceItem[] = [
 ]
 
 export default function InvoicePage() {
+  const { recordSale } = useSales()
   const [items, setItems] = useState<InvoiceItem[]>(DEMO_ITEMS)
   const [invoiceNum] = useState(`INV-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`)
   const [showPreview, setShowPreview] = useState(false)
@@ -215,8 +217,19 @@ export default function InvoicePage() {
   const handleDownloadPDF = () => {
     const doc = generatePDF()
     doc.save(`${invoiceNum}.pdf`)
+
+    // Record sale in SalesContext
+    recordSale({
+      invoiceNum,
+      customerName: customer.name,
+      items: items.map(i => ({ name: i.name, qty: i.qty, rate: i.rate, gstPercent: i.gstPercent })),
+      subtotal,
+      gst: totalGst,
+      grandTotal,
+    })
+
     setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    setTimeout(() => setSaved(false), 8000)
   }
 
   // ── Share Text Builders ──
