@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Package, Plus, Trash2, AlertTriangle, TrendingDown, ShoppingCart, Edit2, Check, X, RefreshCw, Loader2 } from 'lucide-react'
+import { Package, Plus, Trash2, AlertTriangle, TrendingDown, ShoppingCart, Edit2, Check, X, RefreshCw, Loader2, Camera, FileText, MessageCircle, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api } from '../utils/api'
 import { useToast } from '../components/Toast'
@@ -15,21 +15,29 @@ interface InventoryItem {
   dailySellRate: number
   reorderLevel: number
   lastUpdated: string
+  source?: 'bill_scan' | 'manual' | 'wholesale' | 'whatsapp'
+}
+
+const SOURCE_CONFIG = {
+  bill_scan: { label: 'Bill Scan', icon: Camera, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+  manual: { label: 'Manual', icon: FileText, color: 'text-gray-400', bg: 'bg-white/[0.04]' },
+  wholesale: { label: 'Wholesale Order', icon: Truck, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  whatsapp: { label: 'WhatsApp', icon: MessageCircle, color: 'text-green-400', bg: 'bg-green-500/10' },
 }
 
 const DEMO_INVENTORY: InventoryItem[] = [
-  { id: 'demo-1', name: 'Toor Dal (1kg)', category: 'Groceries', costPrice: 120, sellingPrice: 155, quantity: 45, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString() },
-  { id: 'demo-2', name: 'Basmati Rice (5kg)', category: 'Groceries', costPrice: 280, sellingPrice: 380, quantity: 22, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString() },
-  { id: 'demo-3', name: 'Surf Excel (1kg)', category: 'Home & Kitchen', costPrice: 180, sellingPrice: 220, quantity: 8, dailySellRate: 4, reorderLevel: 12, lastUpdated: new Date().toISOString() },
-  { id: 'demo-4', name: 'Parle-G Biscuit (Pack of 12)', category: 'Groceries', costPrice: 60, sellingPrice: 84, quantity: 5, dailySellRate: 6, reorderLevel: 20, lastUpdated: new Date().toISOString() },
-  { id: 'demo-5', name: 'Sugar (5kg)', category: 'Groceries', costPrice: 195, sellingPrice: 250, quantity: 35, dailySellRate: 4, reorderLevel: 10, lastUpdated: new Date().toISOString() },
-  { id: 'demo-6', name: 'Amul Butter (500g)', category: 'Groceries', costPrice: 220, sellingPrice: 275, quantity: 12, dailySellRate: 3, reorderLevel: 8, lastUpdated: new Date().toISOString() },
-  { id: 'demo-7', name: 'Vim Dishwash Bar (3 pack)', category: 'Home & Kitchen', costPrice: 55, sellingPrice: 72, quantity: 18, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString() },
-  { id: 'demo-8', name: 'Maggi Noodles (Family Pack)', category: 'Groceries', costPrice: 96, sellingPrice: 120, quantity: 0, dailySellRate: 8, reorderLevel: 15, lastUpdated: new Date().toISOString() },
-  { id: 'demo-9', name: 'Clinic Plus Shampoo (340ml)', category: 'Beauty & Personal Care', costPrice: 155, sellingPrice: 199, quantity: 14, dailySellRate: 1, reorderLevel: 5, lastUpdated: new Date().toISOString() },
-  { id: 'demo-10', name: 'Fortune Sunflower Oil (1L)', category: 'Groceries', costPrice: 130, sellingPrice: 165, quantity: 28, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString() },
-  { id: 'demo-11', name: 'Colgate MaxFresh (150g)', category: 'Beauty & Personal Care', costPrice: 85, sellingPrice: 110, quantity: 20, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString() },
-  { id: 'demo-12', name: 'Britannia Good Day (Pack of 8)', category: 'Groceries', costPrice: 70, sellingPrice: 96, quantity: 3, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString() },
+  { id: 'demo-1', name: 'Toor Dal (1kg)', category: 'Groceries', costPrice: 120, sellingPrice: 155, quantity: 45, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString(), source: 'bill_scan' },
+  { id: 'demo-2', name: 'Basmati Rice (5kg)', category: 'Groceries', costPrice: 280, sellingPrice: 380, quantity: 22, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString(), source: 'wholesale' },
+  { id: 'demo-3', name: 'Surf Excel (1kg)', category: 'Home & Kitchen', costPrice: 180, sellingPrice: 220, quantity: 8, dailySellRate: 4, reorderLevel: 12, lastUpdated: new Date().toISOString(), source: 'bill_scan' },
+  { id: 'demo-4', name: 'Parle-G Biscuit (Pack of 12)', category: 'Groceries', costPrice: 60, sellingPrice: 84, quantity: 5, dailySellRate: 6, reorderLevel: 20, lastUpdated: new Date().toISOString(), source: 'whatsapp' },
+  { id: 'demo-5', name: 'Sugar (5kg)', category: 'Groceries', costPrice: 195, sellingPrice: 250, quantity: 35, dailySellRate: 4, reorderLevel: 10, lastUpdated: new Date().toISOString(), source: 'wholesale' },
+  { id: 'demo-6', name: 'Amul Butter (500g)', category: 'Groceries', costPrice: 220, sellingPrice: 275, quantity: 12, dailySellRate: 3, reorderLevel: 8, lastUpdated: new Date().toISOString(), source: 'bill_scan' },
+  { id: 'demo-7', name: 'Vim Dishwash Bar (3 pack)', category: 'Home & Kitchen', costPrice: 55, sellingPrice: 72, quantity: 18, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString(), source: 'manual' },
+  { id: 'demo-8', name: 'Maggi Noodles (Family Pack)', category: 'Groceries', costPrice: 96, sellingPrice: 120, quantity: 0, dailySellRate: 8, reorderLevel: 15, lastUpdated: new Date().toISOString(), source: 'whatsapp' },
+  { id: 'demo-9', name: 'Clinic Plus Shampoo (340ml)', category: 'Beauty & Personal Care', costPrice: 155, sellingPrice: 199, quantity: 14, dailySellRate: 1, reorderLevel: 5, lastUpdated: new Date().toISOString(), source: 'bill_scan' },
+  { id: 'demo-10', name: 'Fortune Sunflower Oil (1L)', category: 'Groceries', costPrice: 130, sellingPrice: 165, quantity: 28, dailySellRate: 3, reorderLevel: 10, lastUpdated: new Date().toISOString(), source: 'wholesale' },
+  { id: 'demo-11', name: 'Colgate MaxFresh (150g)', category: 'Beauty & Personal Care', costPrice: 85, sellingPrice: 110, quantity: 20, dailySellRate: 2, reorderLevel: 8, lastUpdated: new Date().toISOString(), source: 'manual' },
+  { id: 'demo-12', name: 'Britannia Good Day (Pack of 8)', category: 'Groceries', costPrice: 70, sellingPrice: 96, quantity: 3, dailySellRate: 5, reorderLevel: 15, lastUpdated: new Date().toISOString(), source: 'bill_scan' },
 ]
 
 export default function InventoryPage() {
@@ -277,6 +285,7 @@ export default function InventoryPage() {
           <thead>
             <tr className="border-b border-[#2a2a2d]">
               <th className="text-left py-3 px-4 text-gray-500 font-medium">Product</th>
+              <th className="text-center py-3 px-4 text-gray-500 font-medium">Source</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Category</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Cost</th>
               <th className="text-center py-3 px-4 text-gray-500 font-medium">Selling</th>
@@ -290,7 +299,7 @@ export default function InventoryPage() {
           <tbody>
             {inventory.length === 0 ? (
               <tr>
-                <td colSpan={9} className="text-center py-12 text-gray-400">
+                <td colSpan={10} className="text-center py-12 text-gray-400">
                   <Package className="w-10 h-10 mx-auto mb-2 opacity-50" />
                   <p>No inventory items yet. Add your first product above.</p>
                 </td>
@@ -301,6 +310,18 @@ export default function InventoryPage() {
               return (
                 <tr key={item.id} className="border-b border-[#2a2a2d] hover:bg-white/[0.06]">
                   <td className="py-3 px-4 font-medium text-gray-100">{item.name}</td>
+                  <td className="text-center py-3 px-4">
+                    {(() => {
+                      const src = SOURCE_CONFIG[item.source || 'manual']
+                      const SrcIcon = src.icon
+                      return (
+                        <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-medium ${src.bg} ${src.color}`}>
+                          <SrcIcon className="w-3 h-3" />
+                          {src.label}
+                        </span>
+                      )
+                    })()}
+                  </td>
                   <td className="text-center py-3 px-4">
                     <span className="text-xs px-2 py-1 bg-white/[0.03] text-gray-400 rounded-md">{item.category}</span>
                   </td>

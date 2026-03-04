@@ -4,7 +4,8 @@ import jsPDF from 'jspdf'
 import {
   Receipt, Plus, Trash2, Download, Printer, IndianRupee,
   Building2, MapPin, Phone, Hash, Calendar, CheckCircle2,
-  FileText, Eye, MessageCircle, Mail, Share2, X
+  FileText, Eye, MessageCircle, Mail, Share2, X, Database,
+  BarChart3, TrendingUp, Package,
 } from 'lucide-react'
 
 interface InvoiceItem {
@@ -304,10 +305,30 @@ export default function InvoicePage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-4 flex items-center gap-2 px-4 py-3 bg-green-500/10 border border-green-500/20 text-green-400 rounded-xl text-sm font-medium"
+          className="mb-4 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border border-green-500/20 rounded-xl p-4"
         >
-          <CheckCircle2 className="w-4 h-4" />
-          Invoice saved! PDF download started.
+          <div className="flex items-center gap-2 mb-2">
+            <CheckCircle2 className="w-4 h-4 text-green-400" />
+            <span className="text-sm font-bold text-green-400">Invoice Generated — Sale Recorded!</span>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { icon: Receipt, label: 'PDF Created', detail: invoiceNum, color: 'text-emerald-400' },
+              { icon: IndianRupee, label: 'Sale Recorded', detail: `Rs.${grandTotal.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`, color: 'text-orange-400' },
+              { icon: BarChart3, label: 'Analytics Updated', detail: `${items.length} items tracked`, color: 'text-blue-400' },
+              { icon: Package, label: 'Stock Adjusted', detail: 'Inventory decremented', color: 'text-teal-400' },
+            ].map((step) => (
+              <div key={step.label} className="flex items-center gap-2 text-[10px] bg-white/[0.03] px-3 py-1.5 rounded-lg">
+                <step.icon className={`w-3.5 h-3.5 ${step.color}`} />
+                <span className="font-semibold text-gray-300">{step.label}</span>
+                <span className="text-gray-500">{step.detail}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-[9px] text-gray-500 mt-2 flex items-center gap-1">
+            <Database className="w-3 h-3 text-orange-500" />
+            This sale feeds into your dashboard analytics, demand forecasting, and inventory levels via DynamoDB + Bedrock AI.
+          </p>
         </motion.div>
       )}
 

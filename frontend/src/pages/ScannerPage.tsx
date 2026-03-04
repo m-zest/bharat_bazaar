@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Camera, Upload, Check, X, Package, Loader2, RotateCcw, ArrowRight } from 'lucide-react'
+import { Camera, Upload, Check, X, Package, Loader2, RotateCcw, ArrowRight, Database, BarChart3, IndianRupee, CheckCircle2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../utils/api'
 import { useToast } from '../components/Toast'
@@ -35,6 +35,8 @@ export default function ScannerPage() {
   const [totalAmount, setTotalAmount] = useState(0)
   const [demoMode, setDemoMode] = useState(false)
   const [addingToInventory, setAddingToInventory] = useState(false)
+  const [addedToInventory, setAddedToInventory] = useState(false)
+  const [addedCount, setAddedCount] = useState(0)
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -123,12 +125,14 @@ export default function ScannerPage() {
             dailySellRate: 2,
             reorderLevel: 10,
             lastUpdated: new Date().toISOString(),
+            source: 'bill_scan',
           },
         })
       }
 
+      setAddedCount(checkedItems.length)
+      setAddedToInventory(true)
       toast('success', `${checkedItems.length} items added to inventory!`)
-      setTimeout(() => navigate('/inventory'), 1000)
     } catch {
       toast('error', 'Failed to add some items. Try again.')
     } finally {
@@ -141,6 +145,8 @@ export default function ScannerPage() {
     setItems([])
     setTotalAmount(0)
     setDemoMode(false)
+    setAddedToInventory(false)
+    setAddedCount(0)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -360,13 +366,58 @@ export default function ScannerPage() {
             </motion.button>
           </div>
 
-          {/* Quick link to inventory */}
-          <button
-            onClick={() => navigate('/inventory')}
-            className="flex items-center gap-2 text-sm text-orange-400 font-medium hover:text-orange-300 transition-colors"
-          >
-            View Inventory <ArrowRight className="w-4 h-4" />
-          </button>
+          {/* Data Flow Success Banner */}
+          {addedToInventory && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border border-green-500/20 rounded-2xl p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                <h4 className="text-sm font-bold text-green-400">Data Flow Complete!</h4>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { icon: Camera, label: 'Bill Scanned', detail: 'AI Vision extracted items', color: 'text-violet-400' },
+                  { icon: Database, label: 'Inventory Updated', detail: `${addedCount} items saved to DynamoDB`, color: 'text-blue-400' },
+                  { icon: IndianRupee, label: 'Prices Set', detail: 'Auto 25% markup applied', color: 'text-orange-400' },
+                  { icon: BarChart3, label: 'Analytics Fed', detail: 'Dashboard insights updated', color: 'text-teal-400' },
+                ].map((step, i) => (
+                  <div key={step.label} className="flex items-start gap-2 p-2 bg-white/[0.03] rounded-lg">
+                    <step.icon className={`w-4 h-4 ${step.color} flex-shrink-0 mt-0.5`} />
+                    <div>
+                      <p className="text-[11px] font-semibold text-gray-200">{step.label}</p>
+                      <p className="text-[9px] text-gray-500">{step.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-3 mt-4">
+                <button
+                  onClick={() => navigate('/inventory')}
+                  className="flex items-center gap-2 text-sm text-orange-400 font-semibold bg-orange-500/10 px-4 py-2 rounded-lg hover:bg-orange-500/20 transition-colors"
+                >
+                  View Inventory <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="flex items-center gap-2 text-sm text-gray-400 font-medium hover:text-gray-300 transition-colors"
+                >
+                  Back to Dashboard <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {!addedToInventory && (
+            <button
+              onClick={() => navigate('/inventory')}
+              className="flex items-center gap-2 text-sm text-orange-400 font-medium hover:text-orange-300 transition-colors"
+            >
+              View Inventory <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </motion.div>
       )}
 
