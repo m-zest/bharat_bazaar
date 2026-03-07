@@ -28,6 +28,7 @@ export default function ScannerPage() {
   const navigate = useNavigate()
   const { toast } = useToast()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [scanning, setScanning] = useState(false)
   const [scanStage, setScanStage] = useState(0)
@@ -175,12 +176,20 @@ export default function ScannerPage() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-[#1a1a1d] rounded-2xl shadow-sm border-2 border-dashed border-[#333] hover:border-orange-500/30 transition-colors"
         >
-          <label className="flex flex-col items-center justify-center py-16 px-8 cursor-pointer">
+          <div className="flex flex-col items-center justify-center py-16 px-8">
+            {/* Hidden file inputs */}
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
             <input
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
               onChange={handleFileSelect}
               className="hidden"
             />
@@ -192,16 +201,22 @@ export default function ScannerPage() {
               Take a photo of your wholesale bill or upload from gallery. AI will extract all items automatically.
             </p>
             <div className="flex gap-3 mt-6">
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-orange-500/25">
+              <button
+                onClick={() => cameraInputRef.current?.click()}
+                className="flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-orange-500/25 cursor-pointer"
+              >
                 <Camera className="w-4 h-4" />
                 Take Photo
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.03] text-gray-300 rounded-xl text-sm font-semibold">
+              </button>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.03] text-gray-300 rounded-xl text-sm font-semibold cursor-pointer hover:bg-white/[0.06] transition-colors"
+              >
                 <Upload className="w-4 h-4" />
                 Upload File
-              </div>
+              </button>
             </div>
-          </label>
+          </div>
         </motion.div>
       )}
 

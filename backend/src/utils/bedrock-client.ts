@@ -17,6 +17,7 @@ const MODEL_ID = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-3-haiku-20240
 const MODEL_CHAIN = [
   { client: primaryClient, modelId: MODEL_ID, label: 'ap-south-1/Haiku' },
   { client: usEastClient, modelId: 'us.anthropic.claude-3-haiku-20240307-v1:0', label: 'us-east-1/Haiku-cross-region' },
+  { client: usEastClient, modelId: 'amazon.nova-pro-v1:0', label: 'us-east-1/Nova-Pro', isNova: true },
   { client: usEastClient, modelId: 'amazon.nova-lite-v1:0', label: 'us-east-1/Nova-Lite', isNova: true },
 ];
 

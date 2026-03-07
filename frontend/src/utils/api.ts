@@ -92,6 +92,7 @@ export const api = {
   chat: (body: {
     message: string;
     city: string;
+    model?: string;
     conversationHistory?: { role: string; content: string }[];
   }) =>
     request<any>('/chat', {

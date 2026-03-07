@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, User, IndianRupee, CloudSun, Package, Sparkles } from 'lucide-react'
+import { Send, User, IndianRupee, CloudSun, Package, Sparkles, Globe, ChevronDown } from 'lucide-react'
 import { api } from '../utils/api'
 import DemoModeBadge from '../components/DemoModeBadge'
 import { useToast } from '../components/Toast'
+import { useLanguage, LANGUAGES } from '../utils/LanguageContext'
 import VoiceInput from '../components/VoiceInput'
 import VoiceOutput from '../components/VoiceOutput'
 
@@ -14,6 +15,14 @@ interface Message {
   timestamp: Date
   voiceInitiated?: boolean
 }
+
+const AI_MODELS = [
+  { id: 'auto', label: 'Auto (Best Available)', desc: 'Gemini → Claude → Nova' },
+  { id: 'bedrock-claude', label: 'AWS Bedrock Claude 3', desc: 'Haiku — Fast & accurate' },
+  { id: 'bedrock-nova', label: 'Amazon Nova Pro', desc: 'AWS native model' },
+  { id: 'bedrock-nova-sonic', label: 'Amazon Nova Sonic', desc: 'Speech-optimized' },
+  { id: 'gemini', label: 'Google Gemini 1.5', desc: 'Flash — multilingual' },
+]
 
 const QUICK_CHIPS = [
   { text: 'Rice ka daam?', emoji: '📊' },
@@ -88,6 +97,10 @@ function InventoryCard() {
 
 export default function ChatPage() {
   const { toast } = useToast()
+  const { lang, setLang, t } = useLanguage()
+  const [selectedModel, setSelectedModel] = useState('auto')
+  const [showModelPicker, setShowModelPicker] = useState(false)
+  const [showLangPicker, setShowLangPicker] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -139,6 +152,7 @@ export default function ChatPage() {
       const result = await api.chat({
         message: msgText,
         city,
+        model: selectedModel,
         conversationHistory: history,
       })
 
@@ -202,9 +216,55 @@ export default function ChatPage() {
             </h1>
             <p className="text-[10px] text-gray-500">AI Business Advisor — speaks 8 Indian languages</p>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-gray-500" />
-            <span className="text-[10px] text-gray-500">Bedrock AI</span>
+          <div className="flex items-center gap-2">
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowLangPicker(!showLangPicker); setShowModelPicker(false) }}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/[0.04] border border-[#333] hover:border-orange-500/30 transition-all text-[10px] text-gray-400"
+              >
+                <Globe className="w-3 h-3" />
+                {LANGUAGES.find(l => l.code === lang)?.native.slice(0, 3) || 'EN'}
+                <ChevronDown className="w-2.5 h-2.5" />
+              </button>
+              {showLangPicker && (
+                <div className="absolute right-0 top-full mt-1 bg-[#1a1a1d] border border-[#2a2a2d] rounded-xl shadow-xl z-50 min-w-[160px] py-1 max-h-[200px] overflow-y-auto">
+                  {LANGUAGES.map(l => (
+                    <button key={l.code} onClick={() => { setLang(l.code); setShowLangPicker(false) }}
+                      className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 hover:bg-white/[0.06] transition-colors ${
+                        lang === l.code ? 'text-orange-400 bg-orange-500/10' : 'text-gray-400'
+                      }`}>
+                      <span>{l.native}</span>
+                      <span className="text-gray-600">({l.label})</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Model Selector */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowModelPicker(!showModelPicker); setShowLangPicker(false) }}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/[0.04] border border-[#333] hover:border-orange-500/30 transition-all text-[10px] text-gray-400"
+              >
+                <Sparkles className="w-3 h-3" />
+                {AI_MODELS.find(m => m.id === selectedModel)?.label.split(' ')[0] || 'Auto'}
+                <ChevronDown className="w-2.5 h-2.5" />
+              </button>
+              {showModelPicker && (
+                <div className="absolute right-0 top-full mt-1 bg-[#1a1a1d] border border-[#2a2a2d] rounded-xl shadow-xl z-50 min-w-[220px] py-1">
+                  {AI_MODELS.map(model => (
+                    <button key={model.id} onClick={() => { setSelectedModel(model.id); setShowModelPicker(false) }}
+                      className={`w-full text-left px-3 py-2 hover:bg-white/[0.06] transition-colors ${
+                        selectedModel === model.id ? 'bg-orange-500/10' : ''
+                      }`}>
+                      <p className={`text-xs font-medium ${selectedModel === model.id ? 'text-orange-400' : 'text-gray-300'}`}>{model.label}</p>
+                      <p className="text-[9px] text-gray-500">{model.desc}</p>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
