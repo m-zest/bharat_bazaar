@@ -125,6 +125,59 @@ const translations: Record<LangCode, Record<string, string>> = {
     'cta.getStarted': 'Get Started',
     'cta.exploreLive': 'Explore Live Demo',
 
+    // Landing - Dashboard Preview
+    'dashboard.label': 'LIVE DASHBOARD',
+    'dashboard.title': 'See your store like',
+    'dashboard.titleHighlight': 'never before',
+    'dashboard.desc': 'Real-time revenue, AI pricing suggestions, inventory alerts, and trend forecasts — all on one screen.',
+
+    // Landing - Problem
+    'problem.label': 'THE PROBLEM',
+    'problem.title': 'The people who feed India have zero data intelligence.',
+
+    // Landing - Marketplace
+    'marketplace.label': 'THE MARKETPLACE',
+    'marketplace.title1': 'One Platform. Three Roles.',
+    'marketplace.title2': 'Infinite Possibilities.',
+    'marketplace.desc': "BharatBazaar AI isn't just a tool — it's a complete ecosystem connecting retailers, suppliers, and customers across India.",
+
+    // Landing - Daily Actions
+    'daily.label': 'ZERO EXTRA WORK',
+    'daily.title': 'Your Daily Actions = Your Data',
+    'daily.desc': "No data entry. No spreadsheets. The store owner's daily routine automatically builds the intelligence layer.",
+
+    // Landing - Features
+    'landing.features.label': '23 FEATURES, ALL WORKING',
+    'landing.features.title1': 'Not mockups. Not wireframes.',
+    'landing.features.title2': 'Every feature works.',
+
+    // Landing - WhatsApp
+    'whatsapp.badge': 'WhatsApp-First Platform',
+    'whatsapp.title1': 'No App. No Website.',
+    'whatsapp.title2': 'Just WhatsApp.',
+    'whatsapp.desc': 'Indian store owners live on WhatsApp. So we brought the entire platform to them. Every feature — pricing, inventory, orders, bills — accessible through simple messages.',
+
+    // Landing - Platform Trilogy
+    'platform.label': 'EVERYWHERE YOU ARE',
+    'platform.title1': 'One Platform.',
+    'platform.title2': 'Three Interfaces.',
+    'platform.desc': 'We built a prototype for every surface Indian merchants use — web dashboards, mobile apps, and WhatsApp chatbots.',
+
+    // Landing - Architecture
+    'landing.arch.label': 'BUILT ON AWS',
+    'landing.arch.title': 'Production-grade architecture',
+    'landing.arch.desc': 'Not a hackathon prototype. This is deployable infrastructure with enterprise-grade resilience.',
+
+    // Landing - Impact
+    'landing.impact.label': 'IMPACT',
+    'landing.impact.title1': 'Built for scale.',
+    'landing.impact.title2': 'Designed for Bharat.',
+
+    // Landing - CTA
+    'landing.cta.line1': 'Amazon has data science teams.',
+    'landing.cta.line2': 'Kirana stores have BharatBazaar AI.',
+    'landing.cta.tryLive': 'Try it Live',
+
     // Footer
     'footer.desc': 'AI-powered market intelligence for Indian retail. Built for the AI for Bharat Hackathon 2026.',
     'footer.features': 'Features',
@@ -226,6 +279,40 @@ const translations: Record<LangCode, Record<string, string>> = {
     'cta.emailPlaceholder': 'अपना ईमेल दर्ज करें',
     'cta.getStarted': 'शुरू करें',
     'cta.exploreLive': 'लाइव डेमो देखें',
+
+    'dashboard.label': 'लाइव डैशबोर्ड',
+    'dashboard.title': 'अपनी दुकान को ऐसे देखें',
+    'dashboard.titleHighlight': 'जैसे पहले कभी नहीं',
+    'dashboard.desc': 'रियल-टाइम रेवेन्यू, AI प्राइसिंग सुझाव, इन्वेंटरी अलर्ट, और ट्रेंड फोरकास्ट — सब एक स्क्रीन पर।',
+    'problem.label': 'समस्या',
+    'problem.title': 'भारत को खिलाने वालों के पास जीरो डेटा इंटेलिजेंस है।',
+    'marketplace.label': 'मार्केटप्लेस',
+    'marketplace.title1': 'एक प्लेटफॉर्म। तीन भूमिकाएं।',
+    'marketplace.title2': 'अनंत संभावनाएं।',
+    'marketplace.desc': 'BharatBazaar AI सिर्फ एक टूल नहीं — यह एक पूरा इकोसिस्टम है जो भारत भर के रिटेलर्स, सप्लायर्स और ग्राहकों को जोड़ता है।',
+    'daily.label': 'जीरो अतिरिक्त काम',
+    'daily.title': 'आपकी रोज़ की गतिविधियां = आपका डेटा',
+    'daily.desc': 'कोई डेटा एंट्री नहीं। कोई स्प्रेडशीट नहीं। दुकानदार की दैनिक दिनचर्या स्वचालित रूप से इंटेलिजेंस लेयर बनाती है।',
+    'landing.features.label': '23 फीचर्स, सब काम करते हैं',
+    'landing.features.title1': 'मॉकअप नहीं। वायरफ्रेम नहीं।',
+    'landing.features.title2': 'हर फीचर काम करता है।',
+    'whatsapp.badge': 'WhatsApp-फर्स्ट प्लेटफॉर्म',
+    'whatsapp.title1': 'कोई ऐप नहीं। कोई वेबसाइट नहीं।',
+    'whatsapp.title2': 'बस WhatsApp।',
+    'whatsapp.desc': 'भारतीय दुकानदार WhatsApp पर रहते हैं। इसलिए हमने पूरा प्लेटफॉर्म उनके पास लाया। हर फीचर — प्राइसिंग, इन्वेंटरी, ऑर्डर, बिल — सरल संदेशों से।',
+    'platform.label': 'जहां आप हैं वहां',
+    'platform.title1': 'एक प्लेटफॉर्म।',
+    'platform.title2': 'तीन इंटरफेस।',
+    'platform.desc': 'हमने भारतीय व्यापारियों के हर प्लेटफॉर्म के लिए प्रोटोटाइप बनाया — वेब डैशबोर्ड, मोबाइल ऐप, और WhatsApp चैटबॉट।',
+    'landing.arch.label': 'AWS पर बना',
+    'landing.arch.title': 'प्रोडक्शन-ग्रेड आर्किटेक्चर',
+    'landing.arch.desc': 'हैकाथन प्रोटोटाइप नहीं। यह एंटरप्राइज-ग्रेड रेज़िलिएंस के साथ डिप्लॉयेबल इंफ्रास्ट्रक्चर है।',
+    'landing.impact.label': 'प्रभाव',
+    'landing.impact.title1': 'स्केल के लिए बना।',
+    'landing.impact.title2': 'भारत के लिए डिज़ाइन।',
+    'landing.cta.line1': 'Amazon के पास डेटा साइंस टीम हैं।',
+    'landing.cta.line2': 'किराना स्टोर्स के पास BharatBazaar AI है।',
+    'landing.cta.tryLive': 'लाइव देखें',
 
     'footer.desc': 'भारतीय रिटेल के लिए AI-संचालित मार्केट इंटेलिजेंस। AI for Bharat Hackathon 2026 के लिए बनाया गया।',
     'footer.features': 'फीचर्स',
