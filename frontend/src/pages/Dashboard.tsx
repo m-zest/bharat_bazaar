@@ -7,10 +7,11 @@ import {
   ArrowRight, Sparkles, Package, BarChart3, Activity, CloudSun, Sun, Cloud,
   CloudRain, Thermometer, Bell, MessageCircle, Eye, GitCompare, ClipboardList,
   Zap, Receipt, Truck, ShieldCheck, ScanLine, FileText, Camera, Database,
-  PlayCircle, CheckCircle2, ChevronRight,
+  PlayCircle, CheckCircle2, ChevronRight, Store,
 } from 'lucide-react'
 import { api } from '../utils/api'
 import { useSales } from '../utils/SalesContext'
+import { useTheme } from '../utils/ThemeContext'
 import OnboardingModal, { isOnboarded, getOnboardingData } from '../components/OnboardingModal'
 import { CountUp } from '../components/AnimatedComponents'
 
@@ -40,6 +41,9 @@ export default function Dashboard() {
   const [weather, setWeather] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(() => !isOnboarded())
+  const [dashRole, setDashRole] = useState<'retailer' | 'supplier' | 'customer'>('retailer')
+  const { theme } = useTheme()
+  const dk = theme === 'dark'
   const [selectedCity, setSelectedCity] = useState(() => {
     const saved = getOnboardingData()
     return saved?.city || 'Lucknow'
@@ -127,16 +131,48 @@ export default function Dashboard() {
         }} />
       )}
 
+      {/* ═══ ROLE SWITCHER — For Judges ═══ */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`flex items-center justify-between rounded-xl p-3 mb-4 border ${dk ? 'bg-gradient-to-r from-[#1E1B4B] to-[#1a1a1d] border-[#2a2a2d]' : 'bg-gradient-to-r from-indigo-50 to-white border-gray-200'}`}
+      >
+        <div className="flex items-center gap-2">
+          <Store className={`w-4 h-4 ${dk ? 'text-orange-400' : 'text-orange-500'}`} />
+          <span className={`text-xs font-semibold ${dk ? 'text-gray-300' : 'text-gray-700'}`}>Switch Dashboard View</span>
+          <span className={`text-[9px] px-2 py-0.5 rounded-full ${dk ? 'bg-white/[0.06] text-gray-500' : 'bg-gray-100 text-gray-400'}`}>Prototype Demo</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {([
+            { key: 'retailer' as const, label: '🏪 Retailer', desc: 'Kirana Store' },
+            { key: 'supplier' as const, label: '🚚 Supplier', desc: 'Wholesale' },
+            { key: 'customer' as const, label: '🛒 Customer', desc: 'End User' },
+          ]).map(tab => (
+            <button key={tab.key} onClick={() => setDashRole(tab.key)}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+                dashRole === tab.key
+                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
+                  : dk ? 'bg-white/[0.06] text-gray-400 hover:bg-white/[0.1] hover:text-gray-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ═══ RETAILER DASHBOARD ═══ */}
+      {dashRole === 'retailer' && <>
+
       {/* ═══ ROW 1: Header + City Selector ═══ */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-          <h1 className="font-display text-xl lg:text-2xl font-bold text-gray-100">
+          <h1 className={`font-display text-xl lg:text-2xl font-bold ${dk ? 'text-gray-100' : 'text-gray-900'}`}>
             {greeting.text}, {onboardingData?.ownerName || data.business.owner} <span>{greeting.emoji}</span>
           </h1>
-          <p className="text-gray-500 flex items-center gap-2 text-xs mt-0.5">
+          <p className={`flex items-center gap-2 text-xs mt-0.5 ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
             <MapPin className="w-3 h-3 text-saffron-500" />
             {onboardingData?.storeName || data.business.name} — {data.business.city}
-            <span className="text-gray-600">|</span>
+            <span className={dk ? 'text-gray-600' : 'text-gray-300'}>|</span>
             <span>{currentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
           </p>
         </motion.div>
@@ -148,7 +184,7 @@ export default function Dashboard() {
               className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all ${
                 selectedCity === c
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
-                  : 'bg-[#1a1a1d] border border-[#2a2a2d] text-gray-400 hover:border-orange-500/30'
+                  : dk ? 'bg-[#1a1a1d] border border-[#2a2a2d] text-gray-400 hover:border-orange-500/30' : 'bg-white border border-gray-200 text-gray-500 hover:border-orange-500/30'
               }`}
             >
               {c}
@@ -157,7 +193,7 @@ export default function Dashboard() {
           <select
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
-            className="px-2 py-1 rounded-full text-[11px] border border-[#2a2a2d] text-gray-400 bg-[#1a1a1d]"
+            className={`px-2 py-1 rounded-full text-[11px] border ${dk ? 'border-[#2a2a2d] text-gray-400 bg-[#1a1a1d]' : 'border-gray-200 text-gray-500 bg-white'}`}
           >
             {data.supportedCities.map((c: string) => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -200,12 +236,12 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-[#1a1a1d] rounded-xl p-3.5 border border-[#2a2a2d] hover:shadow-md transition-all"
+            className={`rounded-xl p-3.5 border hover:shadow-md transition-all ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] text-gray-500 font-medium">{stat.label}</p>
-                <p className="text-xl font-display font-bold text-gray-100 mt-0.5">
+                <p className={`text-[10px] font-medium ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{stat.label}</p>
+                <p className="text-xl font-display font-bold ${dk ? 'text-gray-100' : 'text-gray-900'} mt-0.5">
                   <CountUp end={typeof stat.value === 'number' ? stat.value : parseInt(stat.value)} duration={1.2} />
                   {stat.suffix || ''}
                 </p>
@@ -231,12 +267,12 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-[#1a1a1d] rounded-xl p-3.5 border border-[#2a2a2d] hover:shadow-md transition-all"
+            className={`rounded-xl p-3.5 border hover:shadow-md transition-all ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] text-gray-500 font-medium">{stat.label}</p>
-                <p className="text-xl font-display font-bold text-gray-100 mt-0.5">{stat.value}</p>
+                <p className={`text-[10px] font-medium ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{stat.label}</p>
+                <p className="text-xl font-display font-bold ${dk ? 'text-gray-100' : 'text-gray-900'} mt-0.5">{stat.value}</p>
                 <p className="text-[9px] text-gray-600">{stat.sub}</p>
               </div>
               <div className={`w-9 h-9 rounded-lg ${stat.bg} flex items-center justify-center`}>
@@ -251,7 +287,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="bg-[#1a1a1d] rounded-xl p-3.5 border border-[#2a2a2d]"
+          className={`rounded-xl p-3.5 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}
         >
           <h4 className="text-[10px] text-gray-500 font-medium mb-2 flex items-center gap-1">
             <BarChart3 className="w-3 h-3 text-saffron-500" />
@@ -281,10 +317,10 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d] mb-4"
+            className={`rounded-xl p-4 border mb-4 ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+              <h3 className={`text-xs font-semibold flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
                 <div className="w-1.5 h-1.5 rounded-full bg-saffron-500" />
                 My Store Catalog — {ob.category}
                 <span className="text-[9px] text-gray-500 ml-1">({ob.products.length} products selected during setup)</span>
@@ -318,7 +354,7 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-3 bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]"
         >
-          <h3 className="text-xs font-semibold text-gray-300 mb-3 flex items-center gap-1.5">
+          <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
             <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             Live Data Flow — How Your Store Data Builds
           </h3>
@@ -346,17 +382,17 @@ export default function Dashboard() {
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.06 }}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.04] transition-colors group"
+                  className={`flex items-center gap-3 p-2 rounded-lg transition-colors group ${dk ? 'hover:bg-white/[0.04]' : 'hover:bg-gray-50'}`}
                 >
                   <div className={`w-7 h-7 rounded-lg ${event.bg} flex items-center justify-center flex-shrink-0`}>
                     <event.icon className={`w-3.5 h-3.5 ${event.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-semibold text-gray-200">{event.action}</span>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-500 font-medium">{event.tag}</span>
+                      <span className={`text-[11px] font-semibold ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{event.action}</span>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${dk ? 'bg-white/[0.04] text-gray-500' : 'bg-gray-100 text-gray-500'}`}>{event.tag}</span>
                     </div>
-                    <p className="text-[10px] text-gray-500 truncate">{event.detail}</p>
+                    <p className="text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'} truncate">{event.detail}</p>
                   </div>
                   <span className="text-[9px] text-gray-600 flex-shrink-0">{event.time}</span>
                   <ChevronRight className="w-3 h-3 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -364,7 +400,7 @@ export default function Dashboard() {
               </Link>
             ))}
           </div>
-          <div className="mt-3 pt-2 border-t border-[#2a2a2d] flex items-center gap-2">
+          <div className="mt-3 pt-2 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'} flex items-center gap-2">
             <Database className="w-3 h-3 text-orange-500" />
             <p className="text-[9px] text-gray-500">
               <span className="text-orange-400 font-semibold">Zero manual data entry.</span> Every action above automatically feeds into analytics, inventory & AI insights via DynamoDB + Bedrock.
@@ -422,8 +458,8 @@ export default function Dashboard() {
       {/* ═══ ROW 3: Charts + Weather + Alerts (3-col dense grid) ═══ */}
       <div className="grid lg:grid-cols-3 gap-3 mb-4">
         {/* Sentiment Trend */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-1.5">
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
             <div className="w-1.5 h-1.5 rounded-full bg-saffron-500" />
             Sentiment Trend
           </h3>
@@ -444,8 +480,8 @@ export default function Dashboard() {
         </div>
 
         {/* Demand Forecast */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-1.5">
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
             <div className="w-1.5 h-1.5 rounded-full bg-bazaar-500" />
             Demand Forecast
           </h3>
@@ -505,8 +541,8 @@ export default function Dashboard() {
       {/* ═══ ROW 4: Category Pie + Festivals + Alerts (3-col) ═══ */}
       <div className="grid lg:grid-cols-3 gap-3 mb-4">
         {/* Category Distribution */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2">Category Distribution</h3>
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>Category Distribution</h3>
           <ResponsiveContainer width="100%" height={150}>
             <PieChart>
               <Pie
@@ -531,8 +567,8 @@ export default function Dashboard() {
         </div>
 
         {/* Upcoming Festivals */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-1.5">
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
             <Calendar className="w-3.5 h-3.5 text-saffron-500" />
             Upcoming Festivals — {selectedCity}
           </h3>
@@ -543,11 +579,11 @@ export default function Dashboard() {
                 initial={{ opacity: 0, x: 8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center justify-between p-2 bg-white/[0.03] rounded-lg hover:bg-white/[0.06] transition-colors"
+                className="flex items-center justify-between p-2 ${dk ? 'bg-white/[0.03] hover:bg-white/[0.06]' : 'bg-gray-50 hover:bg-gray-100'} rounded-lg transition-colors"
               >
                 <div>
-                  <p className="text-xs font-medium text-gray-200">{f.name}</p>
-                  <p className="text-[10px] text-gray-500">{f.daysAway} days away</p>
+                  <p className={`text-xs font-medium ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{f.name}</p>
+                  <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{f.daysAway} days away</p>
                 </div>
                 <span className={`text-[9px] px-2 py-0.5 rounded-full font-semibold ${
                   f.impact === 'very_high' ? 'bg-red-500/10 text-red-400' :
@@ -564,8 +600,8 @@ export default function Dashboard() {
         </div>
 
         {/* Smart Alerts — compact */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-1.5">
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
             <Bell className="w-3.5 h-3.5 text-saffron-500" />
             Smart Alerts
           </h3>
@@ -592,8 +628,8 @@ export default function Dashboard() {
                       <AlertIcon className="w-3 h-3" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] font-medium text-gray-200 truncate">{alert.title}</p>
-                      <p className="text-[10px] text-gray-500 truncate">{alert.message}</p>
+                      <p className={`text-[11px] font-medium truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{alert.title}</p>
+                      <p className="text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'} truncate">{alert.message}</p>
                     </div>
                   </motion.div>
                 </Link>
@@ -605,7 +641,7 @@ export default function Dashboard() {
 
       {/* ═══ ROW 5: All 12 AI Features — Compact Grid ═══ */}
       <div className="mb-4">
-        <h3 className="text-xs font-semibold text-gray-300 mb-2.5 flex items-center gap-1.5">
+        <h3 className={`text-xs font-semibold mb-2.5 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
           <Sparkles className="w-3.5 h-3.5 text-saffron-500" />
           All AI Features — 12 Modules
         </h3>
@@ -618,14 +654,14 @@ export default function Dashboard() {
                 transition={{ delay: i * 0.03 }}
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                className="bg-[#1a1a1d] rounded-xl p-3 border border-[#2a2a2d] cursor-pointer hover:shadow-md hover:border-orange-500/20 transition-all group"
+                className={`rounded-xl p-3 border cursor-pointer hover:shadow-md hover:border-orange-500/20 transition-all group ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}
               >
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${f.bg}`}>
                   <f.icon className={`w-4 h-4 ${f.color}`} />
                 </div>
-                <h4 className="text-[11px] font-semibold text-gray-200 leading-tight">{f.label}</h4>
-                <p className="text-[9px] font-hindi text-gray-500">{f.labelHi}</p>
-                <p className="text-[9px] text-gray-500 mt-0.5">{f.desc}</p>
+                <h4 className={`text-[11px] font-semibold leading-tight ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{f.label}</h4>
+                <p className={`text-[9px] font-hindi ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{f.labelHi}</p>
+                <p className={`text-[9px] mt-0.5 ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{f.desc}</p>
               </motion.div>
             </Link>
           ))}
@@ -659,8 +695,8 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-[#1a1a1d] rounded-xl p-4 border border-[#2a2a2d]">
-          <h3 className="text-xs font-semibold text-gray-300 mb-2">Recent Activity</h3>
+        <div className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xs font-semibold mb-2 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>Recent Activity</h3>
           <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
             {data.recentActivity.map((a: any, i: number) => (
               <motion.div
@@ -668,7 +704,7 @@ export default function Dashboard() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.03 }}
-                className="flex items-center gap-3 p-2 bg-white/[0.03] rounded-lg hover:bg-white/[0.06] transition-colors"
+                className="flex items-center gap-3 p-2 ${dk ? 'bg-white/[0.03] hover:bg-white/[0.06]' : 'bg-gray-50 hover:bg-gray-100'} rounded-lg transition-colors"
               >
                 <div className={`w-6 h-6 rounded flex items-center justify-center flex-shrink-0 ${
                   a.type === 'pricing' ? 'bg-saffron-500/10 text-saffron-400' :
@@ -681,7 +717,7 @@ export default function Dashboard() {
                    a.type === 'sentiment' ? <MessageSquareText className="w-3 h-3" /> :
                    <TrendingUp className="w-3 h-3" />}
                 </div>
-                <p className="text-[11px] text-gray-300 flex-1 truncate">{a.description}</p>
+                <p className={`text-[11px] flex-1 truncate ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{a.description}</p>
                 <span className="text-[10px] text-gray-500 flex-shrink-0">{a.time}</span>
               </motion.div>
             ))}
@@ -690,14 +726,326 @@ export default function Dashboard() {
       </div>
 
       {/* ═══ FOOTER ═══ */}
-      <div className="text-center py-4 border-t border-[#2a2a2d]">
-        <p className="text-[10px] text-gray-500">
+      <div className={`text-center py-4 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
+        <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
           Built with ❤️ for 15M+ Indian Kirana Stores | Team ParityAI — AI4Bharat Hackathon 2026
         </p>
-        <p className="text-[9px] text-gray-600 mt-0.5">
+        <p className={`text-[9px] mt-0.5 ${dk ? 'text-gray-600' : 'text-gray-400'}`}>
           AWS Bedrock (Claude 3 Haiku + Nova Lite) · Amazon DynamoDB · App Runner · Google Gemini Fallback · Twilio WhatsApp · React 18 · TypeScript
         </p>
       </div>
+
+      </>}
+
+      {/* ═══ SUPPLIER DASHBOARD ═══ */}
+      {dashRole === 'supplier' && (
+        <div className="space-y-4">
+          {/* Header */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className={`font-display text-xl lg:text-2xl font-bold ${dk ? 'text-gray-100' : 'text-gray-900'}`}>
+              {greeting.text}, Priya <span>{greeting.emoji}</span>
+            </h1>
+            <p className={`flex items-center gap-2 text-xs mt-0.5 ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
+              <MapPin className="w-3 h-3 text-saffron-500" />
+              Priya Enterprises — Mumbai, Maharashtra
+              <span className={`ml-1 text-[9px] px-2 py-0.5 rounded-full font-medium ${dk ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓ Verified Supplier</span>
+            </p>
+          </motion.div>
+
+          {/* KPIs */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { label: 'Total Orders', value: '284', change: '+24 today', up: true, icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+              { label: 'Monthly Revenue', value: '₹8.4L', change: '+22% vs last month', up: true, icon: IndianRupee, color: 'text-green-400', bg: 'bg-green-500/10' },
+              { label: 'Active Retailers', value: '67', change: '+5 this week', up: true, icon: Store, color: 'text-saffron-400', bg: 'bg-saffron-500/10' },
+              { label: 'Products Listed', value: '342', change: '12 low stock', up: false, icon: ClipboardList, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+            ].map((kpi, i) => (
+              <motion.div key={kpi.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
+                className={`rounded-xl p-3.5 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={`text-[10px] font-medium ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{kpi.label}</p>
+                    <p className={`text-xl font-display font-bold ${dk ? 'text-gray-100' : 'text-gray-900'} mt-0.5`}>
+                      <CountUp end={typeof kpi.value === 'string' && kpi.value.includes('₹') ? 8.4 : parseInt(kpi.value)} duration={1.2} />{kpi.value.includes('L') ? 'L' : kpi.value.includes('₹') ? '' : ''}
+                    </p>
+                    <p className={`text-[9px] font-medium mt-0.5 ${kpi.up ? 'text-green-500' : 'text-amber-500'}`}>{kpi.change}</p>
+                  </div>
+                  <div className={`w-9 h-9 rounded-lg ${kpi.bg} flex items-center justify-center`}>
+                    <kpi.icon className={`w-4 h-4 ${kpi.color}`} />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Orders + Top Retailers */}
+          <div className="grid lg:grid-cols-3 gap-3">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className={`lg:col-span-2 rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Recent Orders
+              </h3>
+              <div className="space-y-0">
+                {[
+                  { store: 'Rajesh General Store', city: 'Lucknow', items: 12, total: '₹18,450', status: 'Delivered', sc: 'text-green-500 bg-green-500/10' },
+                  { store: 'Sharma Kirana', city: 'Delhi', items: 8, total: '₹12,200', status: 'In Transit', sc: 'text-blue-500 bg-blue-500/10' },
+                  { store: 'Gupta Traders', city: 'Pune', items: 22, total: '₹35,800', status: 'Processing', sc: 'text-amber-500 bg-amber-500/10' },
+                  { store: 'Patel Corner Shop', city: 'Ahmedabad', items: 6, total: '₹7,600', status: 'Delivered', sc: 'text-green-500 bg-green-500/10' },
+                  { store: 'Singh Provisions', city: 'Jaipur', items: 15, total: '₹24,100', status: 'In Transit', sc: 'text-blue-500 bg-blue-500/10' },
+                  { store: 'Verma General Store', city: 'Bhopal', items: 9, total: '₹14,300', status: 'Delivered', sc: 'text-green-500 bg-green-500/10' },
+                ].map(o => (
+                  <div key={o.store} className={`flex items-center justify-between py-2.5 ${dk ? 'border-b border-white/5' : 'border-b border-gray-100'} last:border-0`}>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-xs font-medium ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{o.store}</p>
+                      <p className={`text-[10px] ${dk ? 'text-gray-600' : 'text-gray-400'}`}>{o.city} · {o.items} items</p>
+                    </div>
+                    <p className={`text-xs font-semibold mx-4 font-mono ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{o.total}</p>
+                    <span className={`text-[10px] px-2 py-1 rounded-lg font-medium ${o.sc}`}>{o.status}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div className="w-1.5 h-1.5 rounded-full bg-saffron-500" /> Top Retailers
+              </h3>
+              {[
+                { name: 'Rajesh General Store', orders: 48, revenue: '₹2.1L', city: 'Lucknow' },
+                { name: 'Gupta Traders', orders: 42, revenue: '₹1.8L', city: 'Pune' },
+                { name: 'Sharma Kirana', orders: 36, revenue: '₹1.5L', city: 'Delhi' },
+                { name: 'Singh Provisions', orders: 31, revenue: '₹1.3L', city: 'Jaipur' },
+                { name: 'Patel Corner Shop', orders: 25, revenue: '₹1.0L', city: 'Ahmedabad' },
+                { name: 'Verma General Store', orders: 20, revenue: '₹0.8L', city: 'Bhopal' },
+              ].map((r, i) => (
+                <div key={r.name} className={`flex items-center gap-3 py-2 ${dk ? 'border-b border-white/5' : 'border-b border-gray-100'} last:border-0`}>
+                  <span className={`text-[10px] font-bold w-5 ${dk ? 'text-gray-600' : 'text-gray-300'}`}>#{i + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-xs font-medium ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{r.name}</p>
+                    <p className={`text-[10px] ${dk ? 'text-gray-600' : 'text-gray-400'}`}>{r.city} · {r.orders} orders</p>
+                  </div>
+                  <p className={`text-xs font-semibold font-mono ${dk ? 'text-gray-400' : 'text-gray-600'}`}>{r.revenue}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Product Performance + AI Forecast */}
+          <div className="grid lg:grid-cols-2 gap-3">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div className="w-1.5 h-1.5 rounded-full bg-violet-400" /> Product Performance
+              </h3>
+              {[
+                { name: 'Basmati Rice 5kg', stock: 1240, sold: 856, pct: 69 },
+                { name: 'Toor Dal 1kg', stock: 890, sold: 678, pct: 76 },
+                { name: 'Sunflower Oil 1L', stock: 560, sold: 420, pct: 75 },
+                { name: 'Sugar 5kg', stock: 720, sold: 310, pct: 43 },
+                { name: 'Surf Excel 1kg', stock: 450, sold: 380, pct: 84 },
+              ].map(p => (
+                <div key={p.name} className="mb-3">
+                  <div className="flex justify-between text-[11px] mb-1">
+                    <span className={`font-medium ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{p.name}</span>
+                    <span className={`font-mono ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{p.sold}/{p.stock} sold</span>
+                  </div>
+                  <div className={`h-1.5 rounded-full overflow-hidden ${dk ? 'bg-white/5' : 'bg-gray-100'}`}>
+                    <div className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full" style={{ width: `${p.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-blue-500/5 border-blue-500/10' : 'bg-blue-50 border-blue-100'}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className={`w-4 h-4 ${dk ? 'text-blue-400' : 'text-blue-600'}`} />
+                <h3 className={`text-xs font-semibold ${dk ? 'text-blue-400' : 'text-blue-700'}`}>AI Demand Forecast</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { emoji: '📈', text: 'Basmati Rice demand expected +35% next week due to festival season — increase stock by 500 units' },
+                  { emoji: '🚨', text: 'Sugar stock critically low — 15 retailers awaiting restock. Expected stockout in 2 days' },
+                  { emoji: '⭐', text: '3 new retail stores in Pune have requested wholesale quotes — respond within 24hrs for best conversion' },
+                  { emoji: '🌧️', text: 'Weather forecast: Heavy rains in Maharashtra next week — Dal & cooking oil demand will spike 40%' },
+                  { emoji: '💡', text: 'Consider bundling Surf Excel + Vim at 5% discount — competitor analysis shows high demand for combo' },
+                ].map((insight, i) => (
+                  <div key={i} className={`flex items-start gap-2.5 text-xs ${dk ? 'text-blue-300/80' : 'text-blue-700'}`}>
+                    <span className="mt-0.5 flex-shrink-0">{insight.emoji}</span>
+                    <span className="leading-relaxed">{insight.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Footer */}
+          <div className={`text-center py-4 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
+            <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
+              Supplier Dashboard Prototype | Team ParityAI — AI4Bharat Hackathon 2026
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ CUSTOMER DASHBOARD ═══ */}
+      {dashRole === 'customer' && (
+        <div className="space-y-4">
+          {/* Header */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className={`font-display text-xl lg:text-2xl font-bold ${dk ? 'text-gray-100' : 'text-gray-900'}`}>
+              {greeting.text}, Meera <span>{greeting.emoji}</span>
+            </h1>
+            <p className={`flex items-center gap-2 text-xs mt-0.5 ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
+              <MapPin className="w-3 h-3 text-saffron-500" />
+              Bengaluru, Karnataka
+              <span className={`ml-1 text-[9px] px-2 py-0.5 rounded-full font-medium ${dk ? 'bg-violet-500/10 text-violet-400' : 'bg-violet-50 text-violet-600'}`}>₹2,340 saved this month</span>
+            </p>
+          </motion.div>
+
+          {/* KPIs */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { label: 'Money Saved', value: '₹2,340', change: 'this month', up: true, icon: IndianRupee, color: 'text-green-400', bg: 'bg-green-500/10' },
+              { label: 'Total Orders', value: '23', change: '3 in transit', up: true, icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+              { label: 'Stores Nearby', value: '14', change: '2 new this week', up: true, icon: MapPin, color: 'text-saffron-400', bg: 'bg-saffron-500/10' },
+              { label: 'Active Deals', value: '8', change: '3 expiring soon', up: false, icon: Zap, color: 'text-violet-400', bg: 'bg-violet-500/10' },
+            ].map((kpi, i) => (
+              <motion.div key={kpi.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
+                className={`rounded-xl p-3.5 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={`text-[10px] font-medium ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{kpi.label}</p>
+                    <p className={`text-xl font-display font-bold ${dk ? 'text-gray-100' : 'text-gray-900'} mt-0.5`}>{kpi.value}</p>
+                    <p className={`text-[9px] font-medium mt-0.5 ${kpi.up ? 'text-green-500' : 'text-amber-500'}`}>{kpi.change}</p>
+                  </div>
+                  <div className={`w-9 h-9 rounded-lg ${kpi.bg} flex items-center justify-center`}>
+                    <kpi.icon className={`w-4 h-4 ${kpi.color}`} />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Price Comparison + Nearby Stores */}
+          <div className="grid lg:grid-cols-3 gap-3">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className={`lg:col-span-2 rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400" /> Price Comparison — Best deals near you
+              </h3>
+              {[
+                { item: 'Basmati Rice 5kg', stores: [{ name: 'Rajesh Store', price: '₹335', best: true }, { name: 'Gupta Traders', price: '₹355', best: false }, { name: 'Singh Mart', price: '₹360', best: false }] },
+                { item: 'Toor Dal 1kg', stores: [{ name: 'Sharma Kirana', price: '₹142', best: true }, { name: 'Rajesh Store', price: '₹148', best: false }, { name: 'Patel Shop', price: '₹155', best: false }] },
+                { item: 'Amul Butter 500g', stores: [{ name: 'Singh Mart', price: '₹195', best: true }, { name: 'Sharma Kirana', price: '₹198', best: false }, { name: 'Gupta Traders', price: '₹205', best: false }] },
+                { item: 'Surf Excel 1kg', stores: [{ name: 'Patel Shop', price: '₹198', best: true }, { name: 'Rajesh Store', price: '₹210', best: false }, { name: 'Singh Mart', price: '₹215', best: false }] },
+              ].map(comp => (
+                <div key={comp.item} className={`py-3 ${dk ? 'border-b border-white/5' : 'border-b border-gray-100'} last:border-0`}>
+                  <p className={`text-xs font-medium mb-2 ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{comp.item}</p>
+                  <div className="flex gap-2">
+                    {comp.stores.map(s => (
+                      <div key={s.name} className={`flex-1 rounded-xl px-3 py-2 border text-center ${
+                        s.best
+                          ? dk ? 'border-green-500/20 bg-green-500/5' : 'border-green-200 bg-green-50'
+                          : dk ? 'border-white/5 bg-white/[0.02]' : 'border-gray-100 bg-gray-50'
+                      }`}>
+                        <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{s.name}</p>
+                        <p className={`text-sm font-bold font-mono ${s.best ? 'text-green-500' : dk ? 'text-gray-300' : 'text-gray-600'}`}>{s.price}</p>
+                        {s.best && <p className="text-[9px] text-green-500 font-semibold mt-0.5">BEST PRICE</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <MapPin className="w-3.5 h-3.5 text-saffron-500" /> Nearby Stores
+              </h3>
+              {[
+                { name: 'Rajesh General Store', dist: '0.3 km', rating: '4.8', deals: 3 },
+                { name: 'Sharma Kirana', dist: '0.7 km', rating: '4.6', deals: 2 },
+                { name: 'Singh Mart', dist: '1.1 km', rating: '4.5', deals: 5 },
+                { name: 'Gupta Traders', dist: '1.4 km', rating: '4.7', deals: 1 },
+                { name: 'Patel Corner Shop', dist: '1.8 km', rating: '4.3', deals: 4 },
+                { name: 'Verma Store', dist: '2.2 km', rating: '4.4', deals: 2 },
+              ].map(store => (
+                <div key={store.name} className={`flex items-center gap-3 py-2 ${dk ? 'border-b border-white/5' : 'border-b border-gray-100'} last:border-0`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${dk ? 'bg-white/5' : 'bg-gray-100'}`}>
+                    <Store className={`w-3.5 h-3.5 ${dk ? 'text-gray-500' : 'text-gray-400'}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-xs font-medium ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{store.name}</p>
+                    <p className={`text-[10px] ${dk ? 'text-gray-600' : 'text-gray-400'}`}>{store.dist} · ⭐ {store.rating}</p>
+                  </div>
+                  <span className="text-[10px] px-2 py-1 rounded-lg bg-orange-500/10 text-orange-400 font-medium">{store.deals} deals</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Recent Orders + Smart Suggestions */}
+          <div className="grid lg:grid-cols-2 gap-3">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xs font-semibold mb-3 flex items-center gap-1.5 ${dk ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Recent Orders
+              </h3>
+              {[
+                { store: 'Rajesh Store', date: '6 Mar', items: 5, total: '₹1,240', status: 'Delivered' },
+                { store: 'Sharma Kirana', date: '4 Mar', items: 3, total: '₹680', status: 'Delivered' },
+                { store: 'Singh Mart', date: '3 Mar', items: 8, total: '₹2,150', status: 'Delivered' },
+                { store: 'Gupta Traders', date: '1 Mar', items: 4, total: '₹920', status: 'Delivered' },
+                { store: 'Patel Shop', date: '28 Feb', items: 6, total: '₹1,580', status: 'Delivered' },
+              ].map(o => (
+                <div key={o.store + o.date} className={`flex items-center justify-between py-2 ${dk ? 'border-b border-white/5' : 'border-b border-gray-100'} last:border-0`}>
+                  <div>
+                    <p className={`text-xs font-medium ${dk ? 'text-gray-300' : 'text-gray-700'}`}>{o.store}</p>
+                    <p className={`text-[10px] ${dk ? 'text-gray-600' : 'text-gray-400'}`}>{o.date} · {o.items} items</p>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-xs font-semibold font-mono ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{o.total}</p>
+                    <p className="text-[10px] text-green-500 font-medium">{o.status}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl p-4 border ${dk ? 'bg-violet-500/5 border-violet-500/10' : 'bg-violet-50 border-violet-100'}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className={`w-4 h-4 ${dk ? 'text-violet-400' : 'text-violet-600'}`} />
+                <h3 className={`text-xs font-semibold ${dk ? 'text-violet-400' : 'text-violet-700'}`}>Smart Suggestions</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { emoji: '💰', text: 'Save ₹25 on Toor Dal — Sharma Kirana has the best price today (₹142 vs avg ₹155)' },
+                  { emoji: '🛒', text: 'Your usual Rice order is due — you buy Basmati 5kg every 12 days. Rajesh Store has stock at ₹335' },
+                  { emoji: '🎉', text: 'Holi deals starting: 5 stores near you are offering 10-15% off on festive essentials' },
+                  { emoji: '📦', text: 'Singh Mart just added 12 new products including organic options you might like' },
+                  { emoji: '⏰', text: 'Price alert: Amul Butter dropped ₹8 at Singh Mart — lowest in 30 days' },
+                ].map((s, i) => (
+                  <div key={i} className={`flex items-start gap-2.5 text-xs ${dk ? 'text-violet-300/80' : 'text-violet-700'}`}>
+                    <span className="mt-0.5 flex-shrink-0">{s.emoji}</span>
+                    <span className="leading-relaxed">{s.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Footer */}
+          <div className={`text-center py-4 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
+            <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
+              Customer Dashboard Prototype | Team ParityAI — AI4Bharat Hackathon 2026
+            </p>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
