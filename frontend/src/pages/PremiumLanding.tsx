@@ -192,6 +192,7 @@ export default function PremiumLanding() {
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('up')
   const [langOpen, setLangOpen] = useState(false)
   const [visibleMessages, setVisibleMessages] = useState(0)
+  const [dashTab, setDashTab] = useState<'retailer' | 'supplier' | 'customer'>('retailer')
   const lastScrollY = useRef(0)
   const langRef = useRef<HTMLDivElement>(null)
 
@@ -502,10 +503,28 @@ export default function PremiumLanding() {
                   <div className="flex-1 flex items-center justify-center gap-2">
                     <div className={`flex items-center gap-2 ${dk ? 'bg-white/5' : 'bg-white/60'} rounded-lg px-3 py-1 max-w-sm w-full`}>
                       <Shield className={`w-3 h-3 ${dk ? 'text-green-400' : 'text-green-600'}`} />
-                      <span className={`text-[10px] ${dk ? 'text-white/50' : 'text-black/40'} font-medium`}>app.bharatbazaar.ai/dashboard</span>
+                      <span className={`text-[10px] ${dk ? 'text-white/50' : 'text-black/40'} font-medium`}>app.bharatbazaar.ai/{dashTab === 'retailer' ? 'dashboard' : dashTab === 'supplier' ? 'supplier' : 'shop'}</span>
                     </div>
                   </div>
                   <div className="w-[52px]" />
+                </div>
+
+                {/* Dashboard Tab Switcher */}
+                <div className={`flex items-center gap-1 px-4 py-2 ${dk ? 'bg-[#1a1a1d] border-b border-white/5' : 'bg-[#f5f5f4] border-b border-black/5'}`}>
+                  {([
+                    { key: 'retailer' as const, label: 'Retailer', icon: '🏪' },
+                    { key: 'supplier' as const, label: 'Supplier', icon: '🚚' },
+                    { key: 'customer' as const, label: 'Customer', icon: '🛒' },
+                  ]).map(tab => (
+                    <button key={tab.key} onClick={() => setDashTab(tab.key)}
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all ${
+                        dashTab === tab.key
+                          ? 'bg-[#F97316] text-white shadow-sm'
+                          : dk ? 'text-white/40 hover:bg-white/5 hover:text-white/60' : 'text-[#78716C] hover:bg-black/[0.04] hover:text-[#44403C]'
+                      }`}>
+                      <span className="mr-1">{tab.icon}</span>{tab.label}
+                    </button>
+                  ))}
                 </div>
 
                 {/* Dashboard Content — Sidebar + Main */}
@@ -518,17 +537,31 @@ export default function PremiumLanding() {
                       </div>
                       <div>
                         <p className={`text-[10px] font-bold ${dk ? 'text-white' : 'text-[#1C1917]'}`}>BharatBazaar</p>
-                        <p className={`text-[8px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>Rajesh Store</p>
+                        <p className={`text-[8px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>{dashTab === 'retailer' ? 'Rajesh Store' : dashTab === 'supplier' ? 'Priya Enterprises' : 'Meera Sharma'}</p>
                       </div>
                     </div>
-                    {[
+                    {(dashTab === 'retailer' ? [
                       { label: 'Dashboard', active: true },
                       { label: 'Inventory', active: false },
                       { label: 'AI Pricing', active: false },
                       { label: 'Invoices', active: false },
                       { label: 'Analytics', active: false },
                       { label: 'Sourcing', active: false },
-                    ].map(item => (
+                    ] : dashTab === 'supplier' ? [
+                      { label: 'Dashboard', active: true },
+                      { label: 'Products', active: false },
+                      { label: 'Orders', active: false },
+                      { label: 'Retailers', active: false },
+                      { label: 'Analytics', active: false },
+                      { label: 'Payments', active: false },
+                    ] : [
+                      { label: 'Home', active: true },
+                      { label: 'Browse Stores', active: false },
+                      { label: 'My Orders', active: false },
+                      { label: 'Deals', active: false },
+                      { label: 'Price Alerts', active: false },
+                      { label: 'Favourites', active: false },
+                    ]).map(item => (
                       <div key={item.label} className={`px-2.5 py-1.5 rounded-lg text-[10px] font-medium mb-0.5 ${
                         item.active
                           ? 'bg-[#F97316]/10 text-[#F97316]'
@@ -539,6 +572,9 @@ export default function PremiumLanding() {
 
                   {/* Main Dashboard Area */}
                   <div className={`flex-1 ${dk ? 'bg-[#0f0f11]' : 'bg-[#FAFAF9]'} p-5`}>
+
+                  {/* ── RETAILER DASHBOARD ── */}
+                  {dashTab === 'retailer' && <>
                     {/* Header Bar */}
                     <div className="flex items-center justify-between mb-4">
                       <div>
@@ -732,6 +768,260 @@ export default function PremiumLanding() {
                         </div>
                       </div>
                     </div>
+                  </>}
+
+                  {/* ── SUPPLIER DASHBOARD ── */}
+                  {dashTab === 'supplier' && <>
+                    {/* Header Bar */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className={`text-sm font-bold ${dk ? 'text-white' : 'text-[#1C1917]'}`}>Good morning, Priya</p>
+                        <p className={`text-[10px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>Mumbai, Maharashtra &middot; Friday, 7 March 2026</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-medium ${dk ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
+                          &#x2713; Verified Supplier
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* KPI Row */}
+                    <div className="grid grid-cols-4 gap-3 mb-4">
+                      {[
+                        { label: 'Total Orders', value: '284', change: '+24 today', up: true, icon: Package },
+                        { label: 'Monthly Revenue', value: '\u20B98.4L', change: '+22% vs last month', up: true, icon: IndianRupee },
+                        { label: 'Active Retailers', value: '67', change: '+5 this week', up: true, icon: Users },
+                        { label: 'Products Listed', value: '342', change: '12 low stock', up: false, icon: BarChart3 },
+                      ].map(kpi => (
+                        <div key={kpi.label} className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-3 border shadow-sm`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <p className={`text-[9px] ${dk ? 'text-white/40' : 'text-[#78716C]'} font-medium`}>{kpi.label}</p>
+                            <kpi.icon className={`w-3 h-3 ${dk ? 'text-white/20' : 'text-black/10'}`} />
+                          </div>
+                          <p className={`text-lg font-bold ${dk ? 'text-white' : 'text-[#1C1917]'}`} style={{ fontFamily: mono }}>{kpi.value}</p>
+                          <p className={`text-[8px] font-medium mt-0.5 ${kpi.up ? 'text-green-500' : 'text-amber-500'}`}>{kpi.change}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Recent Orders + Top Retailers */}
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className={`col-span-2 ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-4 border shadow-sm`}>
+                        <div className="flex justify-between items-center mb-3">
+                          <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'}`}>Recent Orders</p>
+                          <span className={`text-[8px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>Last 24 hours</span>
+                        </div>
+                        <div className="space-y-2">
+                          {[
+                            { store: 'Rajesh General Store', items: '12 items', total: '\u20B918,450', status: 'Delivered', statusColor: 'text-green-500' },
+                            { store: 'Sharma Kirana', items: '8 items', total: '\u20B912,200', status: 'In Transit', statusColor: 'text-blue-500' },
+                            { store: 'Gupta Traders', items: '22 items', total: '\u20B935,800', status: 'Processing', statusColor: 'text-amber-500' },
+                            { store: 'Patel Corner Shop', items: '6 items', total: '\u20B97,600', status: 'Delivered', statusColor: 'text-green-500' },
+                            { store: 'Singh Provisions', items: '15 items', total: '\u20B924,100', status: 'In Transit', statusColor: 'text-blue-500' },
+                          ].map(order => (
+                            <div key={order.store} className={`flex items-center justify-between py-1.5 border-b ${dk ? 'border-white/5' : 'border-black/[0.03]'} last:border-0`}>
+                              <div className="flex-1">
+                                <p className={`text-[9px] font-medium ${dk ? 'text-white/80' : 'text-[#1C1917]'}`}>{order.store}</p>
+                                <p className={`text-[7px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>{order.items}</p>
+                              </div>
+                              <p className={`text-[9px] font-semibold ${dk ? 'text-white/70' : 'text-[#44403C]'} mx-3`} style={{ fontFamily: mono }}>{order.total}</p>
+                              <span className={`text-[7px] font-medium ${order.statusColor}`}>{order.status}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-4 border shadow-sm`}>
+                        <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'} mb-3`}>Top Retailers</p>
+                        {[
+                          { name: 'Rajesh General Store', orders: 48, revenue: '\u20B92.1L' },
+                          { name: 'Gupta Traders', orders: 42, revenue: '\u20B91.8L' },
+                          { name: 'Sharma Kirana', orders: 36, revenue: '\u20B91.5L' },
+                          { name: 'Singh Provisions', orders: 31, revenue: '\u20B91.3L' },
+                          { name: 'Patel Corner Shop', orders: 25, revenue: '\u20B91.0L' },
+                        ].map((r, i) => (
+                          <div key={r.name} className="flex items-center gap-2 mb-2.5">
+                            <span className={`text-[8px] font-bold w-4 ${dk ? 'text-white/20' : 'text-[#a8a29e]'}`}>#{i + 1}</span>
+                            <div className="flex-1">
+                              <p className={`text-[8px] font-medium ${dk ? 'text-white/70' : 'text-[#44403C]'}`}>{r.name}</p>
+                              <p className={`text-[7px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>{r.orders} orders</p>
+                            </div>
+                            <p className={`text-[8px] font-semibold ${dk ? 'text-white/50' : 'text-[#78716C]'}`} style={{ fontFamily: mono }}>{r.revenue}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Product Performance + Demand Forecast */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-3 border shadow-sm`}>
+                        <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'} mb-2`}>Product Performance</p>
+                        {[
+                          { name: 'Basmati Rice 5kg', stock: 1240, sold: 856, pct: 69 },
+                          { name: 'Toor Dal 1kg', stock: 890, sold: 678, pct: 76 },
+                          { name: 'Sunflower Oil 1L', stock: 560, sold: 420, pct: 75 },
+                          { name: 'Sugar 5kg', stock: 720, sold: 310, pct: 43 },
+                        ].map(p => (
+                          <div key={p.name} className="mb-2">
+                            <div className="flex justify-between text-[8px] mb-0.5">
+                              <span className={`${dk ? 'text-white/70' : 'text-[#44403C]'} font-medium`}>{p.name}</span>
+                              <span className={`${dk ? 'text-white/40' : 'text-[#78716C]'}`} style={{ fontFamily: mono }}>{p.sold}/{p.stock} sold</span>
+                            </div>
+                            <div className={`h-1 ${dk ? 'bg-white/5' : 'bg-[#f5f5f4]'} rounded-full overflow-hidden`}>
+                              <div className="h-full bg-gradient-to-r from-[#F97316] to-[#F59E0B] rounded-full" style={{ width: `${p.pct}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={`${dk ? 'bg-blue-500/5 border-blue-500/10' : 'bg-blue-50 border-blue-100'} rounded-xl p-3 border`}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Brain className={`w-3.5 h-3.5 ${dk ? 'text-blue-400' : 'text-blue-700'}`} />
+                          <p className={`text-[10px] font-semibold ${dk ? 'text-blue-400' : 'text-blue-800'}`}>AI Demand Forecast</p>
+                        </div>
+                        <div className="space-y-1.5">
+                          <div className={`flex items-start gap-2 ${dk ? 'text-blue-300/70' : 'text-blue-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x1F4C8;</span><span>Basmati Rice demand +35% next week (festival season)</span>
+                          </div>
+                          <div className={`flex items-start gap-2 ${dk ? 'text-blue-300/70' : 'text-blue-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x1F6A8;</span><span>Sugar stock running low — 15 retailers awaiting restock</span>
+                          </div>
+                          <div className={`flex items-start gap-2 ${dk ? 'text-blue-300/70' : 'text-blue-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x2B50;</span><span>New retailer onboarding: 3 stores in Pune requesting quotes</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>}
+
+                  {/* ── CUSTOMER DASHBOARD ── */}
+                  {dashTab === 'customer' && <>
+                    {/* Header Bar */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className={`text-sm font-bold ${dk ? 'text-white' : 'text-[#1C1917]'}`}>Good afternoon, Meera</p>
+                        <p className={`text-[10px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>Bengaluru, Karnataka &middot; Friday, 7 March 2026</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className={`px-2.5 py-1 rounded-lg text-[9px] font-medium ${dk ? 'bg-violet-500/10 text-violet-400 border border-violet-500/20' : 'bg-violet-50 text-violet-700 border border-violet-200'}`}>
+                          &#x20B9;2,340 saved this month
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* KPI Row */}
+                    <div className="grid grid-cols-4 gap-3 mb-4">
+                      {[
+                        { label: 'Money Saved', value: '\u20B92,340', change: 'this month', up: true, icon: IndianRupee },
+                        { label: 'Total Orders', value: '23', change: '3 in transit', up: true, icon: Package },
+                        { label: 'Stores Nearby', value: '14', change: '2 new this week', up: true, icon: MapPin },
+                        { label: 'Active Deals', value: '8', change: '3 expiring soon', up: false, icon: Zap },
+                      ].map(kpi => (
+                        <div key={kpi.label} className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-3 border shadow-sm`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <p className={`text-[9px] ${dk ? 'text-white/40' : 'text-[#78716C]'} font-medium`}>{kpi.label}</p>
+                            <kpi.icon className={`w-3 h-3 ${dk ? 'text-white/20' : 'text-black/10'}`} />
+                          </div>
+                          <p className={`text-lg font-bold ${dk ? 'text-white' : 'text-[#1C1917]'}`} style={{ fontFamily: mono }}>{kpi.value}</p>
+                          <p className={`text-[8px] font-medium mt-0.5 ${kpi.up ? 'text-green-500' : 'text-amber-500'}`}>{kpi.change}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Price Compare + Nearby Stores */}
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className={`col-span-2 ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-4 border shadow-sm`}>
+                        <div className="flex justify-between items-center mb-3">
+                          <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'}`}>Price Comparison</p>
+                          <span className={`text-[8px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>Best prices near you</span>
+                        </div>
+                        <div className="space-y-2">
+                          {[
+                            { item: 'Basmati Rice 5kg', stores: [{ name: 'Rajesh Store', price: '\u20B9335', best: true }, { name: 'Gupta Traders', price: '\u20B9355', best: false }, { name: 'Singh Mart', price: '\u20B9360', best: false }] },
+                            { item: 'Toor Dal 1kg', stores: [{ name: 'Sharma Kirana', price: '\u20B9142', best: true }, { name: 'Rajesh Store', price: '\u20B9148', best: false }, { name: 'Patel Shop', price: '\u20B9155', best: false }] },
+                            { item: 'Amul Butter 500g', stores: [{ name: 'Singh Mart', price: '\u20B9195', best: true }, { name: 'Sharma Kirana', price: '\u20B9198', best: false }, { name: 'Gupta Traders', price: '\u20B9205', best: false }] },
+                          ].map(comp => (
+                            <div key={comp.item} className={`py-2 border-b ${dk ? 'border-white/5' : 'border-black/[0.03]'} last:border-0`}>
+                              <p className={`text-[9px] font-medium ${dk ? 'text-white/80' : 'text-[#1C1917]'} mb-1.5`}>{comp.item}</p>
+                              <div className="flex gap-2">
+                                {comp.stores.map(s => (
+                                  <div key={s.name} className={`flex-1 rounded-lg px-2 py-1.5 border text-center ${
+                                    s.best
+                                      ? dk ? 'border-green-500/20 bg-green-500/5' : 'border-green-200 bg-green-50'
+                                      : dk ? 'border-white/5 bg-white/[0.02]' : 'border-black/[0.04] bg-[#FAFAF9]'
+                                  }`}>
+                                    <p className={`text-[7px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>{s.name}</p>
+                                    <p className={`text-[10px] font-bold ${s.best ? 'text-green-500' : dk ? 'text-white/60' : 'text-[#44403C]'}`} style={{ fontFamily: mono }}>{s.price}</p>
+                                    {s.best && <p className="text-[6px] text-green-500 font-semibold">BEST PRICE</p>}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-4 border shadow-sm`}>
+                        <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'} mb-3`}>Nearby Stores</p>
+                        {[
+                          { name: 'Rajesh General Store', distance: '0.3 km', rating: '4.8', deals: 3 },
+                          { name: 'Sharma Kirana', distance: '0.7 km', rating: '4.6', deals: 2 },
+                          { name: 'Singh Mart', distance: '1.1 km', rating: '4.5', deals: 5 },
+                          { name: 'Gupta Traders', distance: '1.4 km', rating: '4.7', deals: 1 },
+                          { name: 'Patel Corner Shop', distance: '1.8 km', rating: '4.3', deals: 4 },
+                        ].map(store => (
+                          <div key={store.name} className="flex items-center gap-2 mb-2.5">
+                            <div className={`w-6 h-6 rounded-lg ${dk ? 'bg-white/5' : 'bg-[#f5f5f4]'} flex items-center justify-center`}>
+                              <MapPin className={`w-3 h-3 ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`} />
+                            </div>
+                            <div className="flex-1">
+                              <p className={`text-[8px] font-medium ${dk ? 'text-white/70' : 'text-[#44403C]'}`}>{store.name}</p>
+                              <p className={`text-[7px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>{store.distance} &middot; &#x2B50; {store.rating}</p>
+                            </div>
+                            <span className={`text-[7px] px-1.5 py-0.5 rounded-full font-medium ${dk ? 'bg-[#F97316]/10 text-[#F97316]' : 'bg-orange-50 text-orange-600'}`}>{store.deals} deals</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Recent Orders + Smart Suggestions */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className={`${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-white border-black/[0.04]'} rounded-xl p-3 border shadow-sm`}>
+                        <p className={`text-[10px] font-semibold ${dk ? 'text-white' : 'text-[#1C1917]'} mb-2`}>Recent Orders</p>
+                        {[
+                          { store: 'Rajesh Store', date: '6 Mar', items: 5, total: '\u20B91,240', status: 'Delivered' },
+                          { store: 'Sharma Kirana', date: '4 Mar', items: 3, total: '\u20B9680', status: 'Delivered' },
+                          { store: 'Singh Mart', date: '3 Mar', items: 8, total: '\u20B92,150', status: 'Delivered' },
+                        ].map(o => (
+                          <div key={o.store + o.date} className={`flex items-center justify-between py-1.5 border-b ${dk ? 'border-white/5' : 'border-black/[0.03]'} last:border-0`}>
+                            <div>
+                              <p className={`text-[8px] font-medium ${dk ? 'text-white/70' : 'text-[#44403C]'}`}>{o.store}</p>
+                              <p className={`text-[7px] ${dk ? 'text-white/30' : 'text-[#a8a29e]'}`}>{o.date} &middot; {o.items} items</p>
+                            </div>
+                            <div className="text-right">
+                              <p className={`text-[8px] font-semibold ${dk ? 'text-white/60' : 'text-[#44403C]'}`} style={{ fontFamily: mono }}>{o.total}</p>
+                              <p className="text-[7px] text-green-500">{o.status}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={`${dk ? 'bg-violet-500/5 border-violet-500/10' : 'bg-violet-50 border-violet-100'} rounded-xl p-3 border`}>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Brain className={`w-3.5 h-3.5 ${dk ? 'text-violet-400' : 'text-violet-700'}`} />
+                          <p className={`text-[10px] font-semibold ${dk ? 'text-violet-400' : 'text-violet-800'}`}>Smart Suggestions</p>
+                        </div>
+                        <div className="space-y-1.5">
+                          <div className={`flex items-start gap-2 ${dk ? 'text-violet-300/70' : 'text-violet-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x1F4B0;</span><span>Save &#x20B9;25 on Toor Dal at Sharma Kirana today</span>
+                          </div>
+                          <div className={`flex items-start gap-2 ${dk ? 'text-violet-300/70' : 'text-violet-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x1F6D2;</span><span>Your usual Rice order is due — reorder from Rajesh Store?</span>
+                          </div>
+                          <div className={`flex items-start gap-2 ${dk ? 'text-violet-300/70' : 'text-violet-700'} text-[9px]`}>
+                            <span className="mt-0.5">&#x1F389;</span><span>Holi deals: 5 stores near you have festival discounts</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>}
+
                   </div>
                 </div>
               </div>
@@ -1189,19 +1479,22 @@ export default function PremiumLanding() {
               </Reveal>
             </div>
 
-            {/* Center &#8212; WhatsApp Phone Mockup */}
+            {/* Center — WhatsApp Phone Mockup (always dark WA theme) */}
             <Reveal delay={0.15} className="lg:col-span-1 flex justify-center">
               <div className="w-[280px] bg-[#1C1917] rounded-[2.5rem] p-2.5 shadow-2xl shadow-black/20 relative">
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-32 h-4 bg-green-500/20 blur-xl rounded-full" />
-                <div className="w-full bg-[#ECE5DD] rounded-[2rem] overflow-hidden">
-                  <div className="bg-gradient-to-r from-green-700 to-green-600 text-white px-3 py-2 pt-6 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">BB</div>
+                <div className="w-full bg-[#0b141a] rounded-[2rem] overflow-hidden">
+                  {/* WA dark header */}
+                  <div className="bg-[#1f2c34] text-white px-3 py-2 pt-6 flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-[#2a3942] flex items-center justify-center text-sm font-bold text-green-400">BB</div>
                     <div className="flex-1">
-                      <p className="text-xs font-semibold">Munim-ji AI</p>
-                      <p className="text-[9px] text-white/70">online</p>
+                      <p className="text-xs font-semibold text-[#e9edef]">Munim-ji AI</p>
+                      <p className="text-[9px] text-[#8696a0]">online</p>
                     </div>
                   </div>
-                  <div className="px-2 py-3 space-y-2 min-h-[360px] max-h-[360px] overflow-hidden relative">
+                  {/* Chat area — dark WA background */}
+                  <div className="px-2 py-3 space-y-2 min-h-[360px] max-h-[360px] overflow-hidden relative bg-[#0b141a]"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'200\' height=\'200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'p\' width=\'40\' height=\'40\' patternUnits=\'userSpaceOnUse\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'0.5\' fill=\'rgba(255,255,255,0.03)\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'200\' height=\'200\' fill=\'url(%23p)\'/%3E%3C/svg%3E")' }}>
                     <AnimatePresence>
                       {CHAT_FLOW.slice(0, visibleMessages).map((msg, i) => (
                         <motion.div key={i}
@@ -1209,27 +1502,28 @@ export default function PremiumLanding() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           transition={{ duration: 0.3 }}
                           className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`${msg.type === 'user' ? 'bg-[#DCF8C6] rounded-xl rounded-tr-sm' : 'bg-white rounded-xl rounded-tl-sm'} px-2.5 py-1.5 max-w-[85%] shadow-sm`}>
-                            <p className="text-[10px] text-slate-800 leading-relaxed whitespace-pre-line">{msg.text}</p>
-                            <p className="text-[7px] text-slate-400 text-right mt-0.5">{msg.time} {msg.type === 'user' && ' \u2713\u2713'}</p>
+                          <div className={`${msg.type === 'user' ? 'bg-[#005c4b] rounded-xl rounded-tr-sm' : 'bg-[#1f2c34] rounded-xl rounded-tl-sm'} px-2.5 py-1.5 max-w-[85%]`}>
+                            <p className="text-[10px] text-[#e9edef] leading-relaxed whitespace-pre-line">{msg.text}</p>
+                            <p className="text-[7px] text-[#8696a0] text-right mt-0.5">{msg.time} {msg.type === 'user' && ' \u2713\u2713'}</p>
                           </div>
                         </motion.div>
                       ))}
                     </AnimatePresence>
                     {visibleMessages < CHAT_FLOW.length && (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-                        <div className="bg-white rounded-xl px-3 py-2 shadow-sm">
+                        <div className="bg-[#1f2c34] rounded-xl px-3 py-2">
                           <div className="flex gap-1">
-                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            <span className="w-1.5 h-1.5 bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                            <span className="w-1.5 h-1.5 bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                            <span className="w-1.5 h-1.5 bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                           </div>
                         </div>
                       </motion.div>
                     )}
                   </div>
-                  <div className="bg-[#F0F0F0] px-2 py-1.5 flex items-center gap-1.5">
-                    <div className="flex-1 bg-white rounded-full px-2.5 py-1.5"><p className="text-[10px] text-slate-400">Type a message...</p></div>
+                  {/* Input bar */}
+                  <div className="bg-[#1f2c34] px-2 py-1.5 flex items-center gap-1.5">
+                    <div className="flex-1 bg-[#2a3942] rounded-full px-2.5 py-1.5"><p className="text-[10px] text-[#8696a0]">Type a message...</p></div>
                     <div className="w-7 h-7 bg-green-600 rounded-full flex items-center justify-center"><Mic className="w-3 h-3 text-white" /></div>
                   </div>
                 </div>
@@ -1685,7 +1979,7 @@ export default function PremiumLanding() {
               <div className="space-y-2">
                 <a href="https://github.com/m-zest/bharat_bazaar" target="_blank" rel="noopener noreferrer" className="block text-xs text-white/40 hover:text-white/80 transition-colors">GitHub Repository</a>
                 <a href="https://github.com/m-zest" target="_blank" rel="noopener noreferrer" className="block text-xs text-white/40 hover:text-white/80 transition-colors">Mohammad Zeeshan</a>
-                <a href="mailto:hdglit@inf.elte.hu" className="block text-xs text-white/40 hover:text-white/80 transition-colors">Contact Us</a>
+                <span className="block text-xs text-white/40">Afzal Hussain</span>
               </div>
             </div>
           </div>
@@ -1693,14 +1987,11 @@ export default function PremiumLanding() {
           {/* Bottom bar */}
           <div className="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
             <p className="text-[10px] text-white/30">
-              &copy; 2026 BharatBazaar AI &mdash; Team ParityAI. Built with AWS for the AI for Bharat Hackathon.
+              &copy; 2026 BharatBazaar AI &mdash; ParityAI team made with ❤️ using AWS.
             </p>
             <div className="flex items-center gap-4">
               <a href="https://github.com/m-zest/bharat_bazaar" target="_blank" rel="noopener noreferrer"
                 className="text-[10px] text-white/30 hover:text-white/60 transition-colors">GitHub</a>
-              <span className="text-white/10">|</span>
-              <a href="mailto:hdglit@inf.elte.hu"
-                className="text-[10px] text-white/30 hover:text-white/60 transition-colors">hdglit@inf.elte.hu</a>
             </div>
           </div>
         </div>
