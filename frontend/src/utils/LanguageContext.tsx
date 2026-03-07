@@ -153,9 +153,9 @@ const translations: Record<LangCode, Record<string, string>> = {
 
     // Landing - WhatsApp
     'whatsapp.badge': 'WhatsApp-First Platform',
-    'whatsapp.title1': 'No App. No Website.',
-    'whatsapp.title2': 'Just WhatsApp.',
-    'whatsapp.desc': 'Indian store owners live on WhatsApp. So we brought the entire platform to them. Every feature — pricing, inventory, orders, bills — accessible through simple messages.',
+    'whatsapp.title1': 'WhatsApp-First.',
+    'whatsapp.title2': 'Everywhere Always.',
+    'whatsapp.desc': 'We built a full Web App and Mobile App — but we know India runs on WhatsApp. So every feature works right inside the chat. No downloads, no learning curve. Use it from the shop counter.',
 
     // Landing - Platform Trilogy
     'platform.label': 'EVERYWHERE YOU ARE',
@@ -297,9 +297,9 @@ const translations: Record<LangCode, Record<string, string>> = {
     'landing.features.title1': 'मॉकअप नहीं। वायरफ्रेम नहीं।',
     'landing.features.title2': 'हर फीचर काम करता है।',
     'whatsapp.badge': 'WhatsApp-फर्स्ट प्लेटफॉर्म',
-    'whatsapp.title1': 'कोई ऐप नहीं। कोई वेबसाइट नहीं।',
-    'whatsapp.title2': 'बस WhatsApp।',
-    'whatsapp.desc': 'भारतीय दुकानदार WhatsApp पर रहते हैं। इसलिए हमने पूरा प्लेटफॉर्म उनके पास लाया। हर फीचर — प्राइसिंग, इन्वेंटरी, ऑर्डर, बिल — सरल संदेशों से।',
+    'whatsapp.title1': 'WhatsApp-फर्स्ट।',
+    'whatsapp.title2': 'हर जगह हमेशा।',
+    'whatsapp.desc': 'हमने पूरा वेब ऐप और मोबाइल ऐप बनाया — लेकिन भारत WhatsApp पर चलता है। इसलिए हर फीचर चैट में काम करता है। कोई डाउनलोड नहीं, कोई सीखने की ज़रूरत नहीं।',
     'platform.label': 'जहां आप हैं वहां',
     'platform.title1': 'एक प्लेटफॉर्म।',
     'platform.title2': 'तीन इंटरफेस।',
