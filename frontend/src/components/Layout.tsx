@@ -93,6 +93,7 @@ export default function Layout() {
   const { user, logout } = useAuth()
   const { totalItems } = useCart()
   const { theme, toggleTheme } = useTheme()
+  const dk = theme === 'dark'
 
   useEffect(() => {
     document.title = pageTitles[location.pathname] || 'BharatBazaar AI — Weighed by Intelligence'
@@ -104,20 +105,20 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen bg-[#0c0c0d] overflow-hidden">
-      {/* Desktop Sidebar — Dark Theme */}
-      <aside className="hidden lg:flex w-72 flex-col bg-[#141416] border-r border-[#222]">
+    <div className={`flex h-screen overflow-hidden ${dk ? 'bg-[#0c0c0d]' : 'bg-[#f5f5f4]'}`}>
+      {/* Desktop Sidebar */}
+      <aside className={`hidden lg:flex w-72 flex-col ${dk ? 'bg-[#141416] border-r border-[#222]' : 'bg-white border-r border-gray-200'}`}>
         {/* Logo + Theme Toggle */}
-        <div className="p-6 border-b border-[#222] flex items-center justify-between">
+        <div className={`p-6 ${dk ? 'border-b border-[#222]' : 'border-b border-gray-200'} flex items-center justify-between`}>
           <Link to="/" className="block group">
             <SidebarLogo mode={theme === 'dark' ? 'dark' : 'light'} className="group-hover:opacity-80 transition-opacity" />
           </Link>
           <button
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-orange-400 hover:bg-white/[0.06] transition-all"
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${dk ? 'text-gray-400 hover:text-orange-400 hover:bg-white/[0.06]' : 'text-gray-500 hover:text-orange-500 hover:bg-black/[0.06]'}`}
+            title={dk ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {dk ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
         </div>
 
@@ -125,7 +126,7 @@ export default function Layout() {
         <nav className="flex-1 p-3 overflow-y-auto">
           {navSections.map((section) => (
             <div key={section.title} className="mb-3">
-              <p className="px-4 py-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-wider">
+              <p className={`px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
                 {section.title}
               </p>
               <div className="space-y-0.5">
@@ -138,13 +139,13 @@ export default function Layout() {
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group relative ${
                         isActive
                           ? 'bg-orange-500/10 text-orange-400 border-l-4 border-orange-500 pl-3'
-                          : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                          : dk ? 'text-gray-400 hover:bg-white/5 hover:text-gray-200' : 'text-gray-600 hover:bg-black/[0.04] hover:text-gray-900'
                       }`}
                     >
-                      <item.icon className={`w-[18px] h-[18px] ${isActive ? 'text-orange-400' : 'text-gray-500 group-hover:text-gray-300'}`} />
+                      <item.icon className={`w-[18px] h-[18px] ${isActive ? 'text-orange-400' : dk ? 'text-gray-500 group-hover:text-gray-300' : 'text-gray-400 group-hover:text-gray-600'}`} />
                       <div className="flex-1 min-w-0">
                         <span className={`text-sm block truncate ${isActive ? 'font-semibold' : 'font-medium'}`}>{item.label}</span>
-                        <span className="text-[9px] text-gray-600 font-hindi">{item.labelHi}</span>
+                        <span className={`text-[9px] font-hindi ${dk ? 'text-gray-600' : 'text-gray-400'}`}>{item.labelHi}</span>
                       </div>
                       {item.path === '/notifications' && (
                         <span className="px-1.5 py-0.5 bg-red-500 text-white text-[9px] font-bold rounded-full">4</span>
@@ -159,7 +160,7 @@ export default function Layout() {
         </nav>
 
         {/* User Profile */}
-        <div className="p-3 border-t border-[#222]">
+        <div className={`p-3 ${dk ? 'border-t border-[#222]' : 'border-t border-gray-200'}`}>
           {/* Cart Badge */}
           {totalItems > 0 && (
             <Link
@@ -173,7 +174,7 @@ export default function Layout() {
           )}
 
           {/* User Info */}
-          <div className="bg-[#1a1a1d] rounded-xl p-3 border border-[#2a2a2d]">
+          <div className={`rounded-xl p-3 border ${dk ? 'bg-[#1a1a1d] border-[#2a2a2d]' : 'bg-gray-50 border-gray-200'}`}>
             <div className="flex items-center gap-3">
               <Link
                 to="/profile"
@@ -182,8 +183,8 @@ export default function Layout() {
                 {user?.avatar || 'RS'}
               </Link>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-200 truncate">{user?.name || 'Rajesh Sharma'}</p>
-                <p className="text-[10px] text-gray-500">{user?.role || 'Store Owner'}</p>
+                <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || 'Rajesh Sharma'}</p>
+                <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{user?.role || 'Store Owner'}</p>
               </div>
               <button
                 onClick={handleLogout}
@@ -193,45 +194,45 @@ export default function Layout() {
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#2a2a2d]">
+            <div className={`flex items-center gap-1.5 mt-2 pt-2 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <p className="text-[10px] text-gray-500">
-                <span className="font-medium text-gray-400">{user?.store || 'Sharma Kirana Store'}</span> &middot; {user?.city || 'Lucknow'}
+              <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
+                <span className={`font-medium ${dk ? 'text-gray-400' : 'text-gray-600'}`}>{user?.store || 'Sharma Kirana Store'}</span> &middot; {user?.city || 'Lucknow'}
               </p>
             </div>
           </div>
         </div>
       </aside>
 
-      {/* Mobile Header — Dark */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#141416]/90 backdrop-blur-xl border-b border-[#222] px-4 py-3 flex items-center justify-between">
+      {/* Mobile Header */}
+      <div className={`lg:hidden fixed top-0 left-0 right-0 z-40 backdrop-blur-xl px-4 py-3 flex items-center justify-between ${dk ? 'bg-[#141416]/90 border-b border-[#222]' : 'bg-white/90 border-b border-gray-200'}`}>
         <Link to="/" className="block">
           <NavbarLogo mode={theme === 'dark' ? 'dark' : 'light'} className="h-8 w-auto" />
         </Link>
         <div className="flex items-center gap-2">
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-300"
+            className={`w-9 h-9 rounded-lg flex items-center justify-center ${dk ? 'bg-white/5 text-gray-300' : 'bg-black/[0.04] text-gray-600'}`}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {dk ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
           {totalItems > 0 && (
             <Link to="/cart" className="relative p-2">
-              <ShoppingCart className="w-5 h-5 text-gray-300" />
+              <ShoppingCart className={`w-5 h-5 ${dk ? 'text-gray-300' : 'text-gray-600'}`} />
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-orange-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             </Link>
           )}
           <Link to="/notifications" className="relative p-2">
-            <Bell className="w-5 h-5 text-gray-300" />
+            <Bell className={`w-5 h-5 ${dk ? 'text-gray-300' : 'text-gray-600'}`} />
             <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
               4
             </span>
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-300"
+            className={`w-9 h-9 rounded-lg flex items-center justify-center ${dk ? 'bg-white/5 text-gray-300' : 'bg-black/[0.04] text-gray-600'}`}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -253,7 +254,7 @@ export default function Layout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="w-72 h-full bg-[#141416] pt-16 p-4 shadow-xl overflow-y-auto border-r border-[#222]"
+              className={`w-72 h-full pt-16 p-4 shadow-xl overflow-y-auto ${dk ? 'bg-[#141416] border-r border-[#222]' : 'bg-white border-r border-gray-200'}`}
               onClick={e => e.stopPropagation()}
             >
               {/* User Card */}
@@ -262,15 +263,15 @@ export default function Layout() {
                   {user?.avatar || 'RS'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-200 truncate">{user?.name || 'Rajesh Sharma'}</p>
-                  <p className="text-xs text-gray-500">{user?.store || 'Sharma Kirana Store'}</p>
+                  <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || 'Rajesh Sharma'}</p>
+                  <p className={`text-xs ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{user?.store || 'Sharma Kirana Store'}</p>
                 </div>
               </div>
 
               <nav>
                 {navSections.map(section => (
                   <div key={section.title} className="mb-3">
-                    <p className="px-3 py-1 text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{section.title}</p>
+                    <p className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{section.title}</p>
                     {section.items.map((item) => {
                       const isActive = location.pathname === item.path
                       return (
@@ -281,10 +282,10 @@ export default function Layout() {
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all min-h-[44px] ${
                             isActive
                               ? 'bg-orange-500/10 text-orange-400'
-                              : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+                              : dk ? 'text-gray-400 hover:bg-white/5 hover:text-gray-200' : 'text-gray-600 hover:bg-black/[0.04] hover:text-gray-900'
                           }`}
                         >
-                          <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-400' : 'text-gray-500'}`} />
+                          <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-400' : dk ? 'text-gray-500' : 'text-gray-400'}`} />
                           <span className={`text-sm ${isActive ? 'font-semibold' : 'font-medium'}`}>{item.label}</span>
                         </Link>
                       )
@@ -294,13 +295,13 @@ export default function Layout() {
               </nav>
 
               {/* Mobile Links */}
-              <div className="mt-3 pt-3 border-t border-[#222] space-y-1">
+              <div className={`mt-3 pt-3 space-y-1 ${dk ? 'border-t border-[#222]' : 'border-t border-gray-200'}`}>
                 <Link
                   to="/profile"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl ${dk ? 'text-gray-400 hover:bg-white/5' : 'text-gray-600 hover:bg-black/[0.04]'}`}
                 >
-                  <User className="w-5 h-5 text-gray-500" />
+                  <User className={`w-5 h-5 ${dk ? 'text-gray-500' : 'text-gray-400'}`} />
                   <span className="text-sm font-medium">Store Profile</span>
                 </Link>
                 <button
@@ -317,7 +318,7 @@ export default function Layout() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto lg:pt-0 pt-14 pb-16 lg:pb-0 bg-[#0c0c0d]">
+      <main className={`flex-1 overflow-y-auto lg:pt-0 pt-14 pb-16 lg:pb-0 ${dk ? 'bg-[#0c0c0d]' : 'bg-[#f5f5f4]'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -332,8 +333,8 @@ export default function Layout() {
         </AnimatePresence>
       </main>
 
-      {/* Mobile Bottom Nav — Dark */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#141416]/95 backdrop-blur-xl border-t border-[#222] px-2 py-1 safe-area-bottom">
+      {/* Mobile Bottom Nav */}
+      <nav className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 backdrop-blur-xl px-2 py-1 safe-area-bottom ${dk ? 'bg-[#141416]/95 border-t border-[#222]' : 'bg-white/95 border-t border-gray-200'}`}>
         <div className="flex items-center justify-around">
           {mobileNav.map((item) => {
             const isActive = location.pathname === item.path
@@ -342,7 +343,7 @@ export default function Layout() {
                 key={item.path}
                 to={item.path}
                 className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all relative min-h-[44px] justify-center ${
-                  isActive ? 'text-orange-400' : 'text-gray-500'
+                  isActive ? 'text-orange-400' : dk ? 'text-gray-500' : 'text-gray-400'
                 }`}
               >
                 {isActive && (
