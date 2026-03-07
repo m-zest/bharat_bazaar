@@ -159,11 +159,13 @@ function WarmOrbs() {
   )
 }
 
-function DotGrid() {
+function DotGrid({ dark }: { dark?: boolean }) {
   return (
     <div className="absolute inset-0 pointer-events-none" style={{
       opacity: 0.4,
-      backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)',
+      backgroundImage: dark
+        ? 'radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)'
+        : 'radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)',
       backgroundSize: '24px 24px',
     }} />
   )
@@ -227,9 +229,30 @@ export default function PremiumLanding() {
 
   const serif = "'Playfair Display', 'Instrument Serif', Georgia, serif"
   const mono = "'JetBrains Mono', monospace"
+  const dk = theme === 'dark'
+
+  // Theme-reactive palette
+  const c = {
+    bg: dk ? 'bg-[#0c0c0d]' : 'bg-[#FAFAF9]',
+    bg2: dk ? 'bg-[#111113]' : 'bg-[#f5f5f4]',
+    text: dk ? 'text-gray-100' : 'text-[#1C1917]',
+    textMuted: dk ? 'text-gray-400' : 'text-[#78716C]',
+    textFaint: dk ? 'text-gray-500' : 'text-[#a8a29e]',
+    card: dk ? 'bg-[#1a1a1d]' : 'bg-white',
+    cardBorder: dk ? 'border-[#2a2a2d]' : 'border-black/[0.04]',
+    navBg: dk ? 'bg-[#0c0c0d]/80 backdrop-blur-xl shadow-sm border-b border-[#222]' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-black/[0.04]',
+    navLink: dk ? 'text-gray-400 hover:text-gray-100' : 'text-[#78716C] hover:text-[#1C1917]',
+    btnSecBorder: dk ? 'border-[#333] hover:border-orange-500/50' : 'border-black/10 hover:border-[#F97316]/40',
+    btnSecText: dk ? 'text-gray-300' : 'text-[#44403C]',
+    btnSecBg: dk ? 'bg-white/5' : 'bg-white/60',
+    inputBg: dk ? 'bg-white/5 border-[#333] text-gray-300' : 'bg-white/60 border-black/10 text-[#44403C]',
+    dropBg: dk ? 'bg-[#1a1a1d] border-[#333]' : 'bg-white border-black/[0.06]',
+    dropItem: dk ? 'text-gray-400 hover:bg-white/5' : 'text-[#78716C] hover:bg-[#f5f5f4]',
+    dropActive: dk ? 'bg-orange-500/10 text-orange-400' : 'bg-orange-50 text-[#F97316]',
+  }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-[#1C1917] overflow-hidden" style={{ fontFamily: "'DM Sans', 'Satoshi', sans-serif" }}>
+    <div className={`min-h-screen ${c.bg} ${c.text} overflow-hidden`} style={{ fontFamily: "'DM Sans', 'Satoshi', sans-serif" }}>
       <NoiseOverlay />
 
       {/* ═══ NAVBAR ═══ */}
@@ -237,21 +260,26 @@ export default function PremiumLanding() {
         animate={{ y: scrollDir === 'down' && scrolled ? -100 : 0 }}
         transition={{ duration: 0.3 }}
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-black/[0.04]' : 'bg-transparent'
+          scrolled ? c.navBg : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link to="/" className="block"><NavbarLogo mode="light" /></Link>
+          <Link to="/" className="block"><NavbarLogo mode={dk ? 'dark' : 'light'} /></Link>
           <nav className="hidden md:flex items-center gap-8">
-            {['Features', 'How it Works', 'Architecture', 'Pricing'].map(link => (
-              <a key={link} href={`#${link.toLowerCase().replace(/\s/g, '-')}`}
-                className="text-sm text-[#78716C] hover:text-[#1C1917] transition-colors font-medium">{link}</a>
+            {[
+              { label: t('nav.features'), href: '#features' },
+              { label: t('nav.howItWorks'), href: '#how-it-works' },
+              { label: t('nav.architecture'), href: '#architecture' },
+              { label: 'Pricing', href: '#pricing' },
+            ].map(link => (
+              <a key={link.href} href={link.href}
+                className={`text-sm ${c.navLink} transition-colors font-medium`}>{link.label}</a>
             ))}
           </nav>
           <div className="flex items-center gap-3">
             {/* Theme Toggle */}
             <button onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-[#78716C] hover:text-[#F97316] border border-black/10 bg-white/60 hover:border-[#F97316]/40 transition-all"
+              className={`w-9 h-9 rounded-full flex items-center justify-center hover:text-[#F97316] ${c.btnSecText} ${c.btnSecBorder} ${c.btnSecBg} transition-all`}
               title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
@@ -259,7 +287,7 @@ export default function PremiumLanding() {
             {/* Language Selector */}
             <div ref={langRef} className="relative">
               <motion.button whileTap={{ scale: 0.97 }} onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors border border-black/10 bg-white/60 text-[#44403C] hover:border-[#F97316]/40">
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-colors border ${c.inputBg} hover:border-[#F97316]/40`}>
                 <Globe className="w-3.5 h-3.5 text-[#F97316]" />
                 <span className="hidden sm:inline">{currentLang.native}</span>
                 <span className="sm:hidden">{currentLang.code.toUpperCase()}</span>
@@ -272,15 +300,15 @@ export default function PremiumLanding() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/[0.06] py-1.5 z-50 overflow-hidden"
+                    className={`absolute right-0 mt-2 w-48 rounded-xl shadow-xl py-1.5 z-50 overflow-hidden ${c.dropBg}`}
                   >
                     {LANGUAGES.map(l => (
                       <button key={l.code} onClick={() => { setLang(l.code); setLangOpen(false) }}
                         className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                          lang === l.code ? 'bg-orange-50 text-[#F97316] font-semibold' : 'text-[#78716C] hover:bg-[#f5f5f4]'
+                          lang === l.code ? `${c.dropActive} font-semibold` : c.dropItem
                         }`}>
                         <span className="font-medium flex-1 text-left">{l.native}</span>
-                        <span className="text-xs text-[#a8a29e]">{l.label}</span>
+                        <span className={`text-xs ${c.textFaint}`}>{l.label}</span>
                         {lang === l.code && <Check className="w-3.5 h-3.5 text-[#F97316]" />}
                       </button>
                     ))}
@@ -290,7 +318,7 @@ export default function PremiumLanding() {
             </div>
 
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/register')}
-              className="hidden sm:flex items-center gap-2 text-[#44403C] px-4 py-2.5 rounded-full text-sm font-semibold border border-black/10 hover:border-[#F97316]/40 transition-colors">
+              className={`hidden sm:flex items-center gap-2 ${c.btnSecText} px-4 py-2.5 rounded-full text-sm font-semibold border ${c.btnSecBorder} transition-colors`}>
               Register
             </motion.button>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={goDemo}
@@ -304,7 +332,7 @@ export default function PremiumLanding() {
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         <WarmOrbs />
-        <DotGrid />
+        <DotGrid dark={dk} />
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* Left */}
@@ -317,19 +345,19 @@ export default function PremiumLanding() {
 
               <motion.h1 className="leading-[1.05] tracking-tight mb-6">
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
-                  className="block text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-bold text-[#1C1917]" style={{ fontFamily: serif }}>
-                  Market Intelligence for
+                  className={`block text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-bold ${c.text}`} style={{ fontFamily: serif }}>
+                  {t('hero.title1')}
                 </motion.span>
                 <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.7 }}
                   className="block text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-bold bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent"
                   style={{ fontFamily: serif }}>
-                  Every Kirana Store
+                  {t('hero.title2')}
                 </motion.span>
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-                className="text-lg text-[#78716C] max-w-lg leading-relaxed mb-8">
-                Amazon has data science teams. We give that same intelligence to 15 million kirana stores &#8212; in their language, on WhatsApp, for &#8377;0.
+                className={`text-lg ${c.textMuted} max-w-lg leading-relaxed mb-8`}>
+                {t('hero.desc')}
               </motion.p>
 
               {/* Platform Badges — Mobile + Web + WhatsApp */}
@@ -351,19 +379,19 @@ export default function PremiumLanding() {
                 <motion.button whileHover={{ scale: 1.04, boxShadow: '0 20px 40px -8px rgba(249,115,22,0.35)' }} whileTap={{ scale: 0.97 }}
                   onClick={goDemo}
                   className="flex items-center gap-2.5 bg-[#F97316] text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-[#EA580C] transition-all shadow-xl shadow-orange-500/20">
-                  Try Live Demo <ArrowRight className="w-4 h-4" />
+                  {t('hero.exploreDemo')} <ArrowRight className="w-4 h-4" />
                 </motion.button>
-                <motion.button whileHover={{ scale: 1.04, backgroundColor: '#f5f5f4' }} whileTap={{ scale: 0.97 }} onClick={goDemo}
-                  className="flex items-center gap-2 text-[#1C1917] px-6 py-3.5 rounded-full text-sm font-semibold border border-black/10 hover:border-black/20 transition-all">
-                  Watch 2-min Video <span className="text-[#F97316]">&#9654;</span>
+                <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={goDemo}
+                  className={`flex items-center gap-2 ${c.text} px-6 py-3.5 rounded-full text-sm font-semibold border ${c.btnSecBorder} transition-all`}>
+                  {t('hero.askAI')} <MessageCircle className="w-4 h-4 text-[#F97316]" />
                 </motion.button>
               </motion.div>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-                className="flex items-center gap-6 text-sm text-[#78716C]" style={{ fontFamily: mono }}>
-                {[{ n: 23, l: 'Features' }, { n: 13, l: 'APIs' }, { n: 6, l: 'Languages' }, { n: 10, l: 'Cities' }].map(s => (
+                className={`flex items-center gap-6 text-sm ${c.textMuted}`} style={{ fontFamily: mono }}>
+                {[{ n: 23, l: t('hero.stat1Label') }, { n: 13, l: 'APIs' }, { n: 6, l: t('hero.stat3Label') }, { n: 10, l: t('hero.stat2Label') }].map(s => (
                   <div key={s.l} className="flex items-center gap-1.5">
-                    <CountUp end={s.n} className="font-bold text-[#1C1917]" />
+                    <CountUp end={s.n} className={`font-bold ${c.text}`} />
                     <span className="text-xs">{s.l}</span>
                   </div>
                 ))}
@@ -447,17 +475,16 @@ export default function PremiumLanding() {
       </section>
 
       {/* ═══ DASHBOARD PREVIEW — Mac Screen ═══ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#f5f5f4] relative overflow-hidden">
-        <DotGrid />
+      <section className={`py-24 px-6 lg:px-8 ${c.bg2} relative overflow-hidden`}>
+        <DotGrid dark={dk} />
         <div className="max-w-6xl mx-auto relative z-10">
           <Reveal className="text-center mb-12">
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">LIVE DASHBOARD</p>
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ fontFamily: serif }}>
-              See your store like <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">never before</span>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('dashboard.label')}</p>
+            <h2 className={`text-3xl md:text-4xl font-bold leading-tight ${c.text}`} style={{ fontFamily: serif }}>
+              {t('dashboard.title')} <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">{t('dashboard.titleHighlight')}</span>
             </h2>
-            <p className="text-[#78716C] text-lg max-w-2xl mx-auto mt-4">
-              Real-time revenue, AI pricing suggestions, inventory alerts, and trend forecasts &#8212; all on one screen.
-              Available on <strong>Web</strong>, <strong>Mobile</strong>, and <strong>WhatsApp</strong>.
+            <p className={`${c.textMuted} text-lg max-w-2xl mx-auto mt-4`}>
+              {t('dashboard.desc')}
             </p>
           </Reveal>
 
@@ -578,10 +605,10 @@ export default function PremiumLanding() {
       {/* ═══ PROBLEM ═══ */}
       <section className="py-24 px-6 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <Reveal><p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">THE PROBLEM</p></Reveal>
+          <Reveal><p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('problem.label')}</p></Reveal>
           <Reveal delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-[3.2rem] leading-tight mb-16 max-w-3xl" style={{ fontFamily: serif }}>
-              <WordReveal text="The people who feed India have zero data intelligence." />
+            <h2 className={`text-3xl md:text-4xl lg:text-[3.2rem] leading-tight mb-16 max-w-3xl ${c.text}`} style={{ fontFamily: serif }}>
+              <WordReveal text={t('problem.title')} />
             </h2>
           </Reveal>
 
@@ -633,13 +660,13 @@ export default function PremiumLanding() {
         }} />
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal className="text-center mb-14">
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">THE MARKETPLACE</p>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('marketplace.label')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: serif }}>
-              One Platform. Three Roles.<br />
-              <span className="bg-gradient-to-r from-[#F97316] to-[#0D9488] bg-clip-text text-transparent">Infinite Possibilities.</span>
+              {t('marketplace.title1')}<br />
+              <span className="bg-gradient-to-r from-[#F97316] to-[#0D9488] bg-clip-text text-transparent">{t('marketplace.title2')}</span>
             </h2>
             <p className="text-white/50 mt-4 text-lg max-w-2xl mx-auto">
-              BharatBazaar AI isn&apos;t just a tool &#8212; it&apos;s a complete ecosystem connecting retailers, suppliers, and customers across India.
+              {t('marketplace.desc')}
             </p>
           </Reveal>
 
@@ -740,16 +767,16 @@ export default function PremiumLanding() {
       </section>
 
       {/* ═══ YOUR DAILY ACTIONS = YOUR DATA ═══ */}
-      <section id="how-it-works" className="py-24 px-6 lg:px-8 bg-[#f5f5f4] relative overflow-hidden">
+      <section id="how-it-works" className={`py-24 px-6 lg:px-8 ${c.bg2} relative overflow-hidden`}>
         <WarmOrbs />
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal className="text-center mb-14">
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">ZERO EXTRA WORK</p>
-            <h2 className="text-3xl md:text-4xl lg:text-[3.2rem] font-bold leading-tight" style={{ fontFamily: serif }}>
-              Your Daily Actions = Your Data
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('daily.label')}</p>
+            <h2 className={`text-3xl md:text-4xl lg:text-[3.2rem] font-bold leading-tight ${c.text}`} style={{ fontFamily: serif }}>
+              {t('daily.title')}
             </h2>
-            <p className="text-[#78716C] text-lg max-w-2xl mx-auto mt-4">
-              No data entry. No spreadsheets. The store owner&apos;s daily routine automatically builds the intelligence layer.
+            <p className={`${c.textMuted} text-lg max-w-2xl mx-auto mt-4`}>
+              {t('daily.desc')}
             </p>
           </Reveal>
 
@@ -830,13 +857,13 @@ export default function PremiumLanding() {
 
       {/* ═══ BENTO FEATURES ═══ */}
       <section id="features" className="py-24 px-6 lg:px-8 relative overflow-hidden">
-        <DotGrid />
+        <DotGrid dark={dk} />
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal>
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">23 FEATURES, ALL WORKING</p>
-            <h2 className="text-3xl md:text-4xl lg:text-[3.2rem] font-bold leading-tight mb-16" style={{ fontFamily: serif }}>
-              Not mockups. Not wireframes.<br />
-              <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">Every feature works.</span>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('landing.features.label')}</p>
+            <h2 className={`text-3xl md:text-4xl lg:text-[3.2rem] font-bold leading-tight mb-16 ${c.text}`} style={{ fontFamily: serif }}>
+              {t('landing.features.title1')}<br />
+              <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">{t('landing.features.title2')}</span>
             </h2>
           </Reveal>
 
@@ -973,18 +1000,17 @@ export default function PremiumLanding() {
       </section>
 
       {/* ═══ WHATSAPP DEMO ═══ */}
-      <section className="py-24 px-6 lg:px-8 bg-gradient-to-b from-[#f0fdf4] to-[#FAFAF9] relative overflow-hidden">
+      <section className={`py-24 px-6 lg:px-8 ${dk ? 'bg-gradient-to-b from-[#0a1a0a] to-[#0c0c0d]' : 'bg-gradient-to-b from-[#f0fdf4] to-[#FAFAF9]'} relative overflow-hidden`}>
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2.5 rounded-full text-sm font-semibold mb-6 border border-green-200">
-              <MessageCircle className="w-4 h-4" /> WhatsApp-First Platform
+              <MessageCircle className="w-4 h-4" /> {t('whatsapp.badge')}
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: serif }}>
-              No App. No Website.<br />Just <span className="text-green-600">WhatsApp.</span>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold ${c.text}`} style={{ fontFamily: serif }}>
+              {t('whatsapp.title1')}<br /><span className="text-green-600">{t('whatsapp.title2')}</span>
             </h2>
-            <p className="text-[#78716C] mt-5 text-lg max-w-2xl mx-auto leading-relaxed">
-              Indian store owners live on WhatsApp. So we brought the entire platform to them.
-              Every feature &#8212; pricing, inventory, orders, bills &#8212; accessible through simple messages.
+            <p className={`${c.textMuted} mt-5 text-lg max-w-2xl mx-auto leading-relaxed`}>
+              {t('whatsapp.desc')}
             </p>
           </Reveal>
 
@@ -1168,15 +1194,15 @@ export default function PremiumLanding() {
 
       {/* ═══ AVAILABLE ON 3 PLATFORMS ═══ */}
       <section className="py-24 px-6 lg:px-8 relative overflow-hidden">
-        <DotGrid />
+        <DotGrid dark={dk} />
         <div className="max-w-5xl mx-auto relative z-10 text-center">
           <Reveal>
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">EVERYWHERE YOU ARE</p>
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4" style={{ fontFamily: serif }}>
-              One Platform. <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">Three Interfaces.</span>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('platform.label')}</p>
+            <h2 className={`text-3xl md:text-4xl font-bold leading-tight mb-4 ${c.text}`} style={{ fontFamily: serif }}>
+              {t('platform.title1')} <span className="bg-gradient-to-r from-[#F97316] to-[#F59E0B] bg-clip-text text-transparent">{t('platform.title2')}</span>
             </h2>
-            <p className="text-[#78716C] text-lg max-w-2xl mx-auto mb-16">
-              We built a prototype for every surface Indian merchants use &#8212; web dashboards, mobile apps, and WhatsApp chatbots.
+            <p className={`${c.textMuted} text-lg max-w-2xl mx-auto mb-16`}>
+              {t('platform.desc')}
             </p>
           </Reveal>
 
@@ -1227,7 +1253,7 @@ export default function PremiumLanding() {
       </section>
 
       {/* ═══ DEMO CTA ═══ */}
-      <section className="py-24 px-6 lg:px-8 bg-[#f5f5f4] relative overflow-hidden">
+      <section className={`py-24 px-6 lg:px-8 ${c.bg2} relative overflow-hidden`}>
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
             <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">TRY IT NOW</p>
@@ -1275,11 +1301,11 @@ export default function PremiumLanding() {
         }} />
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal>
-            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">BUILT ON AWS</p>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('landing.arch.label')}</p>
             <h2 className="text-3xl md:text-4xl lg:text-[3.2rem] font-bold leading-tight mb-4" style={{ fontFamily: serif }}>
-              Production-grade architecture
+              {t('landing.arch.title')}
             </h2>
-            <p className="text-white/50 text-lg max-w-2xl mb-16">Not a hackathon prototype. This is deployable infrastructure with enterprise-grade resilience.</p>
+            <p className="text-white/50 text-lg max-w-2xl mb-16">{t('landing.arch.desc')}</p>
           </Reveal>
 
           <Stagger className="space-y-3 mb-12" stagger={0.1}>
@@ -1355,9 +1381,9 @@ export default function PremiumLanding() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <Reveal>
-                <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">IMPACT</p>
-                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-10" style={{ fontFamily: serif }}>
-                  Built for scale.<br />Designed for Bharat.
+                <p className="text-xs font-semibold text-[#F97316] uppercase tracking-[3px] mb-4">{t('landing.impact.label')}</p>
+                <h2 className={`text-3xl md:text-4xl font-bold leading-tight mb-10 ${c.text}`} style={{ fontFamily: serif }}>
+                  {t('landing.impact.title1')}<br />{t('landing.impact.title2')}
                 </h2>
               </Reveal>
               <Stagger className="grid grid-cols-2 gap-4" stagger={0.1}>
@@ -1425,17 +1451,17 @@ export default function PremiumLanding() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <Reveal>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4" style={{ fontFamily: serif }}>
-              Amazon has data science teams.
+              {t('landing.cta.line1')}
             </h2>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white/90 leading-tight mb-10" style={{ fontFamily: serif }}>
-              Kirana stores have BharatBazaar AI.
+              {t('landing.cta.line2')}
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
             <motion.button whileHover={{ scale: 1.04, boxShadow: '0 20px 40px -8px rgba(0,0,0,0.3)' }} whileTap={{ scale: 0.97 }}
               onClick={goDemo}
               className="inline-flex items-center gap-2.5 bg-white text-[#1C1917] px-8 py-4 rounded-full text-base font-bold hover:bg-white/95 transition-all shadow-2xl">
-              Try it Live <ArrowRight className="w-5 h-5" />
+              {t('landing.cta.tryLive')} <ArrowRight className="w-5 h-5" />
             </motion.button>
           </Reveal>
           <Reveal delay={0.3}><p className="text-white/50 text-sm mt-8">Team ParityAI &#183; AI for Bharat Hackathon 2026</p></Reveal>
