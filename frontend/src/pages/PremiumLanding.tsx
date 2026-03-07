@@ -585,22 +585,82 @@ export default function PremiumLanding() {
                             <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-[#F97316]/30" /><span className={`text-[7px] ${dk ? 'text-white/40' : 'text-[#78716C]'}`}>Last week</span></div>
                           </div>
                         </div>
-                        <div className="flex items-end gap-1 h-24">
-                          {[
-                            { curr: 45, prev: 35 }, { curr: 62, prev: 50 }, { curr: 38, prev: 42 },
-                            { curr: 75, prev: 60 }, { curr: 55, prev: 48 }, { curr: 82, prev: 65 }, { curr: 68, prev: 58 },
-                          ].map((d, i) => (
-                            <div key={i} className="flex-1 flex items-end gap-[2px]">
-                              <motion.div initial={{ height: 0 }} whileInView={{ height: `${d.prev}%` }}
-                                viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.5 }}
-                                className="flex-1 rounded-t bg-[#F97316]/20" />
-                              <motion.div initial={{ height: 0 }} whileInView={{ height: `${d.curr}%` }}
-                                viewport={{ once: true }} transition={{ delay: i * 0.06 + 0.1, duration: 0.5 }}
-                                className={`flex-1 rounded-t ${i === 5 ? 'bg-[#F97316]' : 'bg-[#F97316]/70'}`} />
-                            </div>
-                          ))}
+                        {/* SVG Area Chart */}
+                        <div className="relative h-28">
+                          <svg viewBox="0 0 400 120" className="w-full h-full" preserveAspectRatio="none">
+                            {/* Grid lines */}
+                            {[0, 30, 60, 90].map(y => (
+                              <line key={y} x1="0" y1={y} x2="400" y2={y} stroke={dk ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'} strokeDasharray="4 4" />
+                            ))}
+                            {/* Last week area */}
+                            <motion.path
+                              initial={{ opacity: 0 }}
+                              whileInView={{ opacity: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.8 }}
+                              d="M0,85 C30,75 50,68 67,72 C85,76 100,65 133,58 C160,52 180,62 200,55 C220,48 250,42 267,38 C285,34 310,45 333,40 C355,36 380,42 400,48 L400,120 L0,120 Z"
+                              fill="url(#lastWeekGrad)" />
+                            {/* This week area */}
+                            <motion.path
+                              initial={{ opacity: 0 }}
+                              whileInView={{ opacity: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.8, delay: 0.2 }}
+                              d="M0,78 C25,65 50,55 67,60 C85,65 100,42 133,35 C160,28 180,45 200,38 C220,30 250,20 267,15 C285,10 310,25 333,18 C355,12 380,22 400,28 L400,120 L0,120 Z"
+                              fill="url(#thisWeekGrad)" />
+                            {/* Last week line */}
+                            <motion.path
+                              initial={{ pathLength: 0 }}
+                              whileInView={{ pathLength: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 1 }}
+                              d="M0,85 C30,75 50,68 67,72 C85,76 100,65 133,58 C160,52 180,62 200,55 C220,48 250,42 267,38 C285,34 310,45 333,40 C355,36 380,42 400,48"
+                              fill="none" stroke={dk ? 'rgba(249,115,22,0.25)' : 'rgba(249,115,22,0.3)'} strokeWidth="1.5" />
+                            {/* This week line */}
+                            <motion.path
+                              initial={{ pathLength: 0 }}
+                              whileInView={{ pathLength: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 1, delay: 0.2 }}
+                              d="M0,78 C25,65 50,55 67,60 C85,65 100,42 133,35 C160,28 180,45 200,38 C220,30 250,20 267,15 C285,10 310,25 333,18 C355,12 380,22 400,28"
+                              fill="none" stroke="#F97316" strokeWidth="2" />
+                            {/* Dots on this week line */}
+                            {[
+                              { x: 0, y: 78 }, { x: 67, y: 60 }, { x: 133, y: 35 },
+                              { x: 200, y: 38 }, { x: 267, y: 15 }, { x: 333, y: 18 }, { x: 400, y: 28 },
+                            ].map((pt, i) => (
+                              <motion.circle key={i}
+                                initial={{ r: 0 }}
+                                whileInView={{ r: 3 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.3 + i * 0.08 }}
+                                cx={pt.x} cy={pt.y} fill="#F97316" stroke={dk ? '#1a1a1d' : '#fff'} strokeWidth="1.5" />
+                            ))}
+                            {/* Highlight tooltip on Saturday (peak) */}
+                            <motion.g initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 1 }}>
+                              <rect x="240" y="0" width="54" height="20" rx="4" fill={dk ? '#F97316' : '#F97316'} />
+                              <text x="267" y="13" textAnchor="middle" fill="white" fontSize="8" fontWeight="600" fontFamily="JetBrains Mono, monospace">{'\u20B9'}18.4K</text>
+                            </motion.g>
+                            {/* Gradients */}
+                            <defs>
+                              <linearGradient id="thisWeekGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#F97316" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#F97316" stopOpacity="0.01" />
+                              </linearGradient>
+                              <linearGradient id="lastWeekGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#F97316" stopOpacity="0.08" />
+                                <stop offset="100%" stopColor="#F97316" stopOpacity="0.01" />
+                              </linearGradient>
+                            </defs>
+                          </svg>
+                          {/* Y-axis labels */}
+                          <div className="absolute left-0 top-0 h-full flex flex-col justify-between py-1 pointer-events-none">
+                            {['\u20B920K', '\u20B915K', '\u20B910K', '\u20B95K'].map(v => (
+                              <span key={v} className={`text-[6px] ${dk ? 'text-white/20' : 'text-[#a8a29e]'}`} style={{ fontFamily: mono }}>{v}</span>
+                            ))}
+                          </div>
                         </div>
-                        <div className="flex justify-between mt-1.5">
+                        <div className="flex justify-between mt-1.5 px-0">
                           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
                             <span key={d} className={`text-[7px] ${dk ? 'text-white/20' : 'text-[#a8a29e]'} flex-1 text-center`}>{d}</span>
                           ))}
