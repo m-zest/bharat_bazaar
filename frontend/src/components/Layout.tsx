@@ -5,7 +5,7 @@ import {
   Package, MessageCircle, GitCompare, Eye, ClipboardList,
   Menu, X, ChevronRight, Camera, ShoppingCart, Truck,
   Bell, BarChart3, User, LogOut, Store, MapPin, Receipt, BookOpen,
-  Sun, Moon,
+  Sun, Moon, Brain, Briefcase, ScanLine,
 } from 'lucide-react'
 import { SidebarLogo, NavbarLogo } from './TarazuLogo'
 import { useState, useEffect } from 'react'
@@ -15,37 +15,47 @@ import { useTheme } from '../utils/ThemeContext'
 
 const navSections = [
   {
-    title: 'Main',
+    title: 'Dashboard',
     items: [
       { path: '/dashboard', label: 'Dashboard', labelHi: 'डैशबोर्ड', icon: LayoutDashboard },
-      { path: '/scanner', label: 'Bill Scanner', labelHi: 'बिल स्कैनर', icon: Camera },
-      { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package },
-      { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
+    ],
+  },
+  {
+    title: 'AI Assistant',
+    items: [
       { path: '/chat', label: 'Munim-ji AI', labelHi: 'मुनीम-जी AI', icon: MessageCircle },
-    ],
-  },
-  {
-    title: 'Store Management',
-    items: [
-      { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList },
-      { path: '/orders', label: 'Order History', labelHi: 'ऑर्डर हिस्ट्री', icon: ShoppingCart },
-      { path: '/tracking', label: 'Delivery Tracking', labelHi: 'डिलीवरी ट्रैकिंग', icon: Truck },
-      { path: '/invoices', label: 'GST Invoices', labelHi: 'GST बिल', icon: Receipt },
-      { path: '/khata', label: 'Customer Khata', labelHi: 'ग्राहक खाता', icon: BookOpen },
-    ],
-  },
-  {
-    title: 'AI Tools',
-    items: [
-      { path: '/competitors', label: 'Competitors', labelHi: 'प्रतिस्पर्धी', icon: Eye },
-      { path: '/compare', label: 'Compare', labelHi: 'तुलना करें', icon: GitCompare },
       { path: '/content', label: 'Content Generator', labelHi: 'कंटेंट जेनरेटर', icon: Languages },
       { path: '/sentiment', label: 'Sentiment Analyzer', labelHi: 'सेंटिमेंट', icon: MessageSquareText },
     ],
   },
   {
-    title: 'Analytics',
+    title: 'Store',
     items: [
+      { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList },
+      { path: '/orders', label: 'Orders', labelHi: 'ऑर्डर', icon: ShoppingCart },
+      { path: '/tracking', label: 'Delivery', labelHi: 'डिलीवरी ट्रैकिंग', icon: Truck },
+    ],
+  },
+  {
+    title: 'Pricing AI',
+    items: [
+      { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee },
+      { path: '/competitors', label: 'Competitor Monitor', labelHi: 'प्रतिस्पर्धी', icon: Eye },
+      { path: '/compare', label: 'Price Compare', labelHi: 'तुलना करें', icon: GitCompare },
+    ],
+  },
+  {
+    title: 'Operations',
+    items: [
+      { path: '/scanner', label: 'Bill Scanner', labelHi: 'बिल स्कैनर', icon: ScanLine },
+      { path: '/sourcing', label: 'Smart Sourcing', labelHi: 'स्मार्ट सोर्सिंग', icon: Package },
+    ],
+  },
+  {
+    title: 'Business & Finance',
+    items: [
+      { path: '/invoices', label: 'GST Invoices', labelHi: 'GST बिल', icon: Receipt },
+      { path: '/khata', label: 'Khata Book', labelHi: 'ग्राहक खाता', icon: BookOpen },
       { path: '/reports', label: 'Reports', labelHi: 'रिपोर्ट्स', icon: BarChart3 },
       { path: '/notifications', label: 'Notifications', labelHi: 'नोटिफिकेशन', icon: Bell },
     ],
