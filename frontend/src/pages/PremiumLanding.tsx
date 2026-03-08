@@ -318,9 +318,9 @@ export default function PremiumLanding() {
               </AnimatePresence>
             </div>
 
-            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/register')}
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => navigate('/login')}
               className={`hidden sm:flex items-center gap-2 ${c.btnSecText} px-4 py-2.5 rounded-full text-sm font-semibold border ${c.btnSecBorder} transition-colors`}>
-              Register
+              Login
             </motion.button>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={goDemo}
               className="flex items-center gap-2 bg-[#F97316] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#EA580C] transition-colors shadow-lg shadow-orange-500/20">

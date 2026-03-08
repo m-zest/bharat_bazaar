@@ -223,10 +223,10 @@ export default function Landing() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/login')}
               className="hidden sm:flex items-center gap-2 text-gray-300 px-4 py-2.5 rounded-full text-sm font-semibold border border-[#333] hover:border-orange-500/50 transition-colors"
             >
-              Register
+              Login
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.03 }}
