@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <strong>Team ParityAI</strong>: <a href="https://github.com/m-zest">Mohammad Zeeshan</a> · <strong>Afzal Hussain</strong>
+  <strong>Team ParityAI</strong>: <a href="https://github.com/m-zest">Mohammad Zeeshan</a> · <strong><a href="https://github.com/afzalhussain555">Afzal Hussain</strong>
 </p>
 
 ---
@@ -257,7 +257,7 @@ Mumbai, Delhi, Bangalore, Chennai, Kolkata, Ahmedabad, Pune, Jaipur, Lucknow, In
 | Member | Role |
 |--------|------|
 | **Mohammad Zeeshan** | AI Researcher |
-| **Afzal Hussain** | Team Member |
+| **Afzal Hussain** | Senior Software Developer |
 
 ---
 
