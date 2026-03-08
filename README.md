@@ -34,13 +34,13 @@
 
 ##  Project Summary
 
-> **[View Full Project Summary (PDF)](./BharatBazaar-Project-Summary.pdf)**
+> **[View Full Project Summary (PDF)](./BharatBazaar-Summary.pdf)**
 
 | Item | Link |
 |------|------|
 |  Web App | [d3j4u51h5o0dhm.cloudfront.net](https://d3j4u51h5o0dhm.cloudfront.net) |
 |  Mobile App | [d2a5rnm0qdxhtx.cloudfront.net](https://d2a5rnm0qdxhtx.cloudfront.net) |
-|  Presentation | [View PPT](./BharatBazaarParityAI.pdf) |
+|  Presentation | [View PPT](BharatBazaarParityAI.pdf) |
 |  Project Summary | [View PDF](BharatBazaar-Summary.pdf) |
 
 
