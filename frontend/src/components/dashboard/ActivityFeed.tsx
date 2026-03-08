@@ -109,7 +109,7 @@ export default function ActivityFeed({ todaySales, recentActivity }: ActivityFee
       <div className={`mt-3 pt-2 flex items-center gap-1.5 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
         <Database className="w-3 h-3 text-orange-500" />
         <p className="text-[9px] text-gray-500">
-          <span className="text-orange-400 font-semibold">Zero manual entry.</span> Actions auto-feed analytics via DynamoDB + Bedrock.
+          <span className="text-orange-400 font-semibold">Zero manual entry.</span> Actions auto-feed analytics via AI.
         </p>
       </div>
     </div>

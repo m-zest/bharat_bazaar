@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { getOnboardingData } from '../components/OnboardingModal'
 
 interface User {
   username: string
@@ -61,7 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (username: string, password: string): boolean => {
     const entry = DEMO_USERS[username.toLowerCase()]
     if (entry && entry.password === password) {
-      setUser(entry.user)
+      const onboarding = getOnboardingData()
+      const u = { ...entry.user }
+      if (onboarding) {
+        if (onboarding.ownerName) u.name = onboarding.ownerName
+        if (onboarding.storeName) u.store = onboarding.storeName
+        if (onboarding.city) u.city = onboarding.city
+        u.avatar = u.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+      }
+      setUser(u)
       return true
     }
     return false

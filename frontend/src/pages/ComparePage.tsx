@@ -87,11 +87,11 @@ export default function ComparePage() {
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold">AI Product Comparison</h1>
-            <p className="text-sm text-white/60">Bedrock-powered pricing, demand & sentiment comparison</p>
+            <p className="text-sm text-white/60">AI-powered pricing, demand & sentiment comparison</p>
           </div>
           <div className="ml-auto flex items-center gap-2 text-sm text-white/40">
             <Sparkles className="w-4 h-4 text-saffron-300" />
-            Powered by Claude AI
+            AI-Powered
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function ComparePage() {
         <div className="bg-[#1a1a1d] rounded-2xl shadow-sm border border-[#2a2a2d] text-center py-16 text-gray-400">
           <GitCompare className="w-16 h-16 mx-auto mb-4 text-gray-600" />
           <p className="text-lg font-medium">Click "Compare with AI" to get intelligent analysis</p>
-          <p className="text-sm mt-1">Powered by Amazon Bedrock Claude AI</p>
+          <p className="text-sm mt-1">AI-powered intelligent analysis</p>
         </div>
       )}
 

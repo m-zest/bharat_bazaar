@@ -574,7 +574,7 @@ export default function RegisterPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-600 mt-6">
-          Powered by AWS Bedrock & Amazon DynamoDB
+          Powered by AI
         </p>
       </motion.div>
     </div>

@@ -395,7 +395,7 @@ export default function ScannerPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
                   { icon: Camera, label: 'Bill Scanned', detail: 'AI Vision extracted items', color: 'text-violet-400' },
-                  { icon: Database, label: 'Inventory Updated', detail: `${addedCount} items saved to DynamoDB`, color: 'text-blue-400' },
+                  { icon: Database, label: 'Inventory Updated', detail: `${addedCount} items saved`, color: 'text-blue-400' },
                   { icon: IndianRupee, label: 'Prices Set', detail: 'Auto 25% markup applied', color: 'text-orange-400' },
                   { icon: BarChart3, label: 'Analytics Fed', detail: 'Dashboard insights updated', color: 'text-teal-400' },
                 ].map((step, i) => (

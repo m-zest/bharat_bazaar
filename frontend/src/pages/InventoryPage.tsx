@@ -180,7 +180,7 @@ export default function InventoryPage() {
       <div className="p-6 lg:p-8 max-w-[1400px] flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Loader2 className="w-10 h-10 text-saffron-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-500 font-medium">Loading inventory from DynamoDB...</p>
+          <p className="text-gray-500 font-medium">Loading inventory...</p>
         </div>
       </div>
     )
@@ -199,7 +199,7 @@ export default function InventoryPage() {
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold">Inventory Tracker</h1>
-            <p className="text-sm text-white/60">Persisted with AWS DynamoDB — real-time stock management</p>
+            <p className="text-sm text-white/60">Real-time stock management</p>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <button
