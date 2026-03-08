@@ -88,47 +88,12 @@ Small retailers lose an estimated **Rs.50,000+ per year** to suboptimal pricing 
 ---
 
 ## Complete Data Flow
-
-```
-DATA IN                         INVENTORY                       DATA OUT
-+-----------------------+       +-----------------------+       +-----------------------+
-| Onboarding            |       | Every item has:       |       | Invoices              |
-|   Seeds catalog       | ----> |   name, cost, price   | ----> |   Sale recorded       |
-| Bill Scanner          |       |   quantity, sell rate  |       | Dashboard             |
-|   AI extracts items   | ----> |   reorder level       | ----> |   Revenue, top items  |
-| Wholesale Orders      |       |   SOURCE BADGE        |       | AI Layer              |
-|   Incoming stock      | ----> |                       | ----> |   Pricing, forecasts  |
-+-----------------------+       +-----------------------+       +-----------------------+
-```
-
+![Architecture](./DataFlow-Diagram.png)
 ---
 
 ## Architecture
+![Architecture](./architecture.png)
 
-```
-+-----------------------------------------------------------------------+
-|                              FRONTEND                                  |
-|   React 18 + TypeScript + Vite + Tailwind CSS + Framer Motion         |
-|   23 Pages | SalesContext | CartContext | ProductCatalog               |
-|   Light/Dark Theme | Voice I/O | 6 Languages                          |
-+----------------------------------+------------------------------------+
-                                   |
-                              REST API Calls
-                                   |
-+----------------------------------v------------------------------------+
-|                        BACKEND (Express.js)                           |
-|              Multi-stage Docker Container (Node 18 Alpine)             |
-+--------+----------------+----------------+------------------+---------+
-         |                |                |                  |
-         v                v                v                  v
-+----------------+ +-------------+ +---------------+ +---------------+
-|  EXPRESS API   | |  AI ENGINE  | |  DYNAMODB     | | EXTERNAL APIs |
-|  13 Endpoints  | |  Multi-Tier | |  Single-Table | | OpenWeather   |
-|  11 Handlers   | |  Bedrock    | |  Design       | | Twilio        |
-|  Lambda-ready  | |  Gemini     | |  PK/SK Keys   | | (WhatsApp)    |
-|                | |  Smart Demo | |  PAY_PER_REQ  | |               |
-+----------------+ +------+------+ +-------+-------+ +---------------+
-```
 
 ---
 
