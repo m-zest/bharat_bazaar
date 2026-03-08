@@ -114,7 +114,7 @@ export default function Dashboard() {
     { path: '/pricing', label: 'Smart Pricing', labelHi: 'स्मार्ट प्राइसिंग', icon: IndianRupee, color: 'text-saffron-400', bg: 'bg-saffron-500/10', desc: 'AI price optimizer' },
     { path: '/chat', label: 'Munim-ji AI', labelHi: 'AI सलाहकार', icon: MessageCircle, color: 'text-royal-400', bg: 'bg-royal-500/10', desc: 'Business advisor' },
     { path: '/content', label: 'Content Gen', labelHi: 'कंटेंट', icon: Languages, color: 'text-bazaar-400', bg: 'bg-bazaar-500/10', desc: '6 languages + platforms' },
-    { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList, color: 'text-blue-400', bg: 'bg-blue-500/10', desc: 'DynamoDB stock tracker' },
+    { path: '/inventory', label: 'Inventory', labelHi: 'इन्वेंटरी', icon: ClipboardList, color: 'text-blue-400', bg: 'bg-blue-500/10', desc: 'Real-time stock tracker' },
     { path: '/competitors', label: 'Competitors', labelHi: 'प्रतिस्पर्धी', icon: Eye, color: 'text-amber-400', bg: 'bg-amber-500/10', desc: 'Monitor rival prices' },
     { path: '/compare', label: 'Compare', labelHi: 'तुलना करें', icon: GitCompare, color: 'text-cyan-400', bg: 'bg-cyan-500/10', desc: 'Side-by-side analysis' },
     { path: '/sentiment', label: 'Sentiment', labelHi: 'सेंटिमेंट', icon: MessageSquareText, color: 'text-pink-400', bg: 'bg-pink-500/10', desc: 'Review analyzer' },
@@ -436,7 +436,7 @@ export default function Dashboard() {
             iconColor="text-blue-400"
             columns={4}
           >
-            <ModuleCard path="/inventory" label="Inventory" labelHi="इन्वेंटरी" description="DynamoDB-powered stock tracking" icon={ClipboardList} color="text-blue-400" bg="bg-blue-500/10" index={0} />
+            <ModuleCard path="/inventory" label="Inventory" labelHi="इन्वेंटरी" description="Real-time stock tracking" icon={ClipboardList} color="text-blue-400" bg="bg-blue-500/10" index={0} />
             <ModuleCard path="/orders" label="Orders" labelHi="ऑर्डर" description="Track and manage all orders" icon={Truck} color="text-indigo-400" bg="bg-indigo-500/10" index={1} />
             <ModuleCard path="/scanner" label="Bill Scanner" labelHi="बिल स्कैनर" description="OCR + AI to extract bill items" icon={ScanLine} color="text-teal-400" bg="bg-teal-500/10" index={2} badge="AI" />
             <ModuleCard path="/tracking" label="Delivery Tracking" labelHi="डिलीवरी ट्रैकिंग" description="Real-time shipment status" icon={Truck} color="text-violet-400" bg="bg-violet-500/10" index={3} />

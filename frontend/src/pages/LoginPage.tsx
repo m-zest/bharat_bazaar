@@ -182,7 +182,7 @@ export default function LoginPage() {
             </button>
           </p>
           <p className="text-xs text-gray-600 mt-2">
-            Powered by AWS Bedrock & Amazon DynamoDB
+            Powered by AI
           </p>
         </div>
       </motion.div>

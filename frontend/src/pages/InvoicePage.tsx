@@ -340,7 +340,7 @@ export default function InvoicePage() {
           </div>
           <p className="text-[9px] text-gray-500 mt-2 flex items-center gap-1">
             <Database className="w-3 h-3 text-orange-500" />
-            This sale feeds into your dashboard analytics, demand forecasting, and inventory levels via DynamoDB + Bedrock AI.
+            This sale feeds into your dashboard analytics, demand forecasting, and inventory levels.
           </p>
         </motion.div>
       )}

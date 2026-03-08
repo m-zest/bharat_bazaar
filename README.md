@@ -1,26 +1,28 @@
 <p align="center">
   <h1 align="center">BharatBazaar AI</h1>
-  <p align="center"><strong>Market Intelligence for Bharat's 15M Kirana Stores</strong></p>
+  <p align="center"><strong>AI-Powered Market Intelligence for Bharat's 15 Million Kirana Stores</strong></p>
   <p align="center">
-    AI-powered market intelligence platform for Indian small retailers — in their own language, accessible via WhatsApp.
+    Empowering India's small retailers with enterprise-grade market intelligence — in their own language, at zero extra effort, accessible via WhatsApp.
   </p>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/AWS-Bedrock-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS Bedrock" />
   <img src="https://img.shields.io/badge/Amazon-DynamoDB-4053D6?style=for-the-badge&logo=amazon-dynamodb&logoColor=white" alt="DynamoDB" />
-  <img src="https://img.shields.io/badge/AWS-App_Runner-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="App Runner" />
-  <img src="https://img.shields.io/badge/Amazon-ECR-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="ECR" />
+  <img src="https://img.shields.io/badge/Docker-Container-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18" />
   <img src="https://img.shields.io/badge/TypeScript-5.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Node.js-18-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Docker-Multi--Stage-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
 </p>
 
 <p align="center">
-  <strong>AI for Bharat Hackathon 2026</strong> | Track: Retail, Commerce & Market Intelligence | Team: <strong>ParityAI</strong>
+  <strong>AI for Bharat Hackathon 2026</strong> | Track: Retail, Commerce & Market Intelligence
+</p>
+
+<p align="center">
+  <strong>Team ParityAI</strong>: <a href="https://github.com/m-zest">M Zest</a> · <strong>Afzal Hussain</strong>
 </p>
 
 ---
@@ -34,8 +36,8 @@
 - [Key Highlights](#key-highlights)
 - [Architecture](#architecture)
 - [AWS Services Integration](#aws-services-integration)
-- [4-Tier AI Fallback Chain](#4-tier-ai-fallback-chain)
-- [Features](#features)
+- [Multi-Tier AI Fallback Chain](#multi-tier-ai-fallback-chain)
+- [Features (23 Total)](#features-23-total)
 - [WhatsApp-First Strategy](#whatsapp-first-strategy)
 - [API Documentation](#api-documentation)
 - [Tech Stack](#tech-stack)
@@ -45,15 +47,15 @@
 - [Deployment](#deployment)
 - [What Makes This Special](#what-makes-this-special)
 - [Supported Languages & Regions](#supported-languages--regions)
-- [License](#license)
+- [Team](#team)
 
 ---
 
 ## 🎯 Demo Guide for Judges
 
-> **Quick start:** The app works fully in demo mode — no AWS credentials needed. All AI features fall back to smart, realistic cached responses. Pre-loaded with demo sales, inventory, and customer data.
+> **The app works fully out of the box — no AWS credentials required.** All AI features gracefully degrade to intelligent, realistic cached responses when cloud services are unavailable. Pre-loaded with demo sales, inventory, and customer data.
 
-### Demo Login
+### Demo Credentials
 
 | Username | Password | Role |
 |----------|----------|------|
@@ -62,11 +64,9 @@
 
 ### Quick Registration
 
-Visit `/register` → click **"Quick Demo Fill"** → auto-populates with one of three profiles (Retailer/Supplier/Customer). Auto-login after registration.
+Visit `/register` → click **"Quick Demo Fill"** → auto-populates with one of three profiles (Retailer / Supplier / Customer). Auto-login after registration.
 
 ### 🔥 Recommended Demo Flow (5 minutes)
-
-Follow this path to see the **complete data pipeline** in action:
 
 #### Step 1: Onboarding → Store Catalog
 1. Clear localStorage (`localStorage.clear()` in console) → refresh
@@ -79,7 +79,7 @@ Follow this path to see the **complete data pipeline** in action:
 - **Guided Demo:** "Try the Data Flow" panel with 4-step walkthrough
 - **AI Insights, Weather, Festivals, Charts** — all city-aware
 
-#### Step 3: Bill Scanner → Inventory
+#### Step 3: Bill Scanner → Inventory Pipeline
 1. Go to `/scanner` → upload any image
 2. AI extracts items → click "Add All to Inventory"
 3. See **"Data Flow Complete!"** banner: Bill Scanned → Inventory Updated → Prices Set → Analytics Fed
@@ -98,7 +98,7 @@ Follow this path to see the **complete data pipeline** in action:
 - **Sentiment Analyzer** (`/sentiment`) — Paste Hinglish reviews → get actionable insights
 - **Competitor Analysis** (`/competitors`) — Market intelligence on local rivals
 
-### All 23 Features
+### All 23 Features at a Glance
 
 | # | Feature | Route | Highlights |
 |---|---------|-------|-----------|
@@ -126,17 +126,17 @@ Follow this path to see the **complete data pipeline** in action:
 | 22 | Store Catalog | Dashboard | Onboarding-driven product personalization |
 | 23 | WhatsApp Integration | Landing | Twilio sandbox for store messaging |
 
-### Tech Highlights for Code Review
+### Code Review Highlights
 
 | What to look at | File | Why it's interesting |
 |-----------------|------|---------------------|
-| 4-tier AI fallback | `backend/src/utils/bedrock-client.ts` | Bedrock → Nova Lite → Gemini → Smart Demo |
-| DynamoDB single-table | `backend/src/utils/dynamodb-client.ts` | Composite PK/SK keys, auto-creates table |
-| Sales tracking | `frontend/src/utils/SalesContext.tsx` | Records every invoice, computes top sellers |
-| Product catalog | `frontend/src/utils/productCatalog.ts` | 30+ products, onboarding → inventory seeding |
+| Multi-tier AI fallback | `backend/src/utils/bedrock-client.ts` | Bedrock → Nova Lite → Gemini → Smart Demo |
+| DynamoDB single-table design | `backend/src/utils/dynamodb-client.ts` | Composite PK/SK keys, auto-creates table |
+| Sales tracking pipeline | `frontend/src/utils/SalesContext.tsx` | Records every invoice, computes top sellers |
+| Product catalog system | `frontend/src/utils/productCatalog.ts` | 30+ products, onboarding → inventory seeding |
 | Data flow pipeline | `frontend/src/pages/Dashboard.tsx` | Live activity feed, sales overview |
 | Bill scanner → inventory | `frontend/src/pages/ScannerPage.tsx` | AI Vision → auto-add with source tagging |
-| 11 backend handlers | `backend/src/handlers/` | All Lambda-ready with `@types/aws-lambda` |
+| 11 backend handlers | `backend/src/handlers/` | All Lambda-compatible with `@types/aws-lambda` |
 
 ---
 
@@ -198,12 +198,12 @@ The platform answers three fundamental questions every store owner needs answere
 │  tracked live   │  processed        │  Sold Today/Week per item │
 ├─────────────────┴───────────────────┴───────────────────────────┤
 │                      AI INTELLIGENCE LAYER                      │
-│  Bedrock AI analyzes all data → pricing strategies,             │
+│  Multi-tier AI analyzes all data → pricing strategies,          │
 │  demand forecasts, competitor analysis, reorder alerts           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### How Each Data Source Works
+### Data Sources
 
 | Data Source | Trigger | What's Captured | Where It Goes |
 |-------------|---------|-----------------|---------------|
@@ -220,7 +220,7 @@ The platform answers three fundamental questions every store owner needs answere
 
 | Screen | Description |
 |--------|-------------|
-| **Landing Page** | Animated hero with particle effects, 4-card data flow section, WhatsApp demo, AWS architecture, marketplace ecosystem |
+| **Landing Page** | Animated hero with particle effects, 4-card data flow section, WhatsApp demo, architecture diagram, marketplace ecosystem |
 | **Dashboard** | Sales overview (revenue/items/top sellers), live data flow feed, store catalog, guided demo, AI insights, weather, festivals, 12-feature grid |
 | **Smart Pricing** | Enter product + cost → 3 AI strategies (competitive/balanced/premium) with region-aware profit analysis |
 | **Munim-ji AI Chat** | Business advisor in 8 languages, voice I/O, contextual business advice |
@@ -248,61 +248,64 @@ The platform answers three fundamental questions every store owner needs answere
                                   REST API Calls
                                        |
     +----------------------------------v------------------------------------+
-    |                          AWS APP RUNNER                                |
+    |                        BACKEND (Express.js)                           |
     |              Multi-stage Docker Container (Node 18 Alpine)             |
-    |              Auto-scaling | Health Checks (/api/health)               |
-    |              Port 8080 | ECR Private Registry                         |
+    |              Health Checks (/api/health) | Port 4000/8080             |
+    |              Deployable to App Runner / ECS / Any Docker Host          |
     +--------+----------------+----------------+------------------+---------+
              |                |                |                  |
              v                v                v                  v
     +----------------+ +-------------+ +---------------+ +---------------+
-    |  EXPRESS API   | |  BEDROCK    | |  DYNAMODB     | | CLOUDWATCH    |
-    |  LAYER         | |  CLIENT     | |  CLIENT       | | LOGS          |
-    |                | |             | |               | |               |
-    | 13 Endpoints   | | Claude 3    | | Single-Table  | | Container     |
-    | 11 Handlers    | | Haiku       | | Design        | | Monitoring    |
-    | Lambda-ready   | | Nova Lite   | | PK/SK Keys    | |               |
-    | (@types/       | | Gemini      | | PAY_PER_REQ   | |               |
-    |  aws-lambda)   | | Fallback    | | Auto-Create   | |               |
+    |  EXPRESS API   | |  AI ENGINE  | |  DYNAMODB     | | EXTERNAL APIs |
+    |  LAYER         | |  (Multi-    | |  CLIENT       | |               |
+    |                | |   Tier)     | |               | | OpenWeather   |
+    | 13 Endpoints   | |             | | Single-Table  | | Twilio        |
+    | 11 Handlers    | | Bedrock     | | Design        | | (WhatsApp)    |
+    | Lambda-ready   | | Gemini      | | PK/SK Keys    | |               |
+    | (@types/       | | Smart Demo  | | PAY_PER_REQ   | |               |
+    |  aws-lambda)   | |             | | Auto-Create   | |               |
     +----------------+ +------+------+ +-------+-------+ +---------------+
                               |                |
-             +----------------+                |
-             |                                 |
-             v                                 v
-    +-------------------+          +------------------------+
-    | 4-TIER AI ENGINE  |          | DYNAMODB TABLE         |
-    |                   |          | BharatBazaarData       |
-    | 1. Bedrock Haiku  |          |                        |
-    |    (ap-south-1)   |          | STORE#<id> | INV#<id>  |
-    | 2. Nova Lite      |          | STORE#<id> | ORDER#<id>|
-    |    (us-east-1)    |          | STORE#<id> | SETTINGS  |
-    | 3. Gemini 1.5     |          |                        |
-    |    Flash          |          | Inventory, Orders,     |
-    | 4. Smart Demo     |          | Store Settings         |
-    |    Mode           |          +------------------------+
-    +-------------------+
+                              v                v
+                    +-------------------+  +------------------------+
+                    | MULTI-TIER AI     |  | DYNAMODB TABLE         |
+                    |                   |  | BharatBazaarData       |
+                    | 1. Bedrock Haiku  |  |                        |
+                    |    (ap-south-1)   |  | STORE#<id> | INV#<id>  |
+                    | 2. Nova Lite      |  | STORE#<id> | ORDER#<id>|
+                    |    (us-east-1)    |  | STORE#<id> | SETTINGS  |
+                    | 3. Gemini 1.5     |  |                        |
+                    |    Flash          |  | Inventory, Orders,     |
+                    | 4. Smart Demo     |  | Store Settings         |
+                    |    Mode           |  +------------------------+
+                    +-------------------+
 ```
 
 ---
 
 ## AWS Services Integration
 
-All AWS service integrations are implemented in production code with specific SDK versions.
+| AWS Service | SDK Package | Purpose | Implementation |
+|-------------|-------------|---------|----------------|
+| **Amazon Bedrock** | `@aws-sdk/client-bedrock-runtime` ^3.500.0 | Claude 3 Haiku + Nova Lite AI inference with cross-region failover (ap-south-1 → us-east-1) | `backend/src/utils/bedrock-client.ts` |
+| **Amazon DynamoDB** | `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` ^3.500.0 | Single-table NoSQL database with composite keys (PK/SK), auto-creates table, PAY_PER_REQUEST billing | `backend/src/utils/dynamodb-client.ts` |
+| **Bedrock Vision** | `@aws-sdk/client-bedrock-runtime` | Claude 3 Haiku multimodal — image analysis for bill/invoice scanning | `backend/src/handlers/vision.ts` |
 
-| AWS Service | SDK / Integration | Purpose | Code |
-|-------------|-------------------|---------|------|
-| **Amazon Bedrock** | `@aws-sdk/client-bedrock-runtime` ^3.500.0 | Claude 3 Haiku + Nova Lite inference. Cross-region failover (ap-south-1 → us-east-1). | `bedrock-client.ts` |
-| **Amazon DynamoDB** | `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` ^3.500.0 | Single-table NoSQL with composite keys. Auto-creates table. PAY_PER_REQUEST billing. | `dynamodb-client.ts` |
-| **AWS App Runner** | Multi-stage Dockerfile | Container hosting with auto-scaling, managed TLS, health checks on port 8080. | `Dockerfile` |
-| **Amazon ECR** | Private Registry | Docker image storage for containerized backend. | Deployment config |
-| **AWS IAM** | Fine-grained policies | `bedrock:InvokeModel`, `dynamodb:*`, `ecr:*` — least-privilege access. | IAM config |
-| **Amazon CloudWatch** | App Runner integration | Container logs, request metrics, health monitoring. | Automatic |
+### Deployment-Ready For
+
+| Service | Status | Details |
+|---------|--------|---------|
+| **AWS App Runner** | Docker-ready | Multi-stage Dockerfile with health checks on port 8080, designed for App Runner deployment |
+| **AWS Lambda** | Handler-compatible | All 11 handlers typed with `@types/aws-lambda`, can be deployed as Lambda functions behind API Gateway |
+| **Amazon ECR** | Container-ready | Docker image can be pushed to ECR for App Runner or ECS consumption |
+
+> **Note:** The application uses a resilient multi-tier AI strategy. When AWS Bedrock credentials are configured, Bedrock serves as the AI backbone. When unavailable, the system falls back through multiple tiers to ensure zero-downtime operation. See [Multi-Tier AI Fallback Chain](#multi-tier-ai-fallback-chain) below.
 
 ---
 
-## 4-Tier AI Fallback Chain
+## Multi-Tier AI Fallback Chain
 
-The system implements a resilient multi-tier AI strategy that **guarantees the system never returns an error**. Implemented in `backend/src/utils/bedrock-client.ts`.
+The system implements a resilient strategy that **guarantees the application never returns an error**, regardless of cloud service availability. Implemented in `backend/src/utils/bedrock-client.ts`.
 
 ```
 Request
@@ -320,13 +323,20 @@ Request
   v
 [Tier 4] Smart Demo Mode — Always available
   |  Pre-computed, realistic, region-aware cached responses
+  |  Deterministic randomness (same city + date = same response)
   v
 Response (guaranteed)
 ```
 
+This architecture ensures:
+- **Zero downtime** — the app works even without internet connectivity
+- **Cost optimization** — free-tier Gemini as intermediate fallback reduces Bedrock costs
+- **Demo-ready** — judges can experience all features without AWS credentials
+- **Production-ready** — real AI inference when credentials are configured
+
 ---
 
-## Features
+## Features (23 Total)
 
 | # | Feature | AI | Backend Handler | Key Innovation |
 |---|---------|:--:|-----------------|----------------|
@@ -334,7 +344,7 @@ Response (guaranteed)
 | 2 | **Smart Pricing** | ✓ | `pricing.ts` | 3 strategies, region-aware, 10-city purchasing power data |
 | 3 | **Content Generator** | ✓ | `descriptions.ts` | 6 Indian languages, 6 platforms, culturally adapted |
 | 4 | **Sentiment Analyzer** | ✓ | `sentiment.ts` | Hinglish code-mixed text understanding |
-| 5 | **AI Chat (Munim-ji)** | ✓ | `chat.ts` | 8 languages, voice I/O, business advisor |
+| 5 | **AI Chat (Munim-ji)** | ✓ | `chat.ts` | 8 languages, voice I/O, business advisor persona |
 | 6 | **Wholesale Sourcing** | — | `sourcing.ts` | 10-city marketplace, verified suppliers |
 | 7 | **Product Comparison** | ✓ | `compare.ts` | Side-by-side AI analysis |
 | 8 | **Competitor Analysis** | ✓ | `competitors.ts` | Local market intelligence |
@@ -351,8 +361,8 @@ Response (guaranteed)
 | 19 | **Business Reports** | — | Frontend | Trend analytics dashboard |
 | 20 | **Registration** | — | Frontend | Role-based with supplier verification |
 | 21 | **Profile & Notifications** | — | Frontend | Store settings, smart alerts |
-| 22 | **WhatsApp Integration** | — | Twilio | WhatsApp-first access layer |
-| 23 | **PDF Invoice Sharing** | — | Frontend | jsPDF + WhatsApp/Email share |
+| 22 | **WhatsApp Integration** | — | `whatsapp.ts` | WhatsApp-first access layer |
+| 23 | **Weather-Aware Insights** | — | `weather.ts` | OpenWeatherMap + demand correlation |
 
 ---
 
@@ -379,14 +389,14 @@ Response (guaranteed)
 
 ```
 Development:  http://localhost:4000/api
-Production:   https://<app-runner-url>/api
+Production:   https://<deployment-url>/api
 ```
 
 ### Endpoints
 
 | Method | Endpoint | Description | Handler |
 |--------|----------|-------------|---------|
-| `GET` | `/api/health` | Health check for App Runner | `local-server.ts` |
+| `GET` | `/api/health` | Health check | `server.ts` |
 | `GET` | `/api/dashboard` | Aggregated dashboard data | `dashboard.ts` |
 | `POST` | `/api/pricing/recommend` | AI pricing strategies | `pricing.ts` |
 | `POST` | `/api/content/generate` | Multilingual descriptions | `descriptions.ts` |
@@ -448,10 +458,10 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 |-----------|---------|---------|
 | Node.js | 18 (Alpine) | Runtime |
 | Express | 4.18.2 | HTTP framework |
-| `@aws-sdk/client-bedrock-runtime` | 3.500.0 | Bedrock AI inference |
-| `@aws-sdk/client-dynamodb` | 3.500.0 | DynamoDB client |
-| `@aws-sdk/lib-dynamodb` | 3.500.0 | DynamoDB DocumentClient |
-| `@types/aws-lambda` | 8.10.131 | Lambda-ready handler types |
+| `@aws-sdk/client-bedrock-runtime` | ^3.500.0 | Bedrock AI inference |
+| `@aws-sdk/client-dynamodb` | ^3.500.0 | DynamoDB client |
+| `@aws-sdk/lib-dynamodb` | ^3.500.0 | DynamoDB DocumentClient |
+| `@types/aws-lambda` | ^8.10.131 | Lambda-compatible handler types |
 | Jest + ts-jest | 29.7.0 | Testing |
 
 ---
@@ -462,47 +472,55 @@ curl -X POST http://localhost:4000/api/pricing/recommend \
 bharat_bazaar/
 ├── backend/
 │   └── src/
-│       ├── local-server.ts              # Express dev server (port 4000)
-│       ├── handlers/                    # 11 API handlers (all Lambda-ready)
-│       │   ├── pricing.ts               # Smart Pricing — 3 strategies, region-aware
-│       │   ├── descriptions.ts          # Content Generator — 6 languages, 6 platforms
-│       │   ├── sentiment.ts             # Sentiment Analyzer — Hinglish support
-│       │   ├── chat.ts                  # Munim-ji AI — voice I/O, 8 languages
-│       │   ├── compare.ts              # Product Comparison
-│       │   ├── competitors.ts          # Competitor Analysis
-│       │   ├── inventory.ts            # Inventory CRUD (DynamoDB)
-│       │   ├── orders.ts              # Order Management
-│       │   ├── sourcing.ts            # Wholesale Sourcing (10 cities)
-│       │   ├── vision.ts             # Bill Scanner (AI Vision)
-│       │   └── dashboard.ts          # Dashboard Aggregator
+│       ├── server.ts                      # Express production server (port 8080)
+│       ├── local-server.ts                # Express dev server (port 4000)
+│       ├── handlers/                      # 11 API handlers (all Lambda-compatible)
+│       │   ├── pricing.ts                 # Smart Pricing — 3 strategies, region-aware
+│       │   ├── descriptions.ts            # Content Generator — 6 languages, 6 platforms
+│       │   ├── sentiment.ts               # Sentiment Analyzer — Hinglish support
+│       │   ├── chat.ts                    # Munim-ji AI — voice I/O, 8 languages
+│       │   ├── compare.ts                 # Product Comparison
+│       │   ├── competitors.ts             # Competitor Analysis
+│       │   ├── inventory.ts               # Inventory CRUD (DynamoDB)
+│       │   ├── orders.ts                  # Order Management
+│       │   ├── sourcing.ts                # Wholesale Sourcing (10 cities)
+│       │   ├── vision.ts                  # Bill Scanner (AI Vision)
+│       │   ├── dashboard.ts               # Dashboard Aggregator
+│       │   ├── whatsapp.ts                # WhatsApp message handler
+│       │   ├── weather.ts                 # Weather-aware insights
+│       │   └── demo-fallback.ts           # Intelligent demo response generator
 │       ├── utils/
-│       │   ├── bedrock-client.ts      # 4-tier AI fallback chain
-│       │   ├── dynamodb-client.ts     # Single-table design
-│       │   └── gemini-client.ts       # Tier 3 fallback
-│       ├── prompts/                   # Bedrock prompt templates
-│       └── data/                      # Regional intelligence + demo data
+│       │   ├── bedrock-client.ts           # Multi-tier AI fallback chain
+│       │   ├── dynamodb-client.ts          # Single-table DynamoDB design
+│       │   └── gemini-client.ts            # Gemini fallback integration
+│       ├── prompts/                        # AI prompt templates
+│       └── data/                           # Regional intelligence + sample data
+│           ├── sample-data.ts              # Demo products, reviews, competitor prices
+│           ├── regional-data.ts            # 10-city data: festivals, purchasing power
+│           └── wholesale-data.ts           # Wholesaler networks, bulk pricing
 │
 ├── frontend/
 │   └── src/
-│       ├── App.tsx                    # Root: Auth → Cart → Sales → Language → Routes
-│       ├── pages/                     # 23 page components
-│       │   ├── Landing.tsx            # Hero + data flow + marketplace + AWS architecture
-│       │   ├── Dashboard.tsx          # Sales stats, live data flow, guided demo, catalog
-│       │   ├── InventoryPage.tsx      # Source badges, sold today/week, onboarding seeding
-│       │   ├── ScannerPage.tsx        # AI Vision → inventory with data flow banner
-│       │   ├── InvoicePage.tsx        # PDF + sale recording + data pipeline banner
-│       │   └── ...                    # 18 more pages
+│       ├── App.tsx                         # Root: Auth → Cart → Sales → Language → Routes
+│       ├── pages/                          # 23 page components
+│       │   ├── Landing.tsx                 # Hero + data flow + marketplace + architecture
+│       │   ├── Dashboard.tsx               # Sales stats, live data flow, guided demo, catalog
+│       │   ├── InventoryPage.tsx           # Source badges, sold today/week, onboarding seeding
+│       │   ├── ScannerPage.tsx             # AI Vision → inventory with data flow banner
+│       │   ├── InvoicePage.tsx             # PDF + sale recording + data pipeline banner
+│       │   └── ...                         # 18 more pages
 │       ├── utils/
-│       │   ├── SalesContext.tsx        # Sales tracking: revenue, top sellers, per-item counts
-│       │   ├── productCatalog.ts      # 30+ products, onboarding → inventory mapping
-│       │   ├── CartContext.tsx         # Shopping cart state
-│       │   ├── AuthContext.tsx         # Authentication
-│       │   ├── LanguageContext.tsx     # i18n (6 languages)
-│       │   └── ThemeContext.tsx        # Dark/light theme
-│       └── components/                # Shared UI components
+│       │   ├── SalesContext.tsx            # Sales tracking: revenue, top sellers, per-item
+│       │   ├── productCatalog.ts           # 30+ products, onboarding → inventory mapping
+│       │   ├── CartContext.tsx             # Shopping cart state
+│       │   ├── AuthContext.tsx             # Authentication
+│       │   ├── LanguageContext.tsx          # i18n (6 languages)
+│       │   └── ThemeContext.tsx             # Dark/light theme
+│       └── components/                     # Shared UI components
 │
-├── Dockerfile                         # Multi-stage production build (3 stages)
-└── README.md                          # This file
+├── Dockerfile                              # Multi-stage production build (3 stages)
+├── package.json                            # Root package.json
+└── README.md                               # This file
 ```
 
 ---
@@ -563,33 +581,48 @@ docker run -p 8080:8080 --env-file backend/.env bharat-bazaar
 Create `.env` in `backend/`:
 
 ```env
+# AWS Configuration (optional — app works without these)
 AWS_REGION=ap-south-1
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
+
+# AI Models
 BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
-DYNAMODB_TABLE_NAME=BharatBazaarData
 GEMINI_API_KEY=your-gemini-key                    # Optional: enables Tier 3 fallback
+
+# Database
+DYNAMODB_TABLE_NAME=BharatBazaarData              # Optional: auto-creates if missing
+
+# External APIs
+OPENWEATHER_API_KEY=your-key                      # Optional: real weather data
+
+# Server
+PORT=4000
 ```
 
-> **Note:** If no AWS credentials are provided, the system gracefully degrades to Tier 4 (smart demo mode) and remains fully functional.
+> **Note:** If no AWS credentials are provided, the system gracefully degrades to smart demo mode and remains fully functional with realistic, region-aware responses.
 
 ---
 
 ## Deployment
 
-### Docker (App Runner)
+### Docker Build (Production)
 
 3-stage multi-stage build optimized for production:
 
 ```
-Stage 1: frontend-build    → React + TypeScript + Vite
-Stage 2: backend-build     → Express + TypeScript
-Stage 3: production        → Node 18 Alpine (minimal image)
+Stage 1: frontend-build    → React + TypeScript + Vite → static assets
+Stage 2: backend-build     → Express + TypeScript → compiled JS
+Stage 3: production        → Node 18 Alpine (minimal image) serving both
 ```
 
 ```bash
 docker build -t bharat-bazaar .
-docker run -p 8080:8080 -e AWS_REGION=ap-south-1 -e AWS_ACCESS_KEY_ID=<key> -e AWS_SECRET_ACCESS_KEY=<secret> bharat-bazaar
+docker run -p 8080:8080 \
+  -e AWS_REGION=ap-south-1 \
+  -e AWS_ACCESS_KEY_ID=<key> \
+  -e AWS_SECRET_ACCESS_KEY=<secret> \
+  bharat-bazaar
 ```
 
 ### Health Check
@@ -614,7 +647,7 @@ The sentiment analyzer understands code-mixed reviews:
 
 Parsed correctly as mixed negative (packaging) and positive (product) sentiment.
 
-### 4. 4-Tier AI — Never Fails
+### 4. Multi-Tier AI — Never Fails
 Bedrock → Nova Lite → Gemini → Smart Demo. The system always returns intelligent responses. Zero downtime, zero error screens.
 
 ### 5. Sales Intelligence
@@ -632,8 +665,8 @@ Munim-ji AI supports voice input/output. Speak in Hindi, get responses read back
 ### 9. DynamoDB Single-Table Design
 Composite keys (`PK: STORE#<id>`, `SK: INV#<id>`). Single table serves inventory, orders, and settings. `PAY_PER_REQUEST` — costs pennies at small scale.
 
-### 10. Lambda-Ready Handlers
-All backend handlers typed with `@types/aws-lambda`. Seamless migration to Lambda + API Gateway if serverless deployment is preferred.
+### 10. Lambda-Compatible Handlers
+All backend handlers typed with `@types/aws-lambda`. Can be deployed as Lambda functions behind API Gateway for serverless scaling.
 
 ---
 
@@ -671,11 +704,14 @@ Each city has curated data for festivals, seasonal demand, local preferences, an
 
 ---
 
-## License
+## Team
 
-Built for the **AI4Bharat Hackathon 2026** by **Team ParityAI**.
+**Team ParityAI** — AI for Bharat Hackathon 2026
 
-Track: **Retail, Commerce & Market Intelligence**
+| Member | Role | Contributions |
+|--------|------|---------------|
+| **M Zest** | Full-Stack Developer | Architecture, AWS integration, backend handlers, frontend development |
+| **Afzal Hussain** | Team Member | Project development and collaboration |
 
 ---
 
@@ -683,4 +719,8 @@ Track: **Retail, Commerce & Market Intelligence**
   <strong>BharatBazaar AI</strong> — Market Intelligence for Bharat
   <br />
   <em>"Amazon has data science teams. Kirana stores have BharatBazaar AI."</em>
+  <br /><br />
+  Built with ❤️ for India's 15 million kirana stores
+  <br />
+  <strong>AI for Bharat Hackathon 2026 | Team ParityAI</strong>
 </p>

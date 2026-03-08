@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../utils/AuthContext'
 import { useCart } from '../utils/CartContext'
 import { useTheme } from '../utils/ThemeContext'
+import { getOnboardingData } from '../components/OnboardingModal'
 
 const navSections = [
   {
@@ -104,6 +105,7 @@ export default function Layout() {
   const { totalItems } = useCart()
   const { theme, toggleTheme } = useTheme()
   const dk = theme === 'dark'
+  const onboarding = getOnboardingData()
 
   useEffect(() => {
     document.title = pageTitles[location.pathname] || 'BharatBazaar AI — Weighed by Intelligence'
@@ -190,10 +192,10 @@ export default function Layout() {
                 to="/profile"
                 className="w-9 h-9 bg-orange-500 rounded-lg flex items-center justify-center text-white text-xs font-bold hover:bg-orange-600 transition-colors"
               >
-                {user?.avatar || 'RS'}
+                {user?.avatar || onboarding?.ownerName?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'RS'}
               </Link>
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || 'Rajesh Sharma'}</p>
+                <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || onboarding?.ownerName || 'Store Owner'}</p>
                 <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{user?.role || 'Store Owner'}</p>
               </div>
               <button
@@ -207,7 +209,7 @@ export default function Layout() {
             <div className={`flex items-center gap-1.5 mt-2 pt-2 ${dk ? 'border-t border-[#2a2a2d]' : 'border-t border-gray-200'}`}>
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
               <p className={`text-[10px] ${dk ? 'text-gray-500' : 'text-gray-400'}`}>
-                <span className={`font-medium ${dk ? 'text-gray-400' : 'text-gray-600'}`}>{user?.store || 'Sharma Kirana Store'}</span> &middot; {user?.city || 'Lucknow'}
+                <span className={`font-medium ${dk ? 'text-gray-400' : 'text-gray-600'}`}>{user?.store || onboarding?.storeName || 'My Store'}</span> &middot; {user?.city || 'Lucknow'}
               </p>
             </div>
           </div>
@@ -270,11 +272,11 @@ export default function Layout() {
               {/* User Card */}
               <div className="flex items-center gap-3 p-3 bg-orange-500/10 rounded-xl mb-4 border border-orange-500/20">
                 <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white text-sm font-bold">
-                  {user?.avatar || 'RS'}
+                  {user?.avatar || onboarding?.ownerName?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'RS'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || 'Rajesh Sharma'}</p>
-                  <p className={`text-xs ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{user?.store || 'Sharma Kirana Store'}</p>
+                  <p className={`text-sm font-semibold truncate ${dk ? 'text-gray-200' : 'text-gray-800'}`}>{user?.name || onboarding?.ownerName || 'Store Owner'}</p>
+                  <p className={`text-xs ${dk ? 'text-gray-500' : 'text-gray-400'}`}>{user?.store || onboarding?.storeName || 'My Store'}</p>
                 </div>
               </div>
 
